@@ -1,0 +1,2698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>UTI PAN Toolkit</title>
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #f0f2f8;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  color: #1a1a2e;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── App Header ── */
+.app-header {
+  background: linear-gradient(135deg, #1a3a6b 0%, #1e4d94 60%, #2563b8 100%);
+  padding: 16px 16px 0;
+  box-shadow: 0 2px 12px rgba(26,58,107,0.3);
+}
+.app-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.app-title {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+.app-sub {
+  color: rgba(255,255,255,0.55);
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.app-header-actions {
+  display: flex;
+  gap: 6px;
+}
+.hdr-btn {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  border-radius: 8px;
+  padding: 6px 11px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.hdr-btn:hover { background: rgba(255,255,255,0.22); }
+
+/* ── Tab Bar ── */
+.tab-bar { display: flex; gap: 3px; }
+.tab-btn {
+  flex: 1;
+  padding: 9px 4px 10px;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  font-weight: 700;
+  font-size: 10px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  transition: all .15s;
+  line-height: 1.35;
+  text-align: center;
+  letter-spacing: 0.1px;
+}
+.tab-btn:hover { background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.9); }
+.tab-btn.active {
+  background: #f0f2f8;
+  color: #1a3a6b;
+  box-shadow: 0 -2px 0 #2563b8 inset;
+}
+
+/* ── Layout Wrapper ── */
+.wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a3a6b;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-hint {
+  font-size: 11.5px;
+  color: #7a85a0;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+/* ── Requirement Chips ── */
+.req-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.req-chip {
+  border-radius: 20px;
+  padding: 4px 11px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #eef1f7;
+  color: #555;
+}
+.req-chip.ok { background: #e6f4ed; color: #1a6b3a; border: 1px solid #b8dfca; }
+.req-chip.warn { background: #fef9e7; color: #7a5a00; border: 1px solid #f0d580; }
+
+/* ── Form Type Buttons ── */
+.form-btns { display: flex; gap: 8px; }
+.form-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 2px solid #dde3f0;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12.5px;
+  background: #fff;
+  color: #444;
+  transition: all .15s;
+}
+.form-btn:hover { border-color: #7ea8e0; background: #f5f8ff; }
+.form-btn.active { border-color: #1a3a6b; background: #1a3a6b; color: #fff; }
+
+/* ── Dropzone ── */
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #c8d0e8;
+  border-radius: 10px;
+  padding: 20px 14px;
+  cursor: pointer;
+  color: #8a93b0;
+  font-size: 12px;
+  gap: 5px;
+  text-align: center;
+  background: #fafbff;
+  transition: border-color .15s, background .15s;
+}
+.dropzone:hover { border-color: #2563b8; background: #f0f5ff; }
+
+/* ── File Pill ── */
+.file-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f0f4ff;
+  border-radius: 9px;
+  padding: 10px 14px;
+  border: 1px solid #d8e2f8;
+}
+.file-pill span { flex: 1; font-size: 12px; color: #333; font-weight: 600; }
+.remove-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+  transition: background .15s;
+}
+.remove-btn:hover { background: #c0392b; }
+
+/* ── Image Upload Grid ── */
+.upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.img-upload { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.img-upload-label { font-size: 12px; font-weight: 700; color: #444; text-align: center; }
+.img-upload-hint { font-size: 11px; color: #999; text-align: center; }
+.img-box { position: relative; width: 100%; }
+.img-box img { width: 100%; max-height: 120px; object-fit: contain; border-radius: 8px; border: 1px solid #eee; display: block; }
+.img-clear {
+  position: absolute; top: -7px; right: -7px;
+  background: #e74c3c; color: #fff; border: none;
+  border-radius: 50%; width: 22px; height: 22px;
+  cursor: pointer; font-size: 13px; font-weight: 800;
+  line-height: 22px; text-align: center;
+}
+.img-placeholder {
+  width: 100%; min-height: 90px;
+  border: 2px dashed #dde3f0; border-radius: 10px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer; color: #b0b8cc; font-size: 12px; gap: 4px;
+  background: #fafbff; transition: all .15s;
+}
+.img-placeholder:hover { border-color: #2563b8; background: #f0f5ff; }
+
+/* ── Toggle Switch ── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: #555;
+}
+.toggle {
+  width: 40px; height: 22px;
+  border-radius: 11px;
+  background: #d0d5e0;
+  position: relative;
+  cursor: pointer;
+  transition: background .2s;
+  border: none;
+  flex-shrink: 0;
+}
+.toggle.on { background: #1a7a3a; }
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: left .2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle.on::after { left: 21px; }
+
+/* ── Info / Status Boxes ── */
+.info-box {
+  background: #fefce8;
+  border: 1px solid #fde047;
+  border-radius: 10px;
+  padding: 11px 15px;
+  font-size: 12px;
+  color: #7a5a00;
+  line-height: 1.7;
+}
+.error-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 11px 15px;
+  font-size: 12px;
+  color: #c0392b;
+  display: none;
+}
+.success-box {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  padding: 11px 15px;
+  font-size: 12px;
+  color: #15803d;
+  display: none;
+}
+
+/* ── Action Buttons ── */
+.gen-btn {
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #1a3a6b, #2563b8);
+  color: #fff;
+  width: 100%;
+  letter-spacing: 0.2px;
+  transition: opacity .15s, transform .1s;
+  box-shadow: 0 2px 8px rgba(26,58,107,0.25);
+}
+.gen-btn:hover:not(:disabled) { opacity: 0.93; transform: translateY(-1px); }
+.gen-btn:disabled { background: #c8cdd8; cursor: not-allowed; box-shadow: none; }
+.gen-btn.green {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  box-shadow: 0 2px 8px rgba(22,163,74,0.25);
+}
+.gen-btn.orange {
+  background: linear-gradient(135deg, #c2410c, #ea580c);
+  box-shadow: 0 2px 8px rgba(194,65,12,0.2);
+}
+
+/* ── Result Section ── */
+.page-label { font-size: 12px; font-weight: 700; color: #5a6380; margin-bottom: 6px; }
+.result-img { width: 100%; border-radius: 9px; border: 1px solid #dde; margin-bottom: 10px; display: block; }
+.result-btns { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+.dl-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 11px 8px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity .15s;
+  box-shadow: 0 1px 4px rgba(22,163,74,0.2);
+}
+.dl-btn:hover { opacity: 0.9; }
+.reset-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 11px 8px;
+  border-radius: 10px;
+  border: 1.5px solid #dde3f0;
+  background: #fff;
+  color: #555;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.reset-btn:hover { border-color: #aab; }
+.result-note { font-size: 11px; color: #aaa; margin-top: 10px; line-height: 1.6; }
+
+/* ── Size Selection Buttons ── */
+.size-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.size-btn {
+  padding: 7px 11px;
+  border-radius: 9px;
+  border: 1.5px solid #d8dff0;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  transition: all .15s;
+}
+.size-btn:hover { border-color: #2563b8; color: #1a3a6b; background: #f0f5ff; }
+.size-btn.active { border-color: #1a3a6b; background: #1a3a6b; color: #fff; }
+
+/* ── Crop Resize Handles ── */
+.crop-rh {
+  position: absolute;
+  background: #16a34a;
+  border: 2px solid #fff;
+  border-radius: 3px;
+  box-sizing: border-box;
+  z-index: 10;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.crop-rh.tl { width:14px;height:14px; top:-7px;left:-7px; cursor:nw-resize; }
+.crop-rh.tr { width:14px;height:14px; top:-7px;right:-7px; cursor:ne-resize; }
+.crop-rh.bl { width:14px;height:14px; bottom:-7px;left:-7px; cursor:sw-resize; }
+.crop-rh.br { width:14px;height:14px; bottom:-7px;right:-7px; cursor:se-resize; }
+.crop-rh.tm { width:22px;height:10px; top:-5px;left:50%;transform:translateX(-50%); cursor:n-resize; }
+.crop-rh.bm { width:22px;height:10px; bottom:-5px;left:50%;transform:translateX(-50%); cursor:s-resize; }
+.crop-rh.lm { width:10px;height:22px; left:-5px;top:50%;transform:translateY(-50%); cursor:w-resize; }
+.crop-rh.rm { width:10px;height:22px; right:-5px;top:50%;transform:translateY(-50%); cursor:e-resize; }
+
+/* ── Merge / PDF Tool ── */
+.merge-list { display: flex; flex-direction: column; gap: 8px; }
+.merge-item {
+  background: #f8f9ff;
+  border: 1.5px solid #dde3f0;
+  border-radius: 11px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: border-color .15s;
+}
+.merge-item:hover { border-color: #b8c8e8; }
+.merge-item-icon { font-size: 20px; flex-shrink: 0; }
+.merge-item-label { flex: 1; }
+.merge-item-name { font-size: 12px; font-weight: 700; color: #333; }
+.merge-item-hint { font-size: 11px; color: #999; margin-top: 1px; }
+.merge-item-status { font-size: 11px; font-weight: 700; color: #b0b8cc; }
+.merge-item-status.loaded { color: #16a34a; }
+.merge-item button.pick-btn {
+  background: #1a3a6b; color: #fff; border: none;
+  border-radius: 8px; padding: 7px 13px;
+  font-size: 11px; font-weight: 800; cursor: pointer;
+  flex-shrink: 0; transition: background .15s;
+}
+.merge-item button.pick-btn:hover { background: #2563b8; }
+.merge-item button.clear-btn {
+  background: #e74c3c; color: #fff; border: none;
+  border-radius: 8px; padding: 7px 10px;
+  font-size: 12px; font-weight: 800; cursor: pointer;
+  flex-shrink: 0; transition: background .15s;
+}
+.merge-item button.clear-btn:hover { background: #c0392b; }
+.merge-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 7px; border: 1px solid #dde; flex-shrink: 0; }
+.order-note { font-size: 11px; color: #8a93b0; margin-top: 8px; line-height: 1.6; }
+
+/* ── Privacy Footer ── */
+.privacy {
+  font-size: 11px;
+  color: #9aa0b8;
+  text-align: center;
+  line-height: 1.8;
+  margin-top: 4px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 10px;
+}
+
+/* ── Save Bar (hidden by CSS injection from server) ── */
+.save-bar { background:#e8f5e9; border:2px solid #16a34a; border-radius:12px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.save-bar span { font-size:12px; font-weight:700; color:#16a34a; }
+.save-bar button { background:#16a34a; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-weight:800; font-size:12px; cursor:pointer; }
+
+/* ── Tabs ── */
+.tool-section { display: none; }
+.tool-section.active { display: flex; flex-direction: column; gap: 12px; }
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #c8cdd8; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ═══ APP HEADER + TAB NAV ═══ -->
+<div class="app-header">
+  <div class="app-header-row">
+    <div>
+      <div class="app-title">🪪 UTI PAN Toolkit</div>
+      <div class="app-sub">100% Offline · No Uploads · Browser Only</div>
+    </div>
+    <div class="app-header-actions">
+      <button class="hdr-btn" onclick="selfDownload()" title="Save toolkit as HTML file">💾 Save</button>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('t1')" id="tab-t1">📋 Form<br>Placer</button>
+    <button class="tab-btn" onclick="switchTab('t2')" id="tab-t2">🌐 UTI Photo<br>-Sign Crop</button>
+    <button class="tab-btn" onclick="switchTab('t3')" id="tab-t3">🖼️ General<br>Photo-Sign</button>
+    <button class="tab-btn" onclick="switchTab('t4')" id="tab-t4">🪪 Passport<br>Photo Maker</button>
+    <button class="tab-btn" onclick="switchTab('t5')" id="tab-t5">📎 JPEG<br>→ PDF</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TOOL 1 — UTI FORM PHOTO & SIGNATURE PLACER
+     ══════════════════════════════════════════════════ -->
+<div class="wrap">
+<div class="tool-section active" id="t1">
+
+  <div class="save-bar">
+    <span>💾 Save this toolkit to your device</span>
+    <button onclick="selfDownload()">⬇ Download</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">① Select Form Type</div>
+    <div class="form-btns">
+      <button class="form-btn active" id="btn49a" onclick="setForm('form49a')">New PAN (49A)</button>
+      <button class="form-btn" id="btncr01" onclick="setForm('pancr01')">Correction (CR-01)</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">② Upload Form PDF <span style="font-weight:400;color:#aaa">(optional)</span></div>
+    <p class="card-hint">Upload your UTI PDF for perfect alignment on both pages.</p>
+    <div id="pdf-drop" class="dropzone" onclick="document.getElementById('pdfInput').click()">
+      <span style="font-size:26px;">📎</span>
+      <span style="font-weight:600;">Choose PDF form</span>
+    </div>
+    <div id="pdf-pill" class="file-pill" style="display:none;">
+      <span style="font-size:18px;">📄</span>
+      <span id="pdf-name"></span>
+      <button class="remove-btn" onclick="clearPdf()">✕</button>
+    </div>
+    <input type="file" id="pdfInput" accept=".pdf" style="display:none" onchange="loadPdf(this)"/>
+  </div>
+
+  <div class="card">
+    <div class="card-title">③ Upload Photo &amp; Signature</div>
+    <div class="upload-grid">
+      <div class="img-upload">
+        <div class="img-upload-label">📷 Passport Photo</div>
+        <div class="img-upload-hint">Face clearly visible</div>
+        <div id="photo-placeholder" class="img-placeholder" onclick="document.getElementById('photoInput').click()">
+          <span style="font-size:24px;">+</span><span>Choose image</span>
+        </div>
+        <div id="photo-box" class="img-box" style="display:none;">
+          <img id="photo-preview" src="" alt="photo"/>
+          <button class="img-clear" onclick="clearPhoto()">×</button>
+        </div>
+        <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="loadPhoto(this)"/>
+      </div>
+      <div class="img-upload">
+        <div class="img-upload-label">✍️ Signature</div>
+        <div class="img-upload-hint">On white paper</div>
+        <div id="sig-placeholder" class="img-placeholder" onclick="document.getElementById('sigInput').click()">
+          <span style="font-size:24px;">+</span><span>Choose image</span>
+        </div>
+        <div id="sig-box" class="img-box" style="display:none;">
+          <img id="sig-preview" src="" alt="signature"/>
+          <button class="img-clear" onclick="clearSig()">×</button>
+        </div>
+        <input type="file" id="sigInput" accept="image/*" style="display:none" onchange="loadSig(this)"/>
+      </div>
+    </div>
+    <div class="toggle-row">
+      <button class="toggle on" id="bgToggle" onclick="toggleBg()"></button>
+      <span>AI background removal → white (uses TensorFlow)</span>
+    </div>
+    <!-- Stroke thickness for Tool 1 signature -->
+    <div style="display:flex;align-items:center;gap:10px;margin-top:10px;background:#f0f7f2;border-radius:8px;padding:8px 12px;">
+      <span style="font-size:12px;font-weight:600;white-space:nowrap;">✒️ Sig Stroke</span>
+      <input type="range" id="t1StrokeSlider" min="0" max="4" step="1" value="1"
+             style="flex:1;accent-color:#1a3a6b;cursor:pointer;"
+             oninput="updateT1StrokeLabel(this.value)">
+      <span id="t1StrokeLabel" style="font-size:12px;font-weight:700;color:#1a3a6b;min-width:60px;text-align:right;">Light</span>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <b>Page 1:</b> Photo fitted exactly to box · Signature at bottom-left of photo<br>
+    <b>Page 2:</b> Signature in Verification &amp; Declaration box<br>
+    <span style="opacity:0.8">Signature ink → solid black for maximum clarity.</span>
+  </div>
+
+  <div class="error-box" id="error-box"></div>
+  <button class="gen-btn" id="gen-btn" onclick="generate()" disabled>⚡ Generate Both Pages</button>
+
+  <div class="card" id="result-card" style="display:none;">
+    <div class="card-title">✅ Result — Ready to Print</div>
+    <div class="page-label">📄 Page 1 — Photo &amp; Signature</div>
+    <img id="result-img1" class="result-img" src="" alt="Page 1"/>
+    <div class="result-btns">
+      <button class="dl-btn" onclick="download(1)">⬇️ Download Page 1</button>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="page-label">📄 Page 2 — Declaration with Signature</div>
+    <img id="result-img2" class="result-img" src="" alt="Page 2"/>
+    <div class="result-btns">
+      <button class="dl-btn" onclick="download(2)">⬇️ Download Page 2</button>
+      <button class="reset-btn" onclick="resetAll()">Reset</button>
+    </div>
+    <div class="result-note">Print both pages and submit with your application.</div>
+  </div>
+
+</div><!-- /t1 -->
+
+
+<!-- ══════════════════════════════════════════════════
+     TOOL 2 — UTI PHOTO CROP + WHITE BACKGROUND
+     ══════════════════════════════════════════════════ -->
+<div class="tool-section" id="t2">
+
+  <div class="card" id="uti-req-card">
+    <div class="card-title" id="crop-tool-title">📋 UTI Upload Requirements</div>
+    <div class="req-grid">
+      <div class="req-chip ok">✓ JPEG / JPG only</div>
+      <div class="req-chip ok">✓ Max 100 KB</div>
+      <div class="req-chip ok">✓ Min 200×200 px</div>
+      <div class="req-chip warn">⚠ White background</div>
+      <div class="req-chip warn">⚠ Face clearly visible</div>
+      <div class="req-chip warn">⚠ No glasses / cap</div>
+    </div>
+    <p class="card-hint" style="margin-top:8px;" id="crop-tab-hint">UTI Portal Photo: 213×213px · UTI Sign: 400×200px · JPEG, max 100 KB</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">① Choose Output Size</div>
+    <div class="size-btns" id="crop-size-btns">
+      <button class="size-btn" onclick="setCropSize('photo')" id="cs-photo" data-tabs="t3 t4">📷 Photo 3.5×4.5cm</button>
+      <button class="size-btn" onclick="setCropSize('sig')" id="cs-sig" data-tabs="t3">✍️ Signature 2×6cm</button>
+      <button class="size-btn" onclick="setCropSize('portalphoto')" id="cs-portalphoto" data-tabs="t2">🌐 UTI Photo 213×213</button>
+      <button class="size-btn" onclick="setCropSize('portalsig')" id="cs-portalsig" data-tabs="t2">✍️ UTI Sign 400×200</button>
+      <button class="size-btn" onclick="setCropSize('square')" id="cs-square" data-tabs="t3">⬛ Square 300×300px</button>
+      <button class="size-btn" onclick="setCropSize('custom')" id="cs-custom" data-tabs="t3">✏️ Custom</button>
+    </div>
+    <div id="custom-size-row" style="display:none;gap:8px;margin-top:8px;align-items:center;flex-wrap:wrap;" class="custom-size-row">
+      <label style="font-size:12px;color:#555;">W px: <input type="number" id="custom-w" value="350" style="width:70px;padding:5px;border-radius:6px;border:1.5px solid #dde;font-size:12px;"></label>
+      <label style="font-size:12px;color:#555;">H px: <input type="number" id="custom-h" value="450" style="width:70px;padding:5px;border-radius:6px;border:1.5px solid #dde;font-size:12px;"></label>
+      <label style="font-size:12px;color:#555;">DPI: <input type="number" id="custom-dpi" value="300" style="width:60px;padding:5px;border-radius:6px;border:1.5px solid #dde;font-size:12px;"></label>
+      <button onclick="applyCropSize()" style="padding:6px 12px;background:#1a3a6b;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">Apply</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">② Upload Image</div>
+    <div id="crop-placeholder" class="dropzone" onclick="document.getElementById('cropInput').click()">
+      <span style="font-size:28px;">📷</span>
+      <span style="font-weight:600;">Choose photo or signature</span>
+      <span style="font-size:11px;">JPG, PNG, HEIC accepted</span>
+    </div>
+    <div id="crop-loaded" style="display:none;">
+      <div class="toggle-row" style="margin-bottom:10px;">
+        <button class="toggle on" id="cropBgToggle" onclick="toggleCropBg()"></button>
+        <span>AI background removal → white</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
+        <div class="toggle-row" style="margin-bottom:0;">
+          <button class="toggle on" id="cropEnhanceToggle" onclick="toggleCropAutoEnhance()"></button>
+          <span style="font-size:12px;">🔍 Sharpen &amp; Correct</span>
+        </div>
+        <div class="toggle-row" style="margin-bottom:0;">
+          <button class="toggle" id="cropSmoothToggle" onclick="toggleCropEnh('smooth')"></button>
+          <span style="font-size:12px;">✨ Smooth</span>
+        </div>
+        <div class="toggle-row" style="margin-bottom:0;">
+          <button class="toggle" id="cropDenoiseToggle" onclick="toggleCropEnh('denoise')"></button>
+          <span style="font-size:12px;">🧹 Remove Noise</span>
+        </div>
+        <div class="toggle-row" style="margin-bottom:0;">
+          <button class="toggle" id="cropBeautifyToggle" onclick="toggleCropEnh('beautify')"></button>
+          <span style="font-size:12px;">💄 Beautify</span>
+        </div>
+      </div>
+      <!-- ── Levels Editor (Photoshop Ctrl+L equivalent) ── -->
+      <div id="levels-panel" style="background:#f0f2f8;border-radius:8px;padding:10px 12px;margin-bottom:10px;border:1.5px solid #dde;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:12px;font-weight:700;color:#1a3a6b;">📊 Levels  <span style="font-weight:400;color:#777;">(brighten grey background before removing)</span></span>
+          <button onclick="resetLevels()" style="font-size:11px;padding:2px 10px;border-radius:6px;border:1.5px solid #bbc;background:#fff;cursor:pointer;color:#555;">↺ Reset</button>
+        </div>
+        <!-- Histogram -->
+        <canvas id="levels-histogram" height="50" style="width:100%;height:50px;border-radius:4px;background:#1a1a2e;display:block;margin-bottom:6px;cursor:default;"></canvas>
+        <!-- Black point -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-size:11px;color:#333;font-weight:600;width:30px;">⬛ In:</span>
+          <input type="range" id="levels-black" min="0" max="253" value="0" style="flex:1;accent-color:#333;height:6px;cursor:pointer;" oninput="onLevelsInput()">
+          <input type="range" id="levels-white" min="2" max="255" value="255" style="flex:1;accent-color:#bbb;height:6px;cursor:pointer;" oninput="onLevelsInput()">
+          <span style="font-size:11px;color:#888;font-weight:600;width:30px;text-align:right;">⬜ In:</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:0 2px;margin-bottom:2px;">
+          <span id="levels-black-val" style="font-size:11px;font-weight:700;color:#1a3a6b;min-width:28px;">0</span>
+          <span id="levels-white-val" style="font-size:11px;font-weight:700;color:#1a3a6b;min-width:28px;text-align:right;">255</span>
+        </div>
+      </div>
+
+      <!-- Stroke thickness — shown only for sig / portalsig sizes -->
+      <div id="stroke-thickness-row" style="display:none;flex-direction:column;gap:8px;margin-bottom:10px;background:#f0f7f2;border-radius:8px;padding:10px 12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:13px;font-weight:600;white-space:nowrap;">✒️ Stroke Thickness</span>
+          <input type="range" id="strokeThicknessSlider" min="0" max="4" step="1" value="2"
+                 style="flex:1;accent-color:#1a7a3a;cursor:pointer;"
+                 oninput="updateStrokeLabel(this.value)">
+          <span id="strokeThicknessLabel" style="font-size:12px;font-weight:700;color:#1a7a3a;min-width:60px;text-align:right;">Medium</span>
+        </div>
+        <!-- Live preview canvas — updates instantly as slider moves -->
+        <div id="sig-live-preview-wrap" style="display:none;">
+          <div style="font-size:11px;color:#555;margin-bottom:4px;font-style:italic;">Live preview — drag slider to compare</div>
+          <canvas id="sig-live-canvas" style="border:2px solid #1a7a3a;border-radius:6px;width:100%;max-height:120px;object-fit:contain;background:#fff;display:block;"></canvas>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="page-label">Original (drag box to adjust crop)</div>
+          <div id="crop-orig-wrap" style="position:relative;width:100%;touch-action:none;">
+            <canvas id="crop-orig-canvas" style="width:100%;border-radius:7px;border:1px solid #eee;display:block;"></canvas>
+            <div id="crop-box-overlay" style="position:absolute;border:2.5px solid #1a7a3a;background:rgba(26,122,58,0.10);cursor:move;box-sizing:border-box;">
+              <div class="crop-rh tl" data-dir="tl"></div>
+              <div class="crop-rh tr" data-dir="tr"></div>
+              <div class="crop-rh bl" data-dir="bl"></div>
+              <div class="crop-rh br" data-dir="br"></div>
+              <div class="crop-rh tm" data-dir="t"></div>
+              <div class="crop-rh bm" data-dir="b"></div>
+              <div class="crop-rh lm" data-dir="l"></div>
+              <div class="crop-rh rm" data-dir="r"></div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#999;text-align:center;margin-top:4px;">Drag the green box to choose the crop area</div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:6px;">
+            <button onclick="cropZoom(1.1)" style="padding:6px 14px;border-radius:8px;border:1.5px solid #dde;background:#fff;font-size:14px;font-weight:700;cursor:pointer;">➖ Zoom Out</button>
+            <button onclick="cropZoom(1/1.1)" style="padding:6px 14px;border-radius:8px;border:1.5px solid #dde;background:#fff;font-size:14px;font-weight:700;cursor:pointer;">➕ Zoom In</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+            <span style="font-size:12px;color:#555;">↺ Rotate</span>
+            <input type="range" id="crop-rotate" min="-180" max="180" step="0.5" value="0" oninput="cropRotate(this.value)" style="flex:1;">
+            <span id="crop-rotate-val" style="font-size:12px;color:#555;width:38px;text-align:right;">0°</span>
+          </div>
+          <div style="display:flex;gap:6px;justify-content:center;margin-top:6px;flex-wrap:wrap;">
+            <button onclick="cropRotateStep(-90)" style="padding:5px 12px;border-radius:7px;border:1.5px solid #dde;background:#fff;font-size:12px;font-weight:700;cursor:pointer;">↺ 90°</button>
+            <button onclick="cropRotateStep(-45)" style="padding:5px 12px;border-radius:7px;border:1.5px solid #dde;background:#fff;font-size:12px;font-weight:700;cursor:pointer;">↺ 45°</button>
+            <button onclick="cropRotateStep(45)" style="padding:5px 12px;border-radius:7px;border:1.5px solid #dde;background:#fff;font-size:12px;font-weight:700;cursor:pointer;">↻ 45°</button>
+            <button onclick="cropRotateStep(90)" style="padding:5px 12px;border-radius:7px;border:1.5px solid #dde;background:#fff;font-size:12px;font-weight:700;cursor:pointer;">↻ 90°</button>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div class="page-label">Result (cropped)</div>
+          <div style="position:relative;">
+            <canvas id="crop-result-canvas" style="width:100%;border-radius:7px;border:2px solid #1a3a6b;display:block;"></canvas>
+            <!-- AI preview overlays the raw canvas so both are same size -->
+            <canvas id="crop-preview-canvas" style="display:none;position:absolute;top:0;left:0;width:100%;border-radius:7px;border:2px solid #1a7a3a;"></canvas>
+          </div>
+          <!-- Preview bar — visible for photo sizes when BG removal is ON -->
+          <div id="photo-preview-bar" style="display:none;margin-top:6px;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;">
+            <button id="photo-preview-btn" onclick="previewPhotoResult()"
+              style="padding:5px 16px;border-radius:8px;border:1.5px solid #1a7a3a;background:#f0f7f2;color:#1a7a3a;font-size:12px;font-weight:600;cursor:pointer;">
+              👁 Preview BG Removal
+            </button>
+            <span id="photo-preview-status" style="font-size:11px;color:#888;"></span>
+          </div>
+        </div>
+      </div>
+      <div id="crop-size-info" style="font-size:11px;color:#888;margin-top:6px;text-align:center;"></div>
+    </div>
+    <input type="file" id="cropInput" accept="image/*" style="display:none" onchange="loadCropImage(this)"/>
+  </div>
+
+  <div class="error-box" id="crop-error-box"></div>
+
+  <button class="gen-btn green" id="crop-gen-btn" onclick="generateCrop()" disabled>✂️ Crop &amp; Remove Background</button>
+
+  <div class="card" id="crop-result-card" style="display:none;">
+    <div class="card-title">✅ Ready to Upload to UTI Portal</div>
+    <canvas id="crop-final-canvas" style="width:100%;max-width:200px;display:block;margin:0 auto 10px;border-radius:10px;border:2px solid #1a3a6b;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></canvas>
+    <div id="crop-final-info" style="font-size:11px;color:#8a93b0;text-align:center;margin-bottom:14px;font-weight:600;"></div>
+    <div class="result-btns">
+      <button class="dl-btn" onclick="downloadCrop()" style="background:linear-gradient(135deg,#1a3a6b,#2563b8);" title="JPEG — required format for UTI Portal">⬇ JPEG</button>
+      <button class="dl-btn" onclick="downloadCropPNG()" style="background:linear-gradient(135deg,#0e7a5a,#15a370);" title="PNG — transparent background preserved">⬇ PNG</button>
+      <button class="dl-btn" onclick="downloadCropA4()" style="background:linear-gradient(135deg,#7c3aed,#9f5de2);" title="Place photo on A4 sheet for printing">📄 A4</button>
+      <button class="reset-btn" onclick="resetCrop()">↺ Reset</button>
+    </div>
+    <p style="font-size:10.5px;color:#9aa0b8;text-align:center;margin-top:8px;">JPEG required for UTI Portal upload · PNG keeps transparency · A4 for printing</p>
+    <div style="margin-top:16px;border-top:1px solid #eef0f6;padding-top:14px;">
+      <div class="card-title" style="margin-bottom:8px;">🖨️ Print Sheet</div>
+      <p class="card-hint" style="margin-bottom:10px;">Tile copies of this photo onto one sheet for printing.</p>
+      <div class="size-btns" id="sheet-btns">
+        <button class="size-btn" onclick="setSheetCount(1)">1×</button>
+        <button class="size-btn" onclick="setSheetCount(2)">2×</button>
+        <button class="size-btn" onclick="setSheetCount(4)">4×</button>
+        <button class="size-btn" onclick="setSheetCount(6)">6×</button>
+        <button class="size-btn" onclick="setSheetCount(8)">8×</button>
+        <button class="size-btn" onclick="setSheetCount(12)">12×</button>
+        <button class="size-btn" onclick="setSheetCount(16)">16×</button>
+        <button class="size-btn" onclick="setSheetCount('a4')">📄 Fill A4</button>
+        <button class="size-btn" onclick="setSheetCount('4x6')">🖼️ 4×6</button>
+      </div>
+      <canvas id="sheet-canvas" style="width:100%;max-width:300px;display:block;margin:10px auto;border-radius:9px;border:1.5px solid #dde3f0;"></canvas>
+      <div id="sheet-info" style="font-size:11px;color:#8a93b0;text-align:center;margin-bottom:10px;font-weight:600;"></div>
+      <button class="dl-btn" id="sheet-dl-btn" style="display:none;width:100%;background:linear-gradient(135deg,#b45309,#d97706);" onclick="downloadSheet()">⬇ Download Print Sheet</button>
+    </div>
+  </div>
+
+</div><!-- /t2 -->
+
+
+<!-- ══════════════════════════════════════════════════
+     TOOL 3 — JPEG → PDF MERGE
+     ══════════════════════════════════════════════════ -->
+<div class="tool-section" id="t3">
+
+  <div class="card">
+    <div class="card-title">📋 Application Document Requirements</div>
+    <p class="card-hint">UTI / NSDL PAN application typically requires: Application form (2 pages) + Proof of Identity + Proof of Address + Proof of DOB — merged into ONE PDF.</p>
+    <div class="req-grid">
+      <div class="req-chip ok">✓ Single PDF submission</div>
+      <div class="req-chip ok">✓ Max 2 MB total</div>
+      <div class="req-chip warn">⚠ Each page clear &amp; readable</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">① Add Documents (JPEGs or PNGs)</div>
+    <p class="card-hint">Tap each slot to upload. Drag to reorder. Pages will be merged in order shown.</p>
+    <div class="merge-list" id="merge-list">
+      <!-- slots injected by JS -->
+    </div>
+    <button onclick="addMergeSlot()" style="margin-top:10px;width:100%;padding:11px;border-radius:10px;border:2px dashed #c8d0e8;background:#fafbff;color:#8a93b0;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='#2563b8';this.style.color='#1a3a6b'" onmouseout="this.style.borderColor='#c8d0e8';this.style.color='#8a93b0'">+ Add Another Page</button>
+  </div>
+
+  <div class="card" id="merge-order-card">
+    <div class="card-title">② Page Order Preview</div>
+    <div id="merge-thumbs" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    <p class="order-note">Tip: If a JPEG is landscape (wider than tall), it will be rotated automatically to fit A4 portrait.</p>
+  </div>
+
+  <div class="error-box" id="merge-error-box"></div>
+  <button class="gen-btn orange" id="merge-btn" onclick="generatePdf()" disabled>📎 Merge into PDF</button>
+
+  <div class="card" id="merge-result-card" style="display:none;">
+    <div class="card-title">✅ PDF Ready</div>
+    <div id="merge-result-info" style="font-size:13px;color:#444;margin-bottom:12px;"></div>
+    <div class="result-btns">
+      <button class="dl-btn" onclick="downloadPdf()">⬇️ Download PDF</button>
+      <button class="reset-btn" onclick="resetMerge()">Reset</button>
+    </div>
+    <div class="result-note">Upload this PDF to the UTI / NSDL portal as supporting document.
+      <br><span style="color:#9aa0b8;">To verify DPI: open in Adobe Reader → Edit → Properties → Description — shows "200 DPI JPEG".</span></div>
+  </div>
+
+</div><!-- /t3 -->
+
+<div class="privacy">🔒 100% private · All processing runs in your browser · Nothing is uploaded to any server</div>
+
+</div><!-- /wrap -->
+
+<script type="module">
+
+// ══════════════════════════════════════════════════════════
+//  TAB SWITCHER
+// ══════════════════════════════════════════════════════════
+window.switchTab = (id) => {
+  // t2 = UTI Photo-Sign Crop  → #t2 div
+  // t3 = General Photo-Sign   → #t2 div
+  // t4 = Passport Photo Maker → #t2 div
+  // t5 = JPEG→PDF             → #t3 div
+  const divId = id==='t5' ? 't3' : (id==='t2'||id==='t3'||id==='t4') ? 't2' : id;
+  ['t1','t2','t3'].forEach(t => {
+    document.getElementById(t).classList.toggle('active', t===divId);
+  });
+  ['t1','t2','t3','t4','t5'].forEach(t => {
+    const el=document.getElementById('tab-'+t);
+    if(el) el.classList.toggle('active', t===id);
+  });
+
+  // Filter visible size buttons by tab
+  if(['t2','t3','t4'].includes(id)){
+    document.querySelectorAll('#crop-size-btns .size-btn').forEach(btn => {
+      const allowed = (btn.dataset.tabs||'').split(' ');
+      btn.style.display = allowed.includes(id) ? '' : 'none';
+    });
+  }
+
+  // Per-tab context: title, hint, UTI requirements card visibility
+  const titleEl = document.getElementById('crop-tool-title');
+  const hintEl  = document.getElementById('crop-tab-hint');
+  const reqCard = document.getElementById('uti-req-card');
+  if(id==='t2'){
+    if(titleEl) titleEl.textContent='📋 UTI Upload Requirements';
+    if(hintEl)  hintEl.textContent='UTI Portal Photo: 213×213px · UTI Sign: 400×200px · JPEG, max 100 KB';
+    if(reqCard) reqCard.style.display='';
+    cropRect=null; setCropSize('portalphoto');
+  } else if(id==='t3'){
+    if(titleEl) titleEl.textContent='🖼️ General Photo / Signature Crop';
+    if(hintEl)  hintEl.textContent='Photo: 3.5×4.5cm (portrait) · Signature: 2×6cm (landscape) · Square 300px · Or custom size';
+    if(reqCard) reqCard.style.display='none';
+    cropRect=null; setCropSize('photo');
+  } else if(id==='t4'){
+    if(titleEl) titleEl.textContent='🪪 Passport / ID Photo Maker';
+    if(hintEl)  hintEl.textContent='Standard Passport / ID Photo — 3.5×4.5cm (35×45mm) · 413×531px @300dpi · JPEG under 100 KB';
+    if(reqCard) reqCard.style.display='none';
+    cropRect=null; setCropSize('photo');
+  }
+};
+
+window.selfDownload = () => {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download='uti-pan-toolkit.html';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+};
+
+// ══════════════════════════════════════════════════════════
+//  SHARED: AI BACKGROUND REMOVAL
+// ══════════════════════════════════════════════════════════
+let _segmenter = null;
+
+const loadScript = (src) => new Promise((res,rej) => {
+  if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
+  const s = document.createElement('script'); s.src=src;
+  s.onload=res; s.onerror=rej; document.head.appendChild(s);
+});
+
+async function loadSegmenter(statusCb) {
+  if (_segmenter) return _segmenter;
+  if (statusCb) statusCb('⏳ Loading AI model (~3s)…');
+  // Full TF.js bundle includes tf-core, tf-backend-webgl, tf-converter (loadGraphModel), tf-layers, tf-backend-cpu
+  await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js');
+  await loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/body-segmentation@1.0.1/dist/body-segmentation.min.js');
+  if (statusCb) statusCb('⏳ Starting model…');
+  await window.tf.setBackend('webgl');
+  await window.tf.ready();
+  _segmenter = await window.bodySegmentation.createSegmenter(
+    window.bodySegmentation.SupportedModels.MediaPipeSelfieSegmentation,
+    { runtime:'tfjs', modelType:'general' }
+  );
+  return _segmenter;
+}
+
+// ── replaceBackgroundWithWhite ──────────────────────────────────────────────
+// Exact port of photo-hub's background-removal.ts:
+//   • accepts either HTMLImageElement or HTMLCanvasElement
+//   • passes the canvas directly to segmentPeople() with NO extra options
+//   • runs at the input's native resolution (no pre-scaling)
+//   • returns a new canvas with pure #ffffff background
+// ───────────────────────────────────────────────────────────────────────────
+async function removeBackground(imgOrCanvas, statusCb) {
+  const seg = await loadSegmenter(statusCb);
+  if (statusCb) statusCb('⏳ Removing background…');
+
+  // Normalise to canvas (same approach as photo-hub's drawToCanvas helper)
+  const W = imgOrCanvas.width, H = imgOrCanvas.height;
+  const inputCanvas = document.createElement('canvas');
+  inputCanvas.width = W; inputCanvas.height = H;
+  inputCanvas.getContext('2d').drawImage(imgOrCanvas, 0, 0, W, H);
+
+  let segs;
+  try {
+    // ── EXACT match to photo-hub: segmentPeople(canvas) — no extra options ──
+    segs = await seg.segmentPeople(inputCanvas);
+  } catch(e) {
+    console.warn('segmentPeople failed:', e);
+    segs = null;
+  }
+
+  if (!segs || segs.length === 0) {
+    // No person detected: fall back to light-bg flood-fill (same as photo-hub fallback)
+    return whitenBackgroundCanvas(inputCanvas);
+  }
+
+  // Build foreground mask (white = keep subject, transparent = background)
+  const maskImageData = await window.bodySegmentation.toBinaryMask(
+    segs,
+    { r: 255, g: 255, b: 255, a: 255 },
+    { r: 0,   g: 0,   b: 0,   a: 0   },
+    false,
+    0.5
+  );
+
+  // Put mask on its own canvas
+  const maskCanvas = document.createElement('canvas');
+  maskCanvas.width = maskImageData.width; maskCanvas.height = maskImageData.height;
+  maskCanvas.getContext('2d').putImageData(maskImageData, 0, 0);
+
+  // Soften edges — draw mask at full output size (upscales mask if needed)
+  const softMask = document.createElement('canvas'); softMask.width = W; softMask.height = H;
+  const softCtx = softMask.getContext('2d');
+  softCtx.filter = 'blur(3px)';
+  softCtx.drawImage(maskCanvas, 0, 0, W, H);
+  softCtx.filter = 'none';
+
+  // Clip the ORIGINAL canvas to the soft mask using source-in
+  const subjectC = document.createElement('canvas'); subjectC.width = W; subjectC.height = H;
+  const subjectCtx = subjectC.getContext('2d');
+  subjectCtx.drawImage(softMask, 0, 0, W, H);
+  subjectCtx.globalCompositeOperation = 'source-in';
+  subjectCtx.drawImage(inputCanvas, 0, 0, W, H);  // original pixels, masked
+
+  // Composite: pure white base + masked subject on top → pure #ffffff background
+  const out = document.createElement('canvas'); out.width = W; out.height = H;
+  const outCtx = out.getContext('2d');
+  outCtx.fillStyle = '#ffffff'; outCtx.fillRect(0, 0, W, H);
+  outCtx.drawImage(subjectC, 0, 0);
+  return out;
+}
+
+// Fallback: flood-fill from edges replacing light pixels (>=215 all channels)
+// with pure white. Mirrors photo-hub's whitenBackground() exactly.
+// For coloured (non-white) backgrounds the AI path above handles it;
+// this fallback is only reached if the AI model is unavailable.
+function whitenBackgroundCanvas(canvas) {
+  const ctx = canvas.getContext('2d');
+  const { width: W, height: H } = canvas;
+  const imageData = ctx.getImageData(0, 0, W, H); const d = imageData.data;
+  const THR = 215;
+  const visited = new Uint8Array(W * H);
+  const stack = [];
+  const push = (x, y) => {
+    if (x < 0 || y < 0 || x >= W || y >= H) return;
+    const idx = y * W + x; if (visited[idx]) return; visited[idx] = 1;
+    const o = idx * 4;
+    if (d[o] >= THR && d[o+1] >= THR && d[o+2] >= THR) stack.push(idx);
+  };
+  for (let x = 0; x < W; x++) { push(x, 0); push(x, H-1); }
+  for (let y = 1; y < H-1; y++) { push(0, y); push(W-1, y); }
+  while (stack.length) {
+    const idx = stack.pop(), x = idx % W, y = (idx / W)|0, o = idx * 4;
+    d[o] = 255; d[o+1] = 255; d[o+2] = 255; d[o+3] = 255;
+    for (const [dx,dy] of [[-1,0],[1,0],[0,-1],[0,1]]) {
+      const nx = x+dx, ny = y+dy;
+      if (nx < 0 || ny < 0 || nx >= W || ny >= H) continue;
+      const ni = ny*W+nx; if (visited[ni]) continue; visited[ni] = 1;
+      const no = ni*4;
+      if (d[no] >= THR && d[no+1] >= THR && d[no+2] >= THR) stack.push(ni);
+    }
+  }
+  ctx.putImageData(imageData, 0, 0); return canvas;
+}
+// Keep old name for any direct callers
+const removeBackgroundFloodFill = (img) => {
+  const sc = document.createElement('canvas'); sc.width = img.width; sc.height = img.height;
+  sc.getContext('2d').drawImage(img, 0, 0);
+  return whitenBackgroundCanvas(sc);
+};
+
+// ── PORTAL SIGN: smooth stroke processing ────────────────────────────────────
+// Replaces old contrast-boost pipeline that was creating gaps in thin strokes.
+// Algorithm: flood-fill bg → grayscale → Gaussian blur (connects broken strokes)
+//            → Otsu threshold → morphological dilation → soft anti-alias edges
+function enhanceAndWhitenSignature(canvas, strokeRadius) {
+  if(strokeRadius===undefined) strokeRadius=sigStrokeThickness;
+  const W=canvas.width, H=canvas.height;
+  const out=document.createElement('canvas');
+  out.width=W; out.height=H;
+  const ctx=out.getContext('2d');
+  ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+  ctx.drawImage(canvas,0,0);
+
+  // Step 1: flood-fill light edges to white
+  whitenBackgroundCanvas(out);
+
+  // Step 2: grayscale float array
+  const id=ctx.getImageData(0,0,W,H); const d=id.data;
+  const gray=new Float32Array(W*H);
+  for(let i=0;i<W*H;i++){
+    const o=i*4;
+    gray[i]=0.299*d[o]+0.587*d[o+1]+0.114*d[o+2];
+  }
+
+  // Step 3: Gaussian blur — bridges tiny gaps in ink strokes (sigma=1.4)
+  const blurred=_gaussFloat(gray,W,H,1.4);
+
+  // Step 4: Otsu threshold — finds optimal ink/paper boundary automatically
+  const hist=new Array(256).fill(0);
+  for(let i=0;i<W*H;i++) hist[Math.min(255,blurred[i]|0)]++;
+  const total=W*H; let sum=0;
+  for(let i=0;i<256;i++) sum+=i*hist[i];
+  let wB=0,sumB=0,maxV=0,thresh=160;
+  for(let t=0;t<256;t++){
+    wB+=hist[t]; if(!wB) continue;
+    const wF=total-wB; if(!wF) break;
+    sumB+=t*hist[t];
+    const mB=sumB/wB,mF=(sum-sumB)/wF;
+    const v=wB*wF*(mB-mF)**2;
+    if(v>maxV){maxV=v;thresh=t;}
+  }
+  // Small bias so faint strokes are kept; too large a bias includes background texture as ink
+  thresh=Math.min(thresh+8, 210);
+
+  // Step 5: binary ink mask
+  const mask=new Uint8Array(W*H);
+  for(let i=0;i<W*H;i++) mask[i]=blurred[i]<thresh?1:0;
+
+  // Step 6: morphological dilation — thickens strokes by strokeRadius pixels
+  const r=Math.max(0,strokeRadius);
+  const dilated=r>0?_morphDilate(mask,W,H,r):mask;
+
+  // Step 7: write back — pure black ink on pure white
+  for(let i=0;i<W*H;i++){
+    const o=i*4;
+    if(dilated[i]){d[o]=0;d[o+1]=0;d[o+2]=0;d[o+3]=255;}
+    else{d[o]=255;d[o+1]=255;d[o+2]=255;d[o+3]=255;}
+  }
+
+  // Step 8: soft anti-aliasing on ink/paper boundaries
+  _softEdges(d,W,H);
+  ctx.putImageData(id,0,0);
+
+  // Step 9: final flood-fill to purge any stray gray background pixels the threshold missed
+  whitenBackgroundCanvas(out);
+  return out;
+}
+
+// Gaussian blur on float grayscale array (separable 1D passes)
+function _gaussFloat(src,W,H,sigma){
+  const r=Math.ceil(sigma*3)|0; const k=2*r+1;
+  const kern=new Float32Array(k); let ks=0;
+  for(let i=0;i<k;i++){const x=i-r;kern[i]=Math.exp(-x*x/(2*sigma*sigma));ks+=kern[i];}
+  for(let i=0;i<k;i++) kern[i]/=ks;
+  const tmp=new Float32Array(W*H); const out=new Float32Array(W*H);
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    let s=0;
+    for(let i=0;i<k;i++){const xi=Math.min(Math.max(x+i-r,0),W-1);s+=src[y*W+xi]*kern[i];}
+    tmp[y*W+x]=s;
+  }
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    let s=0;
+    for(let i=0;i<k;i++){const yi=Math.min(Math.max(y+i-r,0),H-1);s+=tmp[yi*W+x]*kern[i];}
+    out[y*W+x]=s;
+  }
+  return out;
+}
+
+// Morphological circular dilation
+function _morphDilate(mask,W,H,r){
+  const out=new Uint8Array(W*H); const r2=r*r;
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    if(!mask[y*W+x]) continue;
+    const y0=Math.max(0,y-r),y1=Math.min(H-1,y+r);
+    const x0=Math.max(0,x-r),x1=Math.min(W-1,x+r);
+    for(let ny=y0;ny<=y1;ny++){const dy=ny-y;
+      for(let nx=x0;nx<=x1;nx++){const dx=nx-x;
+        if(dx*dx+dy*dy<=r2) out[ny*W+nx]=1;
+      }
+    }
+  }
+  return out;
+}
+
+// Soft anti-aliasing: blend boundary pixels with neighbours for smooth edges
+function _softEdges(d,W,H){
+  const tmp=new Uint8ClampedArray(d.length);
+  for(let k=0;k<d.length;k++) tmp[k]=d[k];
+  for(let y=1;y<H-1;y++) for(let x=1;x<W-1;x++){
+    const i=(y*W+x)*4; const ink=d[i]<128;
+    let diff=false;
+    for(const[dx,dy]of[[-1,0],[1,0],[0,-1],[0,1]]){
+      if((d[((y+dy)*W+(x+dx))*4]<128)!==ink){diff=true;break;}
+    }
+    if(diff){
+      let s=0,c=0;
+      for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++){
+        s+=d[((y+dy)*W+(x+dx))*4];c++;
+      }
+      tmp[i]=tmp[i+1]=tmp[i+2]=Math.round(s/c);
+    }
+  }
+  for(let k=0;k<d.length;k++) d[k]=tmp[k];
+}
+
+// Auto-detect signature bounding box from dark pixels (for portalsig/sig crop init)
+function _autoSigBounds(rc){
+  const ctx=rc.getContext('2d');
+  const id=ctx.getImageData(0,0,rc.width,rc.height); const d=id.data;
+  const W=rc.width,H=rc.height;
+  let x0=W,y0=H,x1=0,y1=0,found=false;
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    const i=(y*W+x)*4;
+    const lum=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];
+    if(lum<200){
+      if(x<x0)x0=x; if(x>x1)x1=x;
+      if(y<y0)y0=y; if(y>y1)y1=y;
+      found=true;
+    }
+  }
+  if(!found||x1<=x0||y1<=y0) return null;
+  const px=Math.max(18,Math.round((x1-x0)*0.08));
+  const py=Math.max(18,Math.round((y1-y0)*0.15));
+  return{
+    x:Math.max(0,x0-px), y:Math.max(0,y0-py),
+    w:Math.min(W-(x0-px), x1-x0+px*2),
+    h:Math.min(H-(y0-py), y1-y0+py*2)
+  };
+}
+
+const loadImage = (url) => new Promise((res,rej) => {
+  const img=new Image(); img.crossOrigin='anonymous';
+  img.onload=()=>res(img); img.onerror=rej; img.src=url;
+});
+
+// ══════════════════════════════════════════════════════════
+//  TOOL 1 — FORM PLACER
+// ══════════════════════════════════════════════════════════
+const FORM_CONFIG = {
+  form49a: {
+    photoLeft:  { x:1.2,  y:13.2, w:17.9, h:15.0 },
+    photoRight: { x:81.2, y:13.2, w:17.5, h:15.0 },
+    sig2: { x:54.0, y:87.5, w:38.0, h:7.5 },
+  },
+  pancr01: {
+    photoLeft:  { x:1.5,  y:14.0, w:16.7, h:15.8 },
+    photoRight: { x:79.5, y:14.0, w:16.7, h:15.8 },
+    sig2: { x:51.0, y:37.0, w:45.0, h:7.0, sigH:5.5 },
+  },
+};
+
+let formType='form49a', pdfFile=null, photoUrl=null, sigUrl=null;
+let outputUrl1=null, outputUrl2=null, removeBg=true;
+
+window.toggleBg = () => { removeBg=!removeBg; document.getElementById('bgToggle').classList.toggle('on',removeBg); };
+window.updateT1StrokeLabel = (v) => {
+  tool1SigThickness=parseInt(v);
+  document.getElementById('t1StrokeLabel').textContent=STROKE_LABELS[tool1SigThickness];
+};
+window.setForm = (t) => {
+  formType=t;
+  document.getElementById('btn49a').classList.toggle('active',t==='form49a');
+  document.getElementById('btncr01').classList.toggle('active',t==='pancr01');
+  outputUrl1=outputUrl2=null;
+  document.getElementById('result-card').style.display='none';
+};
+let pdfObjectUrl=null; // ObjectURL is safe to fetch many times; ArrayBuffer transfers break on reuse
+window.loadPdf = (input) => {
+  const f=input.files[0]; if(!f) return; pdfFile=f;
+  if(pdfObjectUrl) URL.revokeObjectURL(pdfObjectUrl);
+  pdfObjectUrl=URL.createObjectURL(f); // created once, reusable every Generate call
+  document.getElementById('pdf-drop').style.display='none';
+  document.getElementById('pdf-pill').style.display='flex';
+  document.getElementById('pdf-name').textContent=f.name;
+};
+window.clearPdf = () => {
+  pdfFile=null;
+  if(pdfObjectUrl){ URL.revokeObjectURL(pdfObjectUrl); pdfObjectUrl=null; }
+  document.getElementById('pdfInput').value='';
+  document.getElementById('pdf-drop').style.display='flex';
+  document.getElementById('pdf-pill').style.display='none';
+};
+window.loadPhoto = (input) => {
+  const f=input.files[0]; if(!f) return; photoUrl=URL.createObjectURL(f);
+  document.getElementById('photo-preview').src=photoUrl;
+  document.getElementById('photo-placeholder').style.display='none';
+  document.getElementById('photo-box').style.display='block';
+  checkReady();
+};
+window.clearPhoto = () => {
+  photoUrl=null; document.getElementById('photoInput').value='';
+  document.getElementById('photo-placeholder').style.display='flex';
+  document.getElementById('photo-box').style.display='none'; checkReady();
+};
+window.loadSig = (input) => {
+  const f=input.files[0]; if(!f) return; sigUrl=URL.createObjectURL(f);
+  document.getElementById('sig-preview').src=sigUrl;
+  document.getElementById('sig-placeholder').style.display='none';
+  document.getElementById('sig-box').style.display='block'; checkReady();
+};
+window.clearSig = () => {
+  sigUrl=null; document.getElementById('sigInput').value='';
+  document.getElementById('sig-placeholder').style.display='flex';
+  document.getElementById('sig-box').style.display='none'; checkReady();
+};
+function checkReady() { document.getElementById('gen-btn').disabled=!(photoUrl&&sigUrl); }
+function showError(msg) { const el=document.getElementById('error-box'); el.textContent=msg; el.style.display=msg?'block':'none'; }
+
+let tool1SigThickness=1; // 0=Thin … 4=Heavy  (default Light = 1px dilation)
+
+// Dilation for transparent-background canvases (alpha > 128 = ink)
+function dilateAlphaStrokes(canvas, r) {
+  const {width:W, height:H}=canvas;
+  const ctx=canvas.getContext('2d');
+  const src=ctx.getImageData(0,0,W,H); const sd=src.data;
+  const isInk=new Uint8Array(W*H);
+  for(let i=0;i<W*H;i++){ if(sd[i*4+3]>128) isInk[i]=1; }
+  const out=ctx.createImageData(W,H); const od=out.data;
+  const r2=r*r;
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
+    if(!isInk[y*W+x]) continue;
+    const y0=Math.max(0,y-r),y1=Math.min(H-1,y+r),x0=Math.max(0,x-r),x1=Math.min(W-1,x+r);
+    for(let ny=y0;ny<=y1;ny++){ const dy=ny-y;
+      for(let nx=x0;nx<=x1;nx++){ const dx=nx-x;
+        if(dx*dx+dy*dy<=r2){const ni=(ny*W+nx)*4;od[ni]=0;od[ni+1]=0;od[ni+2]=0;od[ni+3]=255;}
+      }
+    }
+  }
+  ctx.putImageData(out,0,0);
+}
+
+function processSignature(img) {
+  // Ensure signature is at least ~200dpi for a 6x2cm box (472x157px), upscaling if smaller
+  const MIN_W=472, MIN_H=157;
+  let tw=img.width, th=img.height;
+  const scale=Math.max(1, MIN_W/tw, MIN_H/th);
+  if(scale>1){ tw=Math.round(tw*scale); th=Math.round(th*scale); }
+  const sc=document.createElement('canvas'); sc.width=tw; sc.height=th;
+  const sx=sc.getContext('2d');
+  sx.imageSmoothingEnabled=true; sx.imageSmoothingQuality='high';
+  sx.drawImage(img,0,0,tw,th);
+  const id=sx.getImageData(0,0,sc.width,sc.height); const d=id.data;
+  // Step 1: strong contrast boost — pulls faint/gray strokes towards black,
+  //         light background towards white (contrast=2.2, mirror of photo-hub enhanceSignature)
+  for(let i=0;i<d.length;i+=4){
+    for(let c=0;c<3;c++){
+      d[i+c]=Math.min(255,Math.max(0,Math.round((d[i+c]-128)*2.2+128)));
+    }
+  }
+  // Step 2: classify ink vs background with raised threshold (190 instead of 160)
+  //         so faint strokes (lum 160-189) are still kept as solid black ink
+  for(let i=0;i<d.length;i+=4){
+    const r=d[i],g=d[i+1],b=d[i+2],lum=0.299*r+0.587*g+0.114*b;
+    const isBlue=b>r+25&&b>g+15&&b<230&&lum<200, isDark=lum<190;
+    if(isBlue||isDark){d[i]=0;d[i+1]=0;d[i+2]=0;d[i+3]=255;}else{d[i+3]=0;}
+  }
+  sx.putImageData(id,0,0);
+  // Step 3: dilation — use same alpha-based dilation as Tool 2 slider
+  if(tool1SigThickness>0) dilateAlphaStrokes(sc, tool1SigThickness);
+  return sc;
+}
+function setJpegDpi(dataUrl,dpi){
+  // Decode base64
+  const b64=dataUrl.split(',')[1];
+  const raw=atob(b64);
+  const bytes=new Uint8Array(raw.length);
+  for(let i=0;i<raw.length;i++) bytes[i]=raw.charCodeAt(i);
+  // JPEG starts with FFD8, then APP0 (FFE0) JFIF segment with density at fixed offsets
+  // Standard JFIF APP0: FF E0 LL LL 'J' 'F' 'I' 'F' 00 maj min units Xdensity(2) Ydensity(2) ...
+  if(bytes[2]===0xFF&&bytes[3]===0xE0){
+    // units byte at offset 13 (1=dpi), Xdensity at 14-15, Ydensity at 16-17
+    bytes[13]=1; // dots per inch
+    bytes[14]=(dpi>>8)&0xFF; bytes[15]=dpi&0xFF;
+    bytes[16]=(dpi>>8)&0xFF; bytes[17]=dpi&0xFF;
+  }
+  let bin='';
+  for(let i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]);
+  return 'data:image/jpeg;base64,'+btoa(bin);
+}
+function toJpegUnder(canvas,maxKB=200,dpi=null){
+  let q=0.92; let url=canvas.toDataURL('image/jpeg',q);
+  const sz=(u)=>Math.round((u.length-u.indexOf(',')-1)*3/4);
+  while(sz(url)>maxKB*1024&&q>0.4){q-=0.05;url=canvas.toDataURL('image/jpeg',q);}
+  if(dpi) url=setJpegDpi(url,dpi);
+  return url;
+}
+async function renderPage(pdf,pageNum,SCALE){
+  if(pdf){const page=await pdf.getPage(pageNum);const vp=page.getViewport({scale:SCALE});const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;return c;}
+  const c=document.createElement('canvas');c.width=595*SCALE;c.height=842*SCALE;const ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);return c;
+}
+function stampPhoto(ctx,W,H,imgSrc,box,addBorder){
+  const bx=(box.x/100)*W,by=(box.y/100)*H,bw=(box.w/100)*W,bh=(box.h/100)*H;
+  ctx.fillStyle='#fff'; ctx.fillRect(bx,by,bw,bh);
+  const ir=imgSrc.width/imgSrc.height,br=bw/bh;
+  let sx=0,sy=0,sw=imgSrc.width,sh=imgSrc.height;
+  if(ir>br){sw=imgSrc.height*br;sx=(imgSrc.width-sw)/2;}else{sh=imgSrc.width/br;sy=0;}
+  ctx.save(); ctx.beginPath(); ctx.rect(bx,by,bw,bh); ctx.clip();
+  ctx.drawImage(imgSrc,sx,sy,sw,sh,bx,by,bw,bh); ctx.restore();
+  if(addBorder){ctx.save();ctx.strokeStyle='#000';ctx.lineWidth=Math.max(1,W*0.0015);ctx.strokeRect(bx,by,bw,bh);ctx.restore();}
+}
+function stampSigOnPhoto(ctx,W,H,photoBox,sigCanvas){
+  const pbx=(photoBox.x/100)*W,pby=(photoBox.y/100)*H,pbw=(photoBox.w/100)*W,pbh=(photoBox.h/100)*H;
+  const ir=sigCanvas.width/sigCanvas.height;
+  // Larger signature: ~1.6x photo width, capped at 65% of photo height
+  let sw=pbw*1.6, sh=sw/ir;
+  if(sh>pbh*0.65){ sh=pbh*0.65; sw=sh*ir; }
+  // Start at 60% from right edge of photo (i.e., 40% across from left), most of sign extends outside right
+  const startX=pbx+pbw*0.40, anchorY=pby+pbh*0.55;
+  ctx.drawImage(sigCanvas,startX,anchorY-sh/2,sw,sh);
+}
+function stampSigInBox(ctx,W,H,box,sigCanvas){
+  const bx=(box.x/100)*W,by=(box.y/100)*H,bw=(box.w/100)*W,bh=(box.h/100)*H;
+  const ir=sigCanvas.width/sigCanvas.height,br=bw/bh;
+  let dx,dy,dw,dh;
+  if(ir>br){dw=bw;dh=dw/ir;dx=bx;dy=by+(bh-dh)/2;}else{dh=bh;dw=dh*ir;dy=by;dx=bx+(bw-dw)/2;}
+  ctx.save(); ctx.globalCompositeOperation='multiply';
+  ctx.drawImage(sigCanvas,dx,dy,dw,dh); ctx.restore();
+}
+function findSignatureLineY(ctx,W,H,box){
+  const bx=Math.floor((box.x/100)*W),bw=Math.ceil((box.w/100)*W);
+  const sY0=Math.floor((box.y/100)*H),sY1=Math.ceil(((box.y+box.h)/100)*H);
+  const id=ctx.getImageData(bx,sY0,bw,sY1-sY0),d=id.data,rowH=sY1-sY0;
+  const darkFrac=new Array(rowH).fill(0);
+  for(let y=0;y<rowH;y++){let dk=0;for(let x=0;x<bw;x++){const i=(y*bw+x)*4;if(0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]<150)dk++;}darkFrac[y]=dk/bw;}
+  const thr=0.02,rows=[];let inR=false,rS=0;
+  for(let y=0;y<rowH;y++){if(darkFrac[y]>thr){if(!inR){inR=true;rS=y;}}else{if(inR){rows.push([rS,y]);inR=false;}}}
+  if(inR)rows.push([rS,rowH]);
+  if(rows.length===0)return(box.y+box.h*0.7)/100;
+  return(sY0+rows[rows.length-1][0])/H;
+}
+
+window.generate = async () => {
+  showError('');
+  const btn=document.getElementById('gen-btn');
+  btn.disabled=true; btn.textContent='⏳ Processing…';
+  try {
+    const cfg=FORM_CONFIG[formType], SCALE=200/72; let pdf=null;
+    if(pdfFile){
+      const {GlobalWorkerOptions,getDocument}=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.min.mjs');
+      GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.worker.min.mjs';
+      // Use ObjectURL — PDF.js fetches it fresh each call, no ArrayBuffer transfer issues
+      pdf=await getDocument({url:pdfObjectUrl}).promise;
+    }
+    const photoImg=await loadImage(photoUrl);
+    const photoSrc=removeBg ? await removeBackground(photoImg,(s)=>{btn.textContent=s;}) : (()=>{const tc=document.createElement('canvas');tc.width=photoImg.width;tc.height=photoImg.height;tc.getContext('2d').drawImage(photoImg,0,0);return tc;})();
+    const sigCanvas=processSignature(await loadImage(sigUrl));
+
+    const c1=await renderPage(pdf,1,SCALE),ctx1=c1.getContext('2d');
+    stampPhoto(ctx1,c1.width,c1.height,photoSrc,cfg.photoLeft,removeBg);
+    stampPhoto(ctx1,c1.width,c1.height,photoSrc,cfg.photoRight,removeBg);
+    stampSigOnPhoto(ctx1,c1.width,c1.height,cfg.photoLeft,sigCanvas);
+    outputUrl1=toJpegUnder(c1,200,200);  // 200KB max, embed 200 DPI in JFIF header
+
+    const c2=await renderPage(pdf,pdf?2:1,SCALE),ctx2=c2.getContext('2d');
+    let sig2Box=cfg.sig2;
+    if(formType==='pancr01'){
+      const sigH=cfg.sig2.sigH||cfg.sig2.h; let yPct=38.5;
+      if(pdf){try{const lY=findSignatureLineY(ctx2,c2.width,c2.height,cfg.sig2);const cand=(lY/c2.height)*100-sigH;if(cand>=40&&cand<=90)yPct=cand;}catch(e){}}
+      sig2Box={x:cfg.sig2.x,w:cfg.sig2.w,h:sigH,y:Math.max(0,yPct)};
+    }
+    stampSigInBox(ctx2,c2.width,c2.height,sig2Box,sigCanvas);
+    outputUrl2=toJpegUnder(c2,200,200);  // 200KB max, embed 200 DPI in JFIF header
+
+    document.getElementById('result-img1').src=outputUrl1;
+    document.getElementById('result-img2').src=outputUrl2;
+    document.getElementById('result-card').style.display='block';
+    document.getElementById('result-card').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    console.error('Generate error:',e);
+    showError('Error: '+(e&&e.message?e.message:String(e)));
+  } finally {
+    btn.disabled=false; btn.textContent='⚡ Generate Both Pages'; checkReady();
+  }
+};
+window.download = (page) => {
+  const url=page===1?outputUrl1:outputUrl2; if(!url)return;
+  const a=document.createElement('a'); a.href=url; a.download=`${formType}-page${page}.jpg`; a.click();
+};
+window.resetAll = () => {
+  clearPdf(); clearPhoto(); clearSig(); outputUrl1=outputUrl2=null;
+  document.getElementById('result-card').style.display='none'; showError('');
+};
+
+// ══════════════════════════════════════════════════════════
+//  TOOL 2 — PHOTO CROP + WHITE BG
+// ══════════════════════════════════════════════════════════
+// UTI sizes at 96dpi screen (display) — output at 300dpi
+// Photo: 3.5cm × 4.5cm → at 300dpi = 413×531px
+// Sig:   6cm × 2cm    → at 300dpi = 709×236px
+// Square: 300×300px
+const CROP_SIZES = {
+  photo:  { w:413, h:531, label:'Photo 3.5×4.5cm @300dpi', dpi:300 },
+  sig:    { w:709, h:236, label:'Signature 6×2cm @300dpi', dpi:300 },
+  portalphoto: { w:213, h:213, label:'UTI Photo Crop 213×213px @300dpi', dpi:300 },
+  portalsig:   { w:400, h:200, label:'UTI Sign Crop 400×200px @600dpi', dpi:600 },
+  square: { w:300, h:300, label:'Square 300×300px', dpi:96 },
+  custom: { w:350, h:450, label:'Custom', dpi:96 },
+};
+let cropSize='photo', cropImageUrl=null, cropFinalDataUrl=null, cropBgRemove=true;
+let sigStrokeThickness=2; // 0=Thin 1=Light 2=Medium 3=Bold 4=Heavy
+let sigBaseCanvas=null;   // clean cropped canvas reused by the live preview
+let photoPreviewActive=false; // true while the AI preview canvas is on top
+
+const STROKE_LABELS=['Thin','Light','Medium','Bold','Heavy'];
+window.updateStrokeLabel = (v) => {
+  sigStrokeThickness=parseInt(v);
+  document.getElementById('strokeThicknessLabel').textContent=STROKE_LABELS[sigStrokeThickness];
+  updateSigStrokePreview(); // refresh live preview on every slider drag
+};
+
+function updateSigStrokePreview() {
+  if(!sigBaseCanvas) return;
+  // Run the full enhance pipeline with the current slider value on the stored clean crop
+  const result=enhanceAndWhitenSignature(sigBaseCanvas, sigStrokeThickness);
+  const pv=document.getElementById('sig-live-canvas');
+  pv.width=result.width; pv.height=result.height;
+  pv.getContext('2d').drawImage(result,0,0);
+  document.getElementById('sig-live-preview-wrap').style.display='block';
+}
+
+// Central helper: show/hide photo preview bar based on current state
+function syncPhotoPreviewBar() {
+  const isSig=['sig','portalsig'].includes(cropSize);
+  const show=!isSig && cropBgRemove && !!cropRotatedCanvas;
+  document.getElementById('photo-preview-bar').style.display=show?'flex':'none';
+}
+
+window.setCropSize = (sz) => {
+  cropSize=sz;
+  ['photo','sig','portalphoto','portalsig','square','custom'].forEach(k=>{
+    document.getElementById('cs-'+k).classList.toggle('active',k===sz);
+  });
+  document.getElementById('custom-size-row').style.display=sz==='custom'?'flex':'none';
+  // Show stroke thickness slider only for signature sizes; hide live preview until image loads
+  const isSig=['sig','portalsig'].includes(sz);
+  document.getElementById('stroke-thickness-row').style.display=isSig?'flex':'none';
+  if(!isSig){ sigBaseCanvas=null; document.getElementById('sig-live-preview-wrap').style.display='none'; }
+  syncPhotoPreviewBar();
+  updateCropPreview();
+};
+window.applyCropSize = () => {
+  const w=parseInt(document.getElementById('custom-w').value)||350;
+  const h=parseInt(document.getElementById('custom-h').value)||450;
+  const dpi=parseInt(document.getElementById('custom-dpi').value)||96;
+  CROP_SIZES.custom={w,h,dpi,label:`Custom ${w}×${h}px @${dpi}dpi`};
+  cropRect=null;
+  updateCropPreview();
+};
+window.toggleCropBg = () => {
+  cropBgRemove=!cropBgRemove;
+  document.getElementById('cropBgToggle').classList.toggle('on',cropBgRemove);
+  syncPhotoPreviewBar();
+  // If preview was active and we turned BG removal off, restore raw view
+  if(!cropBgRemove && photoPreviewActive) resetPhotoPreview();
+};
+// ── Photo BG-removal live preview ────────────────────────────────────────────
+function resetPhotoPreview() {
+  photoPreviewActive=false;
+  document.getElementById('crop-preview-canvas').style.display='none';
+  document.getElementById('crop-result-canvas').style.display='block';
+  const btn=document.getElementById('photo-preview-btn');
+  btn.textContent='👁 Preview BG Removal'; btn.disabled=false;
+  document.getElementById('photo-preview-status').textContent='';
+}
+
+window.previewPhotoResult = async () => {
+  if(!cropRotatedCanvas||!cropRect) return;
+  // Toggle: if preview is already showing, restore raw crop view
+  if(photoPreviewActive){ resetPhotoPreview(); return; }
+  const sz=CROP_SIZES[cropSize];
+  const btn=document.getElementById('photo-preview-btn');
+  const status=document.getElementById('photo-preview-status');
+  btn.disabled=true; btn.textContent='⏳ Running AI…';
+  status.textContent='Loading model…';
+  try {
+    // Render current crop area at output resolution
+    const cropped=document.createElement('canvas');
+    cropped.width=sz.w; cropped.height=sz.h;
+    const ctx=cropped.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,sz.w,sz.h);
+    ctx.drawImage(cropRotatedCanvas,cropRect.x,cropRect.y,cropRect.w,cropRect.h,0,0,sz.w,sz.h);
+    const enhanced=applyEnhancements(cropped,cropEnh);
+    status.textContent='Removing background…';
+    const result=await removeBackground(enhanced,(s)=>{status.textContent=s;});
+    // Show result overlaid on the raw canvas (both same CSS width so they align)
+    const pv=document.getElementById('crop-preview-canvas');
+    pv.width=result.width; pv.height=result.height;
+    pv.getContext('2d').drawImage(result,0,0);
+    pv.style.display='block';
+    document.getElementById('crop-result-canvas').style.display='none';
+    btn.textContent='↩ Back to crop view'; btn.disabled=false;
+    status.textContent='✓ AI result — tap button to go back';
+    photoPreviewActive=true;
+  } catch(e) {
+    status.textContent='Preview failed — try again';
+    btn.textContent='👁 Preview BG Removal'; btn.disabled=false;
+  }
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+let cropEnh = { smooth:false, denoise:false, beautify:false };
+window.toggleCropEnh = (key) => {
+  cropEnh[key]=!cropEnh[key];
+  document.getElementById('crop'+key.charAt(0).toUpperCase()+key.slice(1)+'Toggle').classList.toggle('on',cropEnh[key]);
+};
+
+// ── Photo Enhancement Pipeline (Sharpen & Correct) ──────────────────────────
+let cropAutoEnhance = true;
+window.toggleCropAutoEnhance = () => {
+  cropAutoEnhance = !cropAutoEnhance;
+  document.getElementById('cropEnhanceToggle').classList.toggle('on', cropAutoEnhance);
+};
+
+// Separable Gaussian blur for unsharp mask (sigma≈1.0, kernel=5)
+function gaussBlur5(imgData) {
+  const {width:W,height:H,data:src}=imgData;
+  const tmp=new Float32Array(W*H*4);
+  const out=new Uint8ClampedArray(src.length);
+  // Kernel: [1,4,6,4,1]/16
+  const k=[1/16,4/16,6/16,4/16,1/16];
+  // Horizontal pass
+  for(let y=0;y<H;y++){
+    for(let x=0;x<W;x++){
+      for(let c=0;c<3;c++){
+        let acc=0;
+        for(let d=-2;d<=2;d++){
+          const xx=Math.max(0,Math.min(W-1,x+d));
+          acc+=src[(y*W+xx)*4+c]*k[d+2];
+        }
+        tmp[(y*W+x)*4+c]=acc;
+      }
+      tmp[(y*W+x)*4+3]=src[(y*W+x)*4+3];
+    }
+  }
+  // Vertical pass
+  for(let y=0;y<H;y++){
+    for(let x=0;x<W;x++){
+      for(let c=0;c<3;c++){
+        let acc=0;
+        for(let d=-2;d<=2;d++){
+          const yy=Math.max(0,Math.min(H-1,y+d));
+          acc+=tmp[(yy*W+x)*4+c]*k[d+2];
+        }
+        out[(y*W+x)*4+c]=Math.max(0,Math.min(255,Math.round(acc)));
+      }
+      out[(y*W+x)*4+3]=src[(y*W+x)*4+3];
+    }
+  }
+  return new ImageData(out,W,H);
+}
+
+// Unsharp mask: sharpen = original + amount*(original - blur), threshold avoids noise amplification
+// amount=1.0 ≈ PIL ImageEnhance.Sharpness(1.5) — strong but identity-preserving
+function unsharpMask(imgData, amount=1.0, threshold=5) {
+  const blurred=gaussBlur5(imgData);
+  const {width:W,height:H,data:d}=imgData, b=blurred.data;
+  const out=new Uint8ClampedArray(d.length);
+  for(let i=0;i<d.length;i+=4){
+    for(let c=0;c<3;c++){
+      const diff=d[i+c]-b[i+c];
+      out[i+c]=Math.abs(diff)>threshold
+        ? Math.max(0,Math.min(255,Math.round(d[i+c]+amount*diff)))
+        : d[i+c];
+    }
+    out[i+3]=d[i+3];
+  }
+  return new ImageData(out,W,H);
+}
+
+// Auto Levels: stretch per-channel histogram with low/high clip (preserves skin tones, no hallucination)
+function autoLevelsAdjust(imgData, clipPct=0.4) {
+  const {width:W,height:H,data:d}=imgData;
+  const n=W*H;
+  const clipN=Math.max(1,Math.round(n*clipPct/100));
+  const out=new Uint8ClampedArray(d.length);
+  for(let c=0;c<3;c++){
+    const hist=new Uint32Array(256);
+    for(let i=0;i<d.length;i+=4) hist[d[i+c]]++;
+    let lo=0,hi=255,cnt=0;
+    for(let v=0;v<256;v++){ cnt+=hist[v]; if(cnt>=clipN){lo=v;break;} }
+    cnt=0;
+    for(let v=255;v>=0;v--){ cnt+=hist[v]; if(cnt>=clipN){hi=v;break;} }
+    if(hi<=lo){lo=0;hi=255;}
+    const range=hi-lo||1;
+    const lut=new Uint8Array(256);
+    for(let v=0;v<256;v++) lut[v]=Math.max(0,Math.min(255,Math.round((v-lo)/range*255)));
+    for(let i=c;i<d.length;i+=4) out[i]=lut[d[i]];
+  }
+  // copy alpha
+  for(let i=3;i<d.length;i+=4) out[i]=d[i];
+  return new ImageData(out,W,H);
+}
+
+// Gray World auto white balance — neutralises colour casts, preserves Indian skin tones faithfully
+function autoWhiteBalance(imgData) {
+  const {width:W,height:H,data:d}=imgData;
+  const n=W*H;
+  let rS=0,gS=0,bS=0;
+  for(let i=0;i<d.length;i+=4){rS+=d[i];gS+=d[i+1];bS+=d[i+2];}
+  const rA=rS/n, gA=gS/n, bA=bS/n;
+  const gray=(rA+gA+bA)/3;
+  // Limit correction strength to 15% to avoid over-correction on warm Indian skin tones
+  const MAX=0.15;
+  const rSc=Math.max(1-MAX,Math.min(1+MAX,gray/Math.max(1,rA)));
+  const gSc=Math.max(1-MAX,Math.min(1+MAX,gray/Math.max(1,gA)));
+  const bSc=Math.max(1-MAX,Math.min(1+MAX,gray/Math.max(1,bA)));
+  const out=new Uint8ClampedArray(d.length);
+  for(let i=0;i<d.length;i+=4){
+    out[i]=Math.max(0,Math.min(255,Math.round(d[i]*rSc)));
+    out[i+1]=Math.max(0,Math.min(255,Math.round(d[i+1]*gSc)));
+    out[i+2]=Math.max(0,Math.min(255,Math.round(d[i+2]*bSc)));
+    out[i+3]=d[i+3];
+  }
+  return new ImageData(out,W,H);
+}
+
+// ── Lanczos-equivalent multi-step downsampling ────────────────────────────────
+// Replicates PIL Image.Resampling.LANCZOS by halving iteratively until ≤2x target,
+// then a final high-quality draw. This preserves fine facial detail far better than
+// a single drawImage from a large canvas to a small one.
+function lanczosDownsample(src, sx, sy, sw, sh, targetW, targetH) {
+  // 1. Extract source region into its own canvas at native size
+  let cur = document.createElement('canvas');
+  cur.width = sw; cur.height = sh;
+  const initCtx = cur.getContext('2d');
+  initCtx.imageSmoothingEnabled = true;
+  initCtx.imageSmoothingQuality = 'high';
+  initCtx.drawImage(src, sx, sy, sw, sh, 0, 0, sw, sh);
+
+  // 2. Halve resolution iteratively while still > 2× target
+  while(cur.width > targetW * 2 || cur.height > targetH * 2) {
+    const nw = Math.max(targetW, Math.round(cur.width  / 2));
+    const nh = Math.max(targetH, Math.round(cur.height / 2));
+    const nxt = document.createElement('canvas');
+    nxt.width = nw; nxt.height = nh;
+    const c = nxt.getContext('2d');
+    c.imageSmoothingEnabled = true;
+    c.imageSmoothingQuality = 'high';
+    c.drawImage(cur, 0, 0, nw, nh);
+    cur = nxt;
+  }
+
+  // 3. Final step to exact target dimensions
+  const out = document.createElement('canvas');
+  out.width = targetW; out.height = targetH;
+  const outCtx = out.getContext('2d');
+  outCtx.imageSmoothingEnabled = true;
+  outCtx.imageSmoothingQuality = 'high';
+  outCtx.fillStyle = '#fff'; outCtx.fillRect(0, 0, targetW, targetH);
+  outCtx.drawImage(cur, 0, 0, targetW, targetH);
+  return out;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Master enhancement: apply all steps to a canvas, returns new canvas
+// Bilateral filter — cv2.bilateralFilter(img, d=5, sigmaColor, sigmaSpace) equivalent.
+// Smooths noise/compression artefacts while PRESERVING edges (eyes, nose, hairline, bindi).
+// Runs on the small output canvas (213×213 = ~45 k pixels) so is fast enough in the browser.
+function bilateralFilter(imgData, sigmaSpace=50, sigmaColor=75) {
+  const {width:W,height:H,data:src}=imgData;
+  const out=new Uint8ClampedArray(src.length);
+  const half=2; // d=5
+  const sigS2=2*sigmaSpace*sigmaSpace, sigC2=2*sigmaColor*sigmaColor;
+  // Precompute spatial weights once
+  const spW=new Float32Array(25);
+  for(let dy=-half;dy<=half;dy++)
+    for(let dx=-half;dx<=half;dx++)
+      spW[(dy+half)*5+(dx+half)]=Math.exp(-(dx*dx+dy*dy)/sigS2);
+  for(let y=0;y<H;y++){
+    for(let x=0;x<W;x++){
+      const ci=(y*W+x)*4;
+      const cr=src[ci],cg=src[ci+1],cb=src[ci+2];
+      let rS=0,gS=0,bS=0,wS=0;
+      for(let dy=-half;dy<=half;dy++){
+        const ny=Math.max(0,Math.min(H-1,y+dy));
+        for(let dx=-half;dx<=half;dx++){
+          const nx=Math.max(0,Math.min(W-1,x+dx));
+          const ni=(ny*W+nx)*4;
+          const dr=cr-src[ni],dg=cg-src[ni+1],db=cb-src[ni+2];
+          const w=spW[(dy+half)*5+(dx+half)]*Math.exp(-(dr*dr+dg*dg+db*db)/sigC2);
+          rS+=src[ni]*w; gS+=src[ni+1]*w; bS+=src[ni+2]*w; wS+=w;
+        }
+      }
+      out[ci]=wS?rS/wS:cr; out[ci+1]=wS?gS/wS:cg; out[ci+2]=wS?bS/wS:cb;
+      out[ci+3]=src[ci+3];
+    }
+  }
+  return new ImageData(out,W,H);
+}
+
+// Auto Gamma Correction — O = I^(1/G) formula from the OpenCV pipeline.
+// Brightens underexposed photos to ~128 target luminance without clipping highlights.
+function autoGamma(imgData) {
+  const d=imgData.data, n=d.length/4;
+  let lum=0;
+  for(let i=0;i<d.length;i+=4) lum+=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];
+  const avg=lum/n;
+  if(Math.abs(avg-128)<20) return imgData; // image is already well-exposed — skip
+  const gamma=Math.log(128/255)/Math.log(Math.max(1,avg)/255);
+  const g=Math.max(0.65,Math.min(1.8,gamma)); // clamp to safe range
+  const lut=new Uint8Array(256);
+  for(let v=0;v<256;v++) lut[v]=Math.round(Math.pow(v/255,1/g)*255);
+  const out=new Uint8ClampedArray(d.length);
+  for(let i=0;i<d.length;i+=4){
+    out[i]=lut[d[i]]; out[i+1]=lut[d[i+1]]; out[i+2]=lut[d[i+2]]; out[i+3]=d[i+3];
+  }
+  return new ImageData(out,imgData.width,imgData.height);
+}
+
+// Master enhancement: apply all steps to a canvas, returns new canvas
+// Pipeline: WhiteBalance → AutoLevels → AutoGamma → BilateralDenoise → UnsharpMask
+function applyPhotoEnhancement(canvas) {
+  const W=canvas.width, H=canvas.height;
+  const work=document.createElement('canvas'); work.width=W; work.height=H;
+  const ctx=work.getContext('2d');
+  ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+  ctx.drawImage(canvas,0,0);
+  let id=ctx.getImageData(0,0,W,H);
+  // 1. Auto white balance — mild, preserves Indian skin tones (±15% max)
+  id=autoWhiteBalance(id);
+  // 2. Auto levels — stretch histogram, recover washed-out detail
+  id=autoLevelsAdjust(id,0.4);
+  // 3. Auto gamma correction — O = I^(1/G), brightens underexposed shots
+  id=autoGamma(id);
+  // 4. Bilateral filter — cv2.bilateralFilter(d=5, sigmaColor=75, sigmaSpace=50)
+  //    edge-preserving denoise: smooths skin/compression noise, keeps face edges sharp
+  id=bilateralFilter(id,50,75);
+  // 5. Unsharp mask — PIL ImageEnhance.Sharpness(1.5) equivalent; amount=1.0, threshold=5
+  id=unsharpMask(id,1.0,5);
+  ctx.putImageData(id,0,0);
+  return work;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+// Box blur helper for ImageData
+function boxBlur(imgData, radius) {
+  const {width:w,height:h,data:d}=imgData;
+  const out=new Uint8ClampedArray(d.length);
+  const r=radius;
+  for(let y=0;y<h;y++){
+    for(let x=0;x<w;x++){
+      let rr=0,gg=0,bb=0,aa=0,cnt=0;
+      for(let dy=-r;dy<=r;dy++){
+        const yy=y+dy; if(yy<0||yy>=h) continue;
+        for(let dx=-r;dx<=r;dx++){
+          const xx=x+dx; if(xx<0||xx>=w) continue;
+          const i=(yy*w+xx)*4;
+          rr+=d[i]; gg+=d[i+1]; bb+=d[i+2]; aa+=d[i+3]; cnt++;
+        }
+      }
+      const o=(y*w+x)*4;
+      out[o]=rr/cnt; out[o+1]=gg/cnt; out[o+2]=bb/cnt; out[o+3]=aa/cnt;
+    }
+  }
+  return new ImageData(out,w,h);
+}
+// Apply smoothing / denoise / beautify to a canvas, returns new canvas
+// ── Levels Editor (Photoshop Ctrl+L equivalent) ──────────────────────────
+function drawLevelsHistogram(srcCanvas) {
+  const hc=document.getElementById('levels-histogram');
+  if(!hc||!srcCanvas) return;
+  const W=hc.offsetWidth||200; hc.width=W; hc.height=50;
+  const ctx=hc.getContext('2d');
+  ctx.fillStyle='#1a1a2e'; ctx.fillRect(0,0,W,50);
+  // Downsample for speed
+  const sc=document.createElement('canvas');
+  sc.width=Math.min(srcCanvas.width,200);
+  sc.height=Math.max(1,Math.round(srcCanvas.height*sc.width/srcCanvas.width));
+  sc.getContext('2d').drawImage(srcCanvas,0,0,sc.width,sc.height);
+  const d=sc.getContext('2d').getImageData(0,0,sc.width,sc.height).data;
+  const bins=new Uint32Array(256);
+  for(let i=0;i<d.length;i+=4){
+    bins[Math.round(0.299*d[i]+0.587*d[i+1]+0.114*d[i+2])]++;
+  }
+  const maxV=Math.max(...bins)||1;
+  ctx.fillStyle='rgba(160,180,240,0.85)';
+  for(let i=0;i<256;i++){
+    const x=Math.round(i*W/256);
+    const bw=Math.max(1,Math.round(W/256));
+    const bh=Math.round(bins[i]/maxV*44);
+    ctx.fillRect(x,50-bh,bw,bh);
+  }
+  // Draw black/white point markers
+  const bx=Math.round(levelsBlack*W/255);
+  const wx=Math.round(levelsWhite*W/255);
+  ctx.fillStyle='#333'; ctx.fillRect(bx,0,2,50);
+  ctx.fillStyle='#ddd'; ctx.fillRect(wx-1,0,2,50);
+}
+
+function applyLevels(canvas){
+  if(levelsBlack===0&&levelsWhite===255) return canvas;
+  const out=document.createElement('canvas');
+  out.width=canvas.width; out.height=canvas.height;
+  const ctx=out.getContext('2d');
+  ctx.drawImage(canvas,0,0);
+  const id=ctx.getImageData(0,0,out.width,out.height);
+  const d=id.data;
+  const range=Math.max(1,levelsWhite-levelsBlack);
+  // Build LUT for speed
+  const lut=new Uint8Array(256);
+  for(let v=0;v<256;v++) lut[v]=Math.min(255,Math.max(0,Math.round((v-levelsBlack)*255/range)));
+  for(let i=0;i<d.length;i+=4){
+    d[i]=lut[d[i]]; d[i+1]=lut[d[i+1]]; d[i+2]=lut[d[i+2]];
+  }
+  ctx.putImageData(id,0,0);
+  return out;
+}
+
+window.onLevelsInput = () => {
+  const bEl=document.getElementById('levels-black');
+  const wEl=document.getElementById('levels-white');
+  let b=parseInt(bEl.value), w=parseInt(wEl.value);
+  // Keep at least 2 apart
+  if(b>=w-1){ if(document.activeElement===bEl){b=w-2;bEl.value=b;}else{w=b+2;wEl.value=w;} }
+  levelsBlack=b; levelsWhite=w;
+  document.getElementById('levels-black-val').textContent=b;
+  document.getElementById('levels-white-val').textContent=w;
+  drawLevelsHistogram(cropRotatedCanvas);
+  updateCropPreview();
+};
+
+window.resetLevels = () => {
+  levelsBlack=0; levelsWhite=255;
+  document.getElementById('levels-black').value=0;
+  document.getElementById('levels-white').value=255;
+  document.getElementById('levels-black-val').textContent='0';
+  document.getElementById('levels-white-val').textContent='255';
+  drawLevelsHistogram(cropRotatedCanvas);
+  updateCropPreview();
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+function applyEnhancements(canvas, opts) {
+  if(!opts.smooth && !opts.denoise && !opts.beautify) return canvas;
+  const w=canvas.width, h=canvas.height;
+  const out=document.createElement('canvas'); out.width=w; out.height=h;
+  const octx=out.getContext('2d');
+  octx.drawImage(canvas,0,0);
+  let imgData=octx.getImageData(0,0,w,h);
+  // Denoise: light blur (radius 1) to remove speckle noise
+  if(opts.denoise){
+    imgData=boxBlur(imgData,1);
+  }
+  // Smooth: slightly stronger blur for skin/edge smoothing
+  if(opts.smooth){
+    imgData=boxBlur(imgData,2);
+  }
+  octx.putImageData(imgData,0,0);
+  // Beautify: subtle brightness/contrast/saturation boost + soft skin blend
+  if(opts.beautify){
+    // brightness + contrast pass
+    const d=imgData.data;
+    const contrast=1.08, brightness=8, satBoost=1.12;
+    for(let i=0;i<d.length;i+=4){
+      for(let c=0;c<3;c++){
+        let v=d[i+c];
+        v=(v-128)*contrast+128+brightness;
+        d[i+c]=Math.max(0,Math.min(255,v));
+      }
+      // saturation boost
+      const r=d[i],g=d[i+1],b=d[i+2];
+      const gray=0.299*r+0.587*g+0.114*b;
+      d[i]=Math.max(0,Math.min(255,gray+(r-gray)*satBoost));
+      d[i+1]=Math.max(0,Math.min(255,gray+(g-gray)*satBoost));
+      d[i+2]=Math.max(0,Math.min(255,gray+(b-gray)*satBoost));
+    }
+    octx.putImageData(imgData,0,0);
+    // extra soft blur blended at low opacity for skin smoothing
+    const soft=document.createElement('canvas'); soft.width=w; soft.height=h;
+    const sctx=soft.getContext('2d');
+    sctx.putImageData(boxBlur(octx.getImageData(0,0,w,h),3),0,0);
+    octx.globalAlpha=0.35;
+    octx.drawImage(soft,0,0);
+    octx.globalAlpha=1;
+  }
+  return out;
+}
+window.loadCropImage = (input) => {
+  const f=input.files[0]; if(!f) return;
+  cropImageUrl=URL.createObjectURL(f);
+  document.getElementById('crop-placeholder').style.display='none';
+  document.getElementById('crop-loaded').style.display='block';
+  document.getElementById('crop-gen-btn').disabled=false;
+  document.getElementById('crop-result-card').style.display='none';
+  // Show original preview
+  loadImage(cropImageUrl).then(img => {
+    cropSourceImg=img;
+    cropAngle=0;
+    document.getElementById('crop-rotate').value=0;
+    document.getElementById('crop-rotate-val').textContent='0°';
+    cropRect=null; // reset, will be initialized in updateCropPreview
+    rebuildRotatedCanvas();
+    initCropOverlay();
+    updateCropPreview();
+  });
+};
+
+let cropSourceImg=null;
+let cropRotatedCanvas=null;
+let cropRect=null; // {x,y,w,h} in rotated-canvas pixels
+let cropAngle=0; // degrees
+let cropDrag=null;
+let levelsBlack=0, levelsWhite=255;
+
+function rebuildRotatedCanvas() {
+  if(!cropSourceImg) return;
+  const img=cropSourceImg;
+  const rad=cropAngle*Math.PI/180;
+  const w=img.width, h=img.height;
+  const nw=Math.abs(w*Math.cos(rad))+Math.abs(h*Math.sin(rad));
+  const nh=Math.abs(w*Math.sin(rad))+Math.abs(h*Math.cos(rad));
+  const rc=document.createElement('canvas');
+  rc.width=Math.round(nw); rc.height=Math.round(nh);
+  const rctx=rc.getContext('2d');
+  rctx.imageSmoothingEnabled=true; rctx.imageSmoothingQuality='high';
+  rctx.fillStyle='#fff'; rctx.fillRect(0,0,rc.width,rc.height);
+  rctx.translate(rc.width/2,rc.height/2);
+  rctx.rotate(rad);
+  rctx.drawImage(img,-w/2,-h/2);
+  cropRotatedCanvas=rc;
+  syncPhotoPreviewBar(); // show button once image is loaded
+  const c=document.getElementById('crop-orig-canvas');
+  c.width=rc.width; c.height=rc.height;
+  c.getContext('2d').drawImage(rc,0,0);
+  drawLevelsHistogram(rc); // update histogram whenever image/rotation changes
+}
+
+window.cropRotateStep = (delta) => {
+  const newAngle = Math.max(-180, Math.min(180, cropAngle + delta));
+  const slider = document.getElementById('crop-rotate');
+  if(slider) slider.value = newAngle;
+  cropRotate(newAngle);
+};
+
+window.cropRotate = (val) => {
+  cropAngle=parseFloat(val);
+  document.getElementById('crop-rotate-val').textContent=cropAngle+'°';
+  // preserve crop box center proportionally
+  let centerFrac=null;
+  if(cropRect&&cropRotatedCanvas){
+    centerFrac={
+      cx:(cropRect.x+cropRect.w/2)/cropRotatedCanvas.width,
+      cy:(cropRect.y+cropRect.h/2)/cropRotatedCanvas.height,
+      w:cropRect.w/cropRotatedCanvas.width,
+      h:cropRect.h/cropRotatedCanvas.height
+    };
+  }
+  rebuildRotatedCanvas();
+  if(centerFrac&&cropRotatedCanvas){
+    const cw=centerFrac.w*cropRotatedCanvas.width, ch=centerFrac.h*cropRotatedCanvas.height;
+    cropRect={
+      x:Math.max(0,Math.min(cropRotatedCanvas.width-cw, centerFrac.cx*cropRotatedCanvas.width-cw/2)),
+      y:Math.max(0,Math.min(cropRotatedCanvas.height-ch, centerFrac.cy*cropRotatedCanvas.height-ch/2)),
+      w:cw,h:ch
+    };
+  }
+  drawCropOverlay();
+  updateCropPreview();
+};
+
+function initCropOverlay() {
+  const overlay=document.getElementById('crop-box-overlay');
+  if(overlay._wired) return;
+  overlay._wired=true;
+  const wrap=document.getElementById('crop-orig-wrap');
+
+  // Returns canvas→screen scale factor
+  const getScale=()=>{
+    const c=document.getElementById('crop-orig-canvas');
+    return c.width/wrap.getBoundingClientRect().width;
+  };
+
+  let dragState=null; // {dir, startX, startY, origRect}
+
+  const onDown=(clientX,clientY,dir)=>{
+    if(!cropRect) return;
+    dragState={dir,startX:clientX,startY:clientY,origRect:{...cropRect}};
+  };
+  const onMove=(clientX,clientY)=>{
+    if(!dragState||!cropRect) return;
+    const c=document.getElementById('crop-orig-canvas');
+    const sc=getScale();
+    const dx=(clientX-dragState.startX)*sc;
+    const dy=(clientY-dragState.startY)*sc;
+    const o=dragState.origRect;
+    const MIN=20;
+    let {x,y,w,h}=o;
+
+    if(dragState.dir==='move'){
+      x=Math.max(0,Math.min(c.width-w, o.x+dx));
+      y=Math.max(0,Math.min(c.height-h, o.y+dy));
+    } else {
+      // Resize: each handle adjusts one or two edges
+      if(dragState.dir==='br'){ w=Math.max(MIN,o.w+dx); h=Math.max(MIN,o.h+dy); }
+      else if(dragState.dir==='bl'){ const nw=Math.max(MIN,o.w-dx); x=o.x+o.w-nw; w=nw; h=Math.max(MIN,o.h+dy); }
+      else if(dragState.dir==='tr'){ w=Math.max(MIN,o.w+dx); const nh=Math.max(MIN,o.h-dy); y=o.y+o.h-nh; h=nh; }
+      else if(dragState.dir==='tl'){ const nw=Math.max(MIN,o.w-dx); x=o.x+o.w-nw; w=nw; const nh=Math.max(MIN,o.h-dy); y=o.y+o.h-nh; h=nh; }
+      else if(dragState.dir==='r'){ w=Math.max(MIN,o.w+dx); }
+      else if(dragState.dir==='l'){ const nw=Math.max(MIN,o.w-dx); x=o.x+o.w-nw; w=nw; }
+      else if(dragState.dir==='b'){ h=Math.max(MIN,o.h+dy); }
+      else if(dragState.dir==='t'){ const nh=Math.max(MIN,o.h-dy); y=o.y+o.h-nh; h=nh; }
+      // Clamp to canvas bounds
+      x=Math.max(0,x); y=Math.max(0,y);
+      if(x+w>c.width){ w=c.width-x; } if(y+h>c.height){ h=c.height-y; }
+      if(w<MIN) w=MIN; if(h<MIN) h=MIN;
+    }
+    cropRect={x,y,w,h};
+    drawCropOverlay();
+    updateCropPreview();
+  };
+  const onUp=()=>{ dragState=null; };
+
+  // Body of overlay = MOVE; handles = RESIZE
+  overlay.addEventListener('mousedown',e=>{
+    if(e.target===overlay){ e.preventDefault(); onDown(e.clientX,e.clientY,'move'); }
+  });
+  overlay.querySelectorAll('.crop-rh').forEach(h=>{
+    h.addEventListener('mousedown',e=>{
+      e.preventDefault(); e.stopPropagation();
+      onDown(e.clientX,e.clientY,h.dataset.dir);
+    });
+  });
+  document.addEventListener('mousemove',e=>onMove(e.clientX,e.clientY));
+  document.addEventListener('mouseup',onUp);
+
+  // Touch support
+  overlay.addEventListener('touchstart',e=>{
+    if(e.target===overlay){ e.preventDefault(); const t=e.touches[0]; onDown(t.clientX,t.clientY,'move'); }
+  },{passive:false});
+  overlay.querySelectorAll('.crop-rh').forEach(h=>{
+    h.addEventListener('touchstart',e=>{
+      e.preventDefault(); e.stopPropagation();
+      const t=e.touches[0]; onDown(t.clientX,t.clientY,h.dataset.dir);
+    },{passive:false});
+  });
+  overlay.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];onMove(t.clientX,t.clientY);},{passive:false});
+  document.addEventListener('touchend',onUp);
+}
+
+window.cropZoom = (factor) => {
+  if(!cropRect||!cropRotatedCanvas) return;
+  const rc=cropRotatedCanvas;
+  const cx=cropRect.x+cropRect.w/2, cy=cropRect.y+cropRect.h/2;
+  let nw=cropRect.w*factor, nh=cropRect.h*factor;
+  nw=Math.min(nw,rc.width); nh=Math.min(nh,rc.height);
+  nw=Math.max(nw,20); nh=Math.max(nh,20);
+  let nx=cx-nw/2, ny=cy-nh/2;
+  nx=Math.max(0,Math.min(rc.width-nw,nx));
+  ny=Math.max(0,Math.min(rc.height-nh,ny));
+  cropRect={x:nx,y:ny,w:nw,h:nh};
+  drawCropOverlay();
+  updateCropPreview();
+};
+function drawCropOverlay() {
+  if(!cropRect) return;
+  const c=document.getElementById('crop-orig-canvas');
+  const wrap=document.getElementById('crop-orig-wrap');
+  const wrapRect=wrap.getBoundingClientRect();
+  const scale=wrapRect.width/c.width;
+  const overlay=document.getElementById('crop-box-overlay');
+  overlay.style.left=(cropRect.x*scale)+'px';
+  overlay.style.top=(cropRect.y*scale)+'px';
+  overlay.style.width=(cropRect.w*scale)+'px';
+  overlay.style.height=(cropRect.h*scale)+'px';
+}
+function updateCropPreview() {
+  if(!cropRotatedCanvas) return;
+  const sz=CROP_SIZES[cropSize];
+  const rc=cropRotatedCanvas;
+  const c=document.getElementById('crop-result-canvas');
+  c.width=sz.w; c.height=sz.h;
+  const ctx=c.getContext('2d');
+  ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,sz.w,sz.h);
+  const br=sz.w/sz.h;
+  if(!cropRect){
+    const isSig=['sig','portalsig'].includes(cropSize);
+    if(isSig){
+      // Auto-detect signature bounds — use natural ink bounds (no AR lock so long sigs don't shrink)
+      const bounds=_autoSigBounds(rc);
+      if(bounds) cropRect={x:bounds.x,y:bounds.y,w:bounds.w,h:bounds.h};
+    }
+    if(!cropRect){
+      // Fallback: whole image constrained to output aspect ratio
+      let sw=rc.width, sh=rc.height;
+      const ir=rc.width/rc.height;
+      if(ir>br){sw=rc.height*br;}else{sh=rc.width/br;}
+      cropRect={x:(rc.width-sw)/2, y:(rc.height-sh)/2, w:sw, h:sh};
+    }
+  }
+  // For sig/portalsig: letterbox (scale-to-fit + white padding) — preserves proportions of wide/narrow sigs
+  if(['sig','portalsig'].includes(cropSize)){
+    const arS=cropRect.w/cropRect.h, arD=sz.w/sz.h;
+    let dw,dh,dx=0,dy=0;
+    if(arS>arD){ dw=sz.w; dh=Math.max(1,Math.round(sz.w/arS)); dy=Math.round((sz.h-dh)/2); }
+    else { dh=sz.h; dw=Math.max(1,Math.round(sz.h*arS)); dx=Math.round((sz.w-dw)/2); }
+    ctx.drawImage(rc,cropRect.x,cropRect.y,cropRect.w,cropRect.h,dx,dy,dw,dh);
+  } else {
+    ctx.drawImage(rc,cropRect.x,cropRect.y,cropRect.w,cropRect.h,0,0,sz.w,sz.h);
+  }
+  // Apply Levels adjustment to preview
+  if(levelsBlack!==0||levelsWhite!==255){
+    const leveled=applyLevels(c);
+    ctx.clearRect(0,0,sz.w,sz.h);
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,sz.w,sz.h);
+    ctx.drawImage(leveled,0,0);
+  }
+  document.getElementById('crop-size-info').textContent=`${sz.w}×${sz.h}px · ${sz.label}`;
+  drawCropOverlay();
+  // Reset photo preview whenever the user adjusts the crop box
+  if(photoPreviewActive) resetPhotoPreview();
+  // For sig sizes: snapshot the clean crop, run live preview with current slider value
+  if(['sig','portalsig'].includes(cropSize)){
+    sigBaseCanvas=document.createElement('canvas');
+    sigBaseCanvas.width=sz.w; sigBaseCanvas.height=sz.h;
+    sigBaseCanvas.getContext('2d').drawImage(c,0,0);
+    updateSigStrokePreview();
+  }
+}
+window.generateCrop = async () => {
+  const btn=document.getElementById('crop-gen-btn');
+  const errEl=document.getElementById('crop-error-box');
+  errEl.style.display='none';
+  btn.disabled=true; btn.textContent='⏳ Processing…';
+  try {
+    const img=cropRotatedCanvas;
+    const sz=CROP_SIZES[cropSize];
+
+    // Crop using user-adjusted rect
+    const sx=cropRect.x, sy=cropRect.y, sw=cropRect.w, sh=cropRect.h;
+    const cropped=document.createElement('canvas'); cropped.width=sz.w; cropped.height=sz.h;
+    const ctx=cropped.getContext('2d');
+    ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,sz.w,sz.h);
+    // For sig/portalsig: letterbox (scale-to-fit + white padding) so long/short sigs keep proportions
+    if(['sig','portalsig'].includes(cropSize)){
+      const arS=sw/sh, arD=sz.w/sz.h;
+      let dw,dh,dx=0,dy=0;
+      if(arS>arD){ dw=sz.w; dh=Math.max(1,Math.round(sz.w/arS)); dy=Math.round((sz.h-dh)/2); }
+      else { dh=sz.h; dw=Math.max(1,Math.round(sz.h*arS)); dx=Math.round((sz.w-dw)/2); }
+      ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+    } else {
+      // Multi-step Lanczos-equivalent downsampling (replicates PIL Image.Resampling.LANCZOS)
+      // Step-halve until within 2x of target, then final precise step — preserves far more detail
+      // than a single-step drawImage, especially for large→213px reductions.
+      const hq = lanczosDownsample(img, sx, sy, sw, sh, sz.w, sz.h);
+      ctx.drawImage(hq, 0, 0);
+    }
+
+    // Apply Levels adjustment (Photoshop Ctrl+L equivalent) before any other processing
+    const leveled=applyLevels(cropped);
+
+    // Apply enhancement filters (smooth/denoise/beautify)
+    let enhanced=applyEnhancements(leveled,cropEnh);
+
+    // Apply photo enhancement (sharpen + auto-levels + white balance) for photo sizes only
+    const isSigSize=['sig','portalsig'].includes(cropSize);
+    if(cropAutoEnhance && !isSigSize){
+      enhanced=applyPhotoEnhancement(enhanced);
+    }
+
+    // AI background removal on cropped canvas
+    let finalCanvas=enhanced;
+    if(cropBgRemove){
+      const isSig=['sig','portalsig'].includes(cropSize);
+      if(isSig){
+        // Signatures have no person — AI model (WebGL) corrupts the canvas and returns blank.
+        // Use contrast-boost + edge flood-fill instead (works perfectly for ink-on-paper).
+        finalCanvas=enhanceAndWhitenSignature(enhanced);
+      } else {
+        // Photos: use full AI segmentation (MediaPipe person detection)
+        finalCanvas=await removeBackground(enhanced,(s)=>{btn.textContent=s;});
+      }
+      if(finalCanvas.width!==sz.w||finalCanvas.height!==sz.h){
+        const out=document.createElement('canvas'); out.width=sz.w; out.height=sz.h;
+        out.getContext('2d').drawImage(finalCanvas,0,0,sz.w,sz.h); finalCanvas=out;
+      }
+    }
+
+    // Compress to under 100KB for UTI portal
+    cropFinalDataUrl=toJpegUnder(finalCanvas,100,sz.dpi);
+
+    // Show final canvas preview
+    const fc=document.getElementById('crop-final-canvas');
+    fc.width=sz.w; fc.height=sz.h;
+    fc.getContext('2d').drawImage(finalCanvas,0,0);
+
+    // Size info
+    const bytes=Math.round((cropFinalDataUrl.length-cropFinalDataUrl.indexOf(',')-1)*3/4);
+    document.getElementById('crop-final-info').textContent=
+      `${sz.w}×${sz.h}px · ${(bytes/1024).toFixed(1)} KB · ${sz.label}`;
+
+    document.getElementById('crop-result-card').style.display='block';
+    document.getElementById('crop-result-card').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    console.error('Crop error:',e);
+    errEl.textContent='Error: '+(e&&e.message?e.message:String(e));
+    errEl.style.display='block';
+  } finally {
+    btn.disabled=false; btn.textContent='✂️ Crop & Remove Background';
+  }
+};
+window.downloadCrop = () => {
+  if(!cropFinalDataUrl) return;
+  const a=document.createElement('a'); a.href=cropFinalDataUrl;
+  const sz=CROP_SIZES[cropSize];
+  a.download=`uti-${cropSize}-${sz.w}x${sz.h}.jpg`; a.click();
+};
+
+window.downloadCropPNG = () => {
+  if(!cropFinalDataUrl) return;
+  const sz=CROP_SIZES[cropSize];
+  // Re-draw from the final canvas to get a clean PNG with transparency preserved
+  const fc=document.getElementById('crop-final-canvas');
+  fc.toBlob((blob)=>{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url;
+    a.download=`uti-${cropSize}-${sz.w}x${sz.h}.png`; a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+  },'image/png');
+};
+
+window.downloadCropA4 = () => {
+  if(!cropFinalDataUrl) return;
+  // A4 at 300dpi: 2480×3508px
+  const A4W=2480, A4H=3508;
+  const img=new Image();
+  img.onload=()=>{
+    const c=document.createElement('canvas'); c.width=A4W; c.height=A4H;
+    const ctx=c.getContext('2d');
+    ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high';
+    ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,A4W,A4H);
+    // Scale to fit with margin, centered
+    const margin=118; // ~10mm at 300dpi
+    const maxW=A4W-margin*2, maxH=A4H-margin*2;
+    const scale=Math.min(maxW/img.width, maxH/img.height, 1); // don't upscale beyond actual size
+    const dw=Math.round(img.width*scale), dh=Math.round(img.height*scale);
+    const dx=Math.round((A4W-dw)/2), dy=Math.round((A4H-dh)/2);
+    ctx.drawImage(img,dx,dy,dw,dh);
+    const a=document.createElement('a');
+    a.href=c.toDataURL('image/jpeg',0.95);
+    a.download=`uti-${cropSize}-A4.jpg`; a.click();
+  };
+  img.src=cropFinalDataUrl;
+};
+window.addEventListener('resize',()=>{if(cropRect)drawCropOverlay();});
+
+window.resetCrop = () => {
+  levelsBlack=0; levelsWhite=255;
+  const bEl=document.getElementById('levels-black'); if(bEl) bEl.value=0;
+  const wEl=document.getElementById('levels-white'); if(wEl) wEl.value=255;
+  const bv=document.getElementById('levels-black-val'); if(bv) bv.textContent='0';
+  const wv=document.getElementById('levels-white-val'); if(wv) wv.textContent='255';
+  cropImageUrl=null; cropFinalDataUrl=null; cropRect=null; cropSourceImg=null; cropRotatedCanvas=null; cropAngle=0;
+  sheetDataUrl=null;
+  document.getElementById('sheet-dl-btn').style.display='none';
+  document.getElementById('sheet-canvas').width=0; document.getElementById('sheet-canvas').height=0;
+  document.getElementById('sheet-info').textContent='';
+  document.querySelectorAll('#sheet-btns .size-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cropInput').value='';
+  document.getElementById('crop-placeholder').style.display='flex';
+  document.getElementById('crop-loaded').style.display='none';
+  document.getElementById('crop-result-card').style.display='none';
+  document.getElementById('crop-gen-btn').disabled=true;
+  document.getElementById('crop-error-box').style.display='none';
+};
+
+// ── PRINT SHEET LAYOUT ──
+let sheetDataUrl=null;
+const MM_TO_PX300 = mm => Math.round(mm/25.4*300); // at 300dpi
+
+window.setSheetCount = (n) => {
+  if(!cropFinalDataUrl){ alert('Please generate the cropped photo first.'); return; }
+  document.querySelectorAll('#sheet-btns .size-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  buildSheet(n);
+};
+
+function buildSheet(n) {
+  const sz=CROP_SIZES[cropSize];
+  const img=new Image();
+  img.onload=()=>{
+    // Sheet size: A4 = 210x297mm, 4x6 = 101.6x152.4mm, all at 300dpi
+    let sheetWmm, sheetHmm;
+    if(n==='a4'){ sheetWmm=210; sheetHmm=297; }
+    else if(n==='4x6'){ sheetWmm=101.6; sheetHmm=152.4; }
+    const sheetW=n==='a4'||n==='4x6'?MM_TO_PX300(sheetWmm):0;
+    const sheetH=n==='a4'||n==='4x6'?MM_TO_PX300(sheetHmm):0;
+    const photoW=sz.w, photoH=sz.h;
+    const margin=Math.round(0.04*300);
+    const gap=Math.round(0.06*300);
+
+    let cols, rows, targetCount;
+    if(n==='a4' || n==='4x6'){
+      cols=Math.max(1,Math.floor((sheetW-margin*2+gap)/(photoW+gap)));
+      rows=Math.max(1,Math.floor((sheetH-margin*2+gap)/(photoH+gap)));
+      targetCount=cols*rows;
+    } else {
+      targetCount=n;
+      const layouts={1:[1,1],2:[2,1],4:[2,2],6:[3,2],8:[4,2],12:[4,3],16:[4,4]};
+      [cols,rows]=layouts[n]||[Math.ceil(Math.sqrt(n)),Math.ceil(Math.sqrt(n))];
+    }
+
+    const gridW=cols*photoW+(cols-1)*gap;
+    const gridH=rows*photoH+(rows-1)*gap;
+    let canvasW, canvasH;
+    if(n==='a4'||n==='4x6'){
+      canvasW=sheetW; canvasH=sheetH;
+    } else {
+      canvasW=gridW+margin*2; canvasH=gridH+margin*2;
+    }
+
+    const c=document.getElementById('sheet-canvas');
+    c.width=canvasW; c.height=canvasH;
+    const ctx=c.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvasW,canvasH);
+
+    const offsetX=(canvasW-gridW)/2, offsetY=(canvasH-gridH)/2;
+    let placed=0;
+    for(let r=0;r<rows;r++){
+      for(let cc=0;cc<cols;cc++){
+        if(n!=='a4'&&n!=='4x6'&&placed>=targetCount) break;
+        const x=offsetX+cc*(photoW+gap), y=offsetY+r*(photoH+gap);
+        ctx.drawImage(img,x,y,photoW,photoH);
+        ctx.strokeStyle='#222'; ctx.lineWidth=3;
+        ctx.strokeRect(x+1.5,y+1.5,photoW-3,photoH-3);
+        placed++;
+      }
+    }
+    sheetDataUrl=toJpegUnder(c,500,300);
+    const sizeLabel = n==='a4' ? 'A4' : (n==='4x6' ? '4×6in' : `${cols}×${rows} grid`);
+    document.getElementById('sheet-info').textContent=
+      `${canvasW}×${canvasH}px · ${placed} copies · ${sizeLabel}`;
+    document.getElementById('sheet-dl-btn').style.display='block';
+  };
+  img.src=cropFinalDataUrl;
+}
+
+window.downloadSheet = () => {
+  if(!sheetDataUrl) return;
+  const a=document.createElement('a'); a.href=sheetDataUrl;
+  a.download=`print-sheet-${cropSize}.jpg`; a.click();
+};
+
+// ══════════════════════════════════════════════════════════
+//  TOOL 3 — JPEG → PDF MERGE
+// ══════════════════════════════════════════════════════════
+const DEFAULT_SLOTS = [
+  { id:'slot-app1',  icon:'📋', name:'Application Page 1',      hint:'PAN form page 1' },
+  { id:'slot-app2',  icon:'📋', name:'Application Page 2',      hint:'PAN form page 2' },
+  { id:'slot-aadhar',icon:'🪪', name:'Aadhaar Card (Front)',    hint:'ID proof' },
+  { id:'slot-aadharb',icon:'🪪',name:'Aadhaar Card (Back)',     hint:'ID proof back (optional)' },
+  { id:'slot-voter', icon:'🗳️', name:'Voter ID / Passport',     hint:'Identity proof' },
+  { id:'slot-pan',   icon:'💳', name:'Existing PAN / DOB proof',hint:'Date of birth proof' },
+];
+
+let mergeSlots = DEFAULT_SLOTS.map(s=>({...s, dataUrl:null, file:null}));
+let mergePdfBlob=null;
+let slotCounter=DEFAULT_SLOTS.length;
+
+function renderMergeList() {
+  const list=document.getElementById('merge-list');
+  list.innerHTML='';
+  mergeSlots.forEach((slot,idx)=>{
+    const div=document.createElement('div');
+    div.className='merge-item';
+    div.innerHTML=`
+      <span class="merge-item-icon">${slot.icon}</span>
+      <div class="merge-item-label">
+        <div class="merge-item-name">${idx+1}. ${slot.name}</div>
+        <div class="merge-item-hint">${slot.hint}</div>
+      </div>
+      ${slot.dataUrl
+        ? `<img class="merge-thumb" src="${slot.dataUrl}" alt=""/><button class="clear-btn" onclick="clearMergeSlot(${idx})">✕</button>`
+        : `<span class="merge-item-status" id="ms-${idx}">Not added</span><button class="pick-btn" onclick="pickMergeSlot(${idx})">Add</button>`
+      }
+    `;
+    list.appendChild(div);
+  });
+  updateMergeThumbs();
+  checkMergeReady();
+}
+
+function updateMergeThumbs() {
+  const container=document.getElementById('merge-thumbs');
+  container.innerHTML='';
+  mergeSlots.forEach((slot,idx)=>{
+    if(!slot.dataUrl) return;
+    const wrap=document.createElement('div');
+    wrap.style.cssText='text-align:center;';
+    wrap.innerHTML=`<img src="${slot.dataUrl}" style="width:48px;height:60px;object-fit:cover;border-radius:5px;border:1.5px solid #1a3a6b;display:block;"><div style="font-size:10px;color:#888;margin-top:3px;">${idx+1}</div>`;
+    container.appendChild(wrap);
+  });
+}
+
+window.pickMergeSlot = (idx) => {
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*,application/pdf';
+  inp.onchange=async(e)=>{
+    const f=e.target.files[0]; if(!f) return;
+    if(f.type==='application/pdf'){
+      // render first page of PDF as image
+      try{
+        const {GlobalWorkerOptions,getDocument}=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.min.mjs');
+        GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.2.67/pdf.worker.min.mjs';
+        const pdf=await getDocument({data:await f.arrayBuffer()}).promise;
+        const page=await pdf.getPage(1);
+        const vp=page.getViewport({scale:2});
+        const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+        await page.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;
+        mergeSlots[idx].dataUrl=c.toDataURL('image/jpeg',0.85);
+        mergeSlots[idx].file=f;
+      }catch(err){
+        mergeSlots[idx].dataUrl=URL.createObjectURL(f);
+        mergeSlots[idx].file=f;
+      }
+    } else {
+      mergeSlots[idx].dataUrl=URL.createObjectURL(f);
+      mergeSlots[idx].file=f;
+    }
+    renderMergeList();
+  };
+  inp.click();
+};
+window.clearMergeSlot = (idx) => {
+  mergeSlots[idx].dataUrl=null; mergeSlots[idx].file=null; renderMergeList();
+};
+window.addMergeSlot = () => {
+  slotCounter++;
+  mergeSlots.push({id:'slot-extra-'+slotCounter,icon:'📄',name:'Extra Page '+slotCounter,hint:'Additional document',dataUrl:null,file:null});
+  renderMergeList();
+};
+
+function checkMergeReady() {
+  const hasAny=mergeSlots.some(s=>s.dataUrl);
+  document.getElementById('merge-btn').disabled=!hasAny;
+}
+
+// Pure-JS PDF writer (no external lib needed for simple image pages)
+function buildPdfFromImages(imageDataUrls, pageW=595, pageH=842) {
+  // Each image gets its own A4 page
+  const objects=[];
+  let objNum=1;
+  const push=(str)=>{objects.push({id:objNum++,content:str});};
+
+  // catalog + pages placeholder
+  push(`<< /Type /Catalog /Pages 2 0 R >>`); // obj 1
+  const pageIds=[];
+
+  // We'll fill pages after images
+  const imgObjects=[];
+  const imgInfos=[];
+
+  // Parse data URLs into raw JPEG bytes
+  for(const dataUrl of imageDataUrls){
+    if(!dataUrl) continue;
+    const b64=dataUrl.split(',')[1];
+    const raw=atob(b64);
+    const bytes=new Uint8Array(raw.length);
+    for(let i=0;i<raw.length;i++) bytes[i]=raw.charCodeAt(i);
+    // Get image dimensions from JPEG header or use default
+    let iw=pageW, ih=pageH;
+    // Read JPEG dimensions from SOF marker
+    for(let i=0;i<bytes.length-8;i++){
+      if(bytes[i]===0xFF&&(bytes[i+1]===0xC0||bytes[i+1]===0xC2)){
+        ih=(bytes[i+5]<<8)|bytes[i+6]; iw=(bytes[i+7]<<8)|bytes[i+8]; break;
+      }
+    }
+    imgInfos.push({bytes,iw,ih});
+  }
+
+  // Build PDF binary
+  // Simple single-pass approach: write objects, then xref
+  let pdf='%PDF-1.4\n%\xFF\xFF\xFF\xFF\n';
+  const offsets=[];
+
+  const enc=(s)=>s.split('').map(c=>c.charCodeAt(0));
+
+  const appendStr=(s)=>{pdf+=s;};
+
+  // Helper: current byte offset
+  let pos=()=>new TextEncoder().encode(pdf).length;
+
+  // Object builder
+  const writeObj=(id,dict,stream=null)=>{
+    offsets[id]=new TextEncoder().encode(pdf).length;
+    if(stream!==null){
+      pdf+=`${id} 0 obj\n${dict}\nstream\n`;
+      return {needsStream:true, streamData:stream};
+    } else {
+      pdf+=`${id} 0 obj\n${dict}\nendobj\n`;
+      return null;
+    }
+  };
+
+  // We need binary-safe output — use Uint8Array accumulation
+  const parts=[]; // array of string | Uint8Array
+  const pushStr=(s)=>parts.push(s);
+  const pushBytes=(b)=>parts.push(b);
+
+  pushStr('%PDF-1.4\n%\xFF\xFF\xFF\xFF\n');
+
+  const objOffsets={};
+  let byteCount=new TextEncoder().encode(parts[0]).length;
+
+  const addObj=(id,dictStr,stream=null)=>{
+    objOffsets[id]=byteCount;
+    const header=`${id} 0 obj\n`;
+    pushStr(header); byteCount+=header.length;
+    if(stream!==null){
+      const streamHeader=`${dictStr}\nstream\n`;
+      pushStr(streamHeader); byteCount+=streamHeader.length;
+      pushBytes(stream); byteCount+=stream.length;
+      const trailer=`\nendstream\nendobj\n`;
+      pushStr(trailer); byteCount+=trailer.length;
+    } else {
+      const body=`${dictStr}\nendobj\n`;
+      pushStr(body); byteCount+=body.length;
+    }
+  };
+
+  let nextId=1;
+  const catalogId=nextId++; // 1
+  const pagesId=nextId++;   // 2
+
+  // Reserve catalog and pages — write after we know page IDs
+  // Use placeholder, then we'll fix up
+  // Actually: build all image XObjects and pages first, track IDs
+
+  const pageObjIds=[];
+  const imgXObjIds=[];
+
+  // For each image: image XObject + page
+  for(let i=0;i<imgInfos.length;i++){
+    const info=imgInfos[i];
+    const imgId=nextId++;
+    const pgId=nextId++;
+    imgXObjIds.push(imgId);
+    pageObjIds.push(pgId);
+  }
+
+  // Now write catalog (id=1)
+  addObj(catalogId, `<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
+
+  // pages dict
+  const pageRefs=pageObjIds.map(id=>`${id} 0 R`).join(' ');
+  addObj(pagesId, `<< /Type /Pages /Kids [${pageRefs}] /Count ${pageObjIds.length} >>`);
+
+  // images + pages
+  for(let i=0;i<imgInfos.length;i++){
+    const info=imgInfos[i];
+    const imgId=imgXObjIds[i];
+    const pgId=pageObjIds[i];
+
+    // Place image at its native resolution (assume 300dpi source), centered on A4,
+    // but shrink to fit the page if it would be larger than the printable area.
+    const TARGET_DPI=200;
+    let dw=info.iw/TARGET_DPI*72, dh=info.ih/TARGET_DPI*72;
+    const maxW=pageW-40, maxH=pageH-40;
+    if(dw>maxW||dh>maxH){
+      const ar=dw/dh;
+      if(maxW/maxH>ar) dh=maxH, dw=dh*ar; else dw=maxW, dh=dw/ar;
+    }
+    const ox=(pageW-dw)/2, oy=(pageH-dh)/2;
+
+    // image XObject
+    addObj(imgId,
+      `<< /Type /XObject /Subtype /Image /Width ${info.iw} /Height ${info.ih} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${info.bytes.length} >>`,
+      info.bytes
+    );
+
+    // page content stream
+    const contentStr=`q ${dw.toFixed(2)} 0 0 ${dh.toFixed(2)} ${ox.toFixed(2)} ${oy.toFixed(2)} cm /Im${i} Do Q\n`;
+    const contentBytes=new TextEncoder().encode(contentStr);
+    const contentId=nextId++;
+    addObj(contentId,
+      `<< /Length ${contentBytes.length} >>`,
+      contentBytes
+    );
+
+    // page object
+    addObj(pgId,
+      `<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Contents ${contentId} 0 R /Resources << /XObject << /Im${i} ${imgId} 0 R >> >> >>`
+    );
+  }
+
+  // Info dictionary — shows up in Windows Explorer → Properties → Details tab
+  const infoId=nextId++;
+  addObj(infoId,
+    `<< /Creator (UTI PAN Toolkit) /Producer (UTI PAN Toolkit) /Subject (${imgInfos.length}-page PDF, images at 200 DPI) /Keywords (200 DPI JPEG A4 UTI PAN) >>`
+  );
+
+  // xref
+  const xrefOffset=byteCount;
+  let xrefStr=`xref\n0 ${nextId}\n0000000000 65535 f \n`;
+  for(let i=1;i<nextId;i++){
+    xrefStr+=String(objOffsets[i]||0).padStart(10,'0')+' 00000 n \n';
+  }
+  xrefStr+=`trailer\n<< /Size ${nextId} /Root ${catalogId} 0 R /Info ${infoId} 0 R >>\nstartxref\n${xrefOffset}\n%%EOF\n`;
+  pushStr(xrefStr);
+
+  // Assemble final Uint8Array
+  const totalBytes=parts.reduce((acc,p)=>{
+    if(typeof p==='string') return acc+new TextEncoder().encode(p).length;
+    return acc+p.length;
+  },0);
+  const out=new Uint8Array(totalBytes);
+  let offset2=0;
+  for(const p of parts){
+    if(typeof p==='string'){
+      const enc2=new TextEncoder().encode(p);
+      out.set(enc2,offset2); offset2+=enc2.length;
+    } else {
+      out.set(p,offset2); offset2+=p.length;
+    }
+  }
+  return new Blob([out],{type:'application/pdf'});
+}
+
+window.generatePdf = async () => {
+  const btn=document.getElementById('merge-btn');
+  const errEl=document.getElementById('merge-error-box');
+  errEl.style.display='none';
+  btn.disabled=true; btn.textContent='⏳ Building PDF…';
+  try {
+    const loaded=mergeSlots.filter(s=>s.dataUrl);
+    if(loaded.length===0) throw new Error('No images added');
+
+    // Resolve all images, then resample each to 200dpi A4 (or matching aspect, capped to A4 box)
+    const MERGE_DPI=200;
+    const a4W=Math.round(595/72*MERGE_DPI);  // 1654
+    const a4H=Math.round(842/72*MERGE_DPI);  // 2339
+    const dataUrls=[];
+    for(const slot of loaded){
+      const img=await loadImage(slot.dataUrl);
+      const ar=img.width/img.height;
+      let tw=a4W, th=a4H;
+      if(a4W/a4H>ar) tw=Math.round(th*ar); else th=Math.round(tw/ar);
+      const c=document.createElement('canvas'); c.width=tw; c.height=th;
+      const ctx=c.getContext('2d');
+      ctx.fillStyle='#fff'; ctx.fillRect(0,0,tw,th);
+      ctx.drawImage(img,0,0,tw,th);
+      dataUrls.push(setJpegDpi(c.toDataURL('image/jpeg',0.88), 200));
+    }
+
+    mergePdfBlob=buildPdfFromImages(dataUrls);
+    const kb=(mergePdfBlob.size/1024).toFixed(1);
+    document.getElementById('merge-result-info').textContent=
+      `✅ ${loaded.length} page${loaded.length>1?'s':''} merged · ${kb} KB · Images embedded at 200 DPI`;
+    document.getElementById('merge-result-card').style.display='block';
+    document.getElementById('merge-result-card').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    console.error('PDF merge error:',e);
+    errEl.textContent='Error: '+(e&&e.message?e.message:String(e));
+    errEl.style.display='block';
+  } finally {
+    btn.disabled=false; btn.textContent='📎 Merge into PDF'; checkMergeReady();
+  }
+};
+window.downloadPdf = () => {
+  if(!mergePdfBlob) return;
+  const url=URL.createObjectURL(mergePdfBlob);
+  const a=document.createElement('a'); a.href=url; a.download='pan-application-docs.pdf'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),5000);
+};
+window.resetMerge = () => {
+  mergeSlots=DEFAULT_SLOTS.map(s=>({...s,dataUrl:null,file:null}));
+  mergePdfBlob=null;
+  renderMergeList();
+  document.getElementById('merge-result-card').style.display='none';
+  document.getElementById('merge-error-box').style.display='none';
+};
+
+// Init Tool 3
+renderMergeList();
+
+</script>
+<script src="https://replit-cdn.com/replit-pill/replit-pill.global.js" data-repl-id="32e0e8cd-7596-414c-b6de-74fd38ef5ba7"></script></body>
+</html>

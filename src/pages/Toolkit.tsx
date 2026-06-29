@@ -97,7 +97,7 @@ export default function ToolkitPage() {
       <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       <iframe
         ref={iframeRef}
-        src="/api/toolkit"
+        src="/toolkit.html"
         style={{ width: "100%", height: "100%", border: "none", display: "block", pointerEvents: (paymentRequest || showRecovery) ? "none" : "auto" }}
         title="UTI PAN Toolkit"
         sandbox="allow-scripts allow-same-origin allow-downloads allow-modals allow-popups"
