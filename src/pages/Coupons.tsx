@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
 const PACK_OPTIONS = [
-  { label: "Starter", amount: 100, uses: 12, tag: "Most Popular", color: "#2557a7" },
-  { label: "Standard", amount: 200, uses: 25, tag: "Best Value", color: "#1a7a3a" },
+  { label: "Starter", amount: 100, uses: 12, tag: "Most Popular", color: "#3D5A73" },
+  { label: "Standard", amount: 200, uses: 25, tag: "Best Value", color: "#1E7145" },
   { label: "Pro", amount: 500, uses: 70, tag: "Power User", color: "#7c3aed" },
 ];
 
@@ -13,7 +13,7 @@ function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
-      style={{ background: copied ? "#1a7a3a" : "#1a3a6b", color: "#fff", border: "none", borderRadius: 6, padding: "5px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0 }}>
+      style={{ background: copied ? "#1E7145" : "#15233D", color: "#fff", border: "none", borderRadius: 6, padding: "5px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0 }}>
       {copied ? "✓ Copied" : "Copy"}
     </button>
   );
@@ -81,14 +81,14 @@ export default function CouponsPage() {
       <PageWrapper whatsappNum={whatsappNum}>
         <div style={{ textAlign: "center", padding: "20px 0 12px" }}>
           <div style={{ fontSize: 52 }}>⏳</div>
-          <h2 style={{ fontSize: 22, fontWeight: 900, color: "#1a3a6b", margin: "10px 0 4px" }}>Payment Submitted!</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 900, color: "#15233D", margin: "10px 0 4px" }}>Payment Submitted!</h2>
           <p style={{ color: "#666", fontSize: 13 }}>Admin will verify and credit your uses shortly (usually within 2 hours).</p>
         </div>
 
         <div style={{ background: "#f0f7f0", border: "2px solid #a5d6a7", borderRadius: 12, padding: "14px 18px", marginBottom: 14 }}>
           <p style={{ fontSize: 12, color: "#555", margin: "0 0 6px" }}>Your Unique Code — <b>save this!</b></p>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontSize: 22, fontWeight: 900, color: "#1a3a6b", letterSpacing: 3, flex: 1 }}>{result.uniqueCode}</span>
+            <span style={{ fontSize: 22, fontWeight: 900, color: "#15233D", letterSpacing: 3, flex: 1 }}>{result.uniqueCode}</span>
             <CopyButton text={result.uniqueCode} />
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function CouponsPage() {
         )}
 
         <a href="/my-coupons" style={btnStyle}>🎟️ Check My Coupon Balance →</a>
-        <a href="/" style={{ ...btnStyle, background: "none", color: "#1a3a6b", border: "2px solid #1a3a6b", marginTop: 10, boxSizing: "border-box" }}>← Back to Toolkit</a>
+        <a href="/" style={{ ...btnStyle, background: "none", color: "#15233D", border: "2px solid #15233D", marginTop: 10, boxSizing: "border-box" }}>← Back to Toolkit</a>
       </PageWrapper>
     );
   }
@@ -118,7 +118,7 @@ export default function CouponsPage() {
       <PageWrapper whatsappNum={whatsappNum}>
         <button onClick={() => setStep("pay")} style={backBtnStyle}>← Back</button>
         <h2 style={sectionTitle}>📝 Submit Payment Details</h2>
-        <div style={{ background: "#eef1f7", borderRadius: 8, padding: "10px 14px", fontSize: 13, color: "#1a3a6b", fontWeight: 600, marginBottom: 16 }}>
+        <div style={{ background: "#eef1f7", borderRadius: 8, padding: "10px 14px", fontSize: 13, color: "#15233D", fontWeight: 600, marginBottom: 16 }}>
           ₹{getAmount()} {getUses() ? `→ ${getUses()} uses` : "(custom — admin sets uses)"}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 16 }}>
@@ -146,18 +146,18 @@ export default function CouponsPage() {
           {/* QR Code */}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
             <div style={{ background: "#fff", padding: 12, borderRadius: 14, border: "2px solid #dde", display: "inline-block" }}>
-              <QRCodeSVG value={upiLink} size={170} bgColor="#ffffff" fgColor="#1a3a6b" level="M" />
+              <QRCodeSVG value={upiLink} size={170} bgColor="#ffffff" fgColor="#15233D" level="M" />
             </div>
           </div>
           <p style={{ fontSize: 12, color: "#888", margin: "0 0 4px", fontWeight: 600 }}>📷 Scan QR with any UPI app</p>
           <p style={{ fontSize: 11, color: "#aaa", margin: "0 0 14px" }}>GPay • PhonePe • Paytm • BHIM</p>
 
           <p style={{ fontSize: 12, color: "#555", margin: "0 0 8px" }}>— or enter UPI ID manually —</p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#fff", border: "2px solid #1a3a6b", borderRadius: 10, padding: "12px 16px", marginBottom: 12 }}>
-            <span style={{ fontWeight: 900, fontSize: 15, color: "#1a3a6b", flex: 1, textAlign: "center" }}>{UPI_ID}</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, background: "#fff", border: "2px solid #15233D", borderRadius: 10, padding: "12px 16px", marginBottom: 12 }}>
+            <span style={{ fontWeight: 900, fontSize: 15, color: "#15233D", flex: 1, textAlign: "center" }}>{UPI_ID}</span>
             <CopyButton text={UPI_ID} />
           </div>
-          <p style={{ fontSize: 12, color: "#888", margin: "0 0 14px" }}>Pay <b style={{ color: "#1a3a6b" }}>exactly ₹{amount}</b></p>
+          <p style={{ fontSize: 12, color: "#888", margin: "0 0 14px" }}>Pay <b style={{ color: "#15233D" }}>exactly ₹{amount}</b></p>
           <a href={upiLink} style={{ display: "block", background: "linear-gradient(135deg,#00b386,#00854f)", color: "#fff", borderRadius: 10, padding: "13px", fontSize: 14, fontWeight: 800, textDecoration: "none" }}>
             🚀 Open UPI App to Pay ₹{amount}
           </a>
@@ -175,7 +175,7 @@ export default function CouponsPage() {
   return (
     <PageWrapper whatsappNum={whatsappNum}>
       <div style={{ textAlign: "center", marginBottom: 22 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 900, color: "#1a3a6b", margin: "0 0 6px" }}>🎟️ Buy Coupon Pack</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 900, color: "#15233D", margin: "0 0 6px" }}>🎟️ Buy Coupon Pack</h1>
         <p style={{ fontSize: 13, color: "#666", margin: 0 }}>Pay via UPI → Submit UTR → Uses credited within 2 hrs</p>
       </div>
 
@@ -221,7 +221,7 @@ export default function CouponsPage() {
       <div style={{ marginTop: 18, borderTop: "1px solid #eee", paddingTop: 14, textAlign: "center" }}>
         <p style={{ fontSize: 12, color: "#888" }}>
           Already paid?{" "}
-          <a href="/my-coupons" style={{ color: "#1a3a6b", fontWeight: 700 }}>Find your uses by UTR or mobile →</a>
+          <a href="/my-coupons" style={{ color: "#15233D", fontWeight: 700 }}>Find your uses by UTR or mobile →</a>
         </p>
       </div>
     </PageWrapper>
@@ -231,7 +231,7 @@ export default function CouponsPage() {
 function PageWrapper({ children, whatsappNum }: { children: React.ReactNode; whatsappNum: string }) {
   return (
     <div style={{ minHeight: "100vh", background: "#eef1f7", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <div style={{ background: "linear-gradient(135deg, #1a3a6b, #2557a7)", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ background: "linear-gradient(135deg, #15233D, #3D5A73)", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="/" style={{ color: "#fff", textDecoration: "none", fontWeight: 800, fontSize: 16 }}>UTI PAN Toolkit</a>
         <a href="/my-coupons" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>🎟️ My Coupons</a>
       </div>
@@ -257,6 +257,6 @@ function ErrorBox({ msg }: { msg: string }) {
   return <div style={{ background: "#fee", border: "1px solid #fcc", borderRadius: 8, padding: "10px 14px", fontSize: 12, color: "#c00", marginBottom: 12 }}>⚠️ {msg}</div>;
 }
 
-const sectionTitle: React.CSSProperties = { fontSize: 18, fontWeight: 800, color: "#1a3a6b", marginBottom: 16 };
+const sectionTitle: React.CSSProperties = { fontSize: 18, fontWeight: 800, color: "#15233D", marginBottom: 16 };
 const backBtnStyle: React.CSSProperties = { background: "none", border: "none", color: "#555", fontSize: 13, fontWeight: 700, cursor: "pointer", padding: "4px 0", marginBottom: 12, display: "block" };
-const btnStyle: React.CSSProperties = { display: "block", width: "100%", padding: "14px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #1a3a6b, #2557a7)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", textDecoration: "none", textAlign: "center" };
+const btnStyle: React.CSSProperties = { display: "block", width: "100%", padding: "14px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #15233D, #3D5A73)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", textDecoration: "none", textAlign: "center" };

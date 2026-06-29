@@ -68,29 +68,30 @@ export default function ToolkitPage() {
     if (deviceId) await checkAccess(deviceId);
   };
 
-  const footerLinks = [
+  const primaryLinks = [
     { href: "/coupons", label: "🎟️ Buy Coupons" },
     { href: "/my-coupons", label: "💰 My Coupons" },
     { href: "/check", label: "📊 Usage Check" },
+  ];
+  const legalLinks = [
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact Us" },
     { href: "/privacy", label: "Privacy Policy" },
     { href: "/terms", label: "Terms & Conditions" },
     { href: "/refund", label: "Refund Policy" },
-    { href: "/admin", label: "🔐 Admin" },
   ];
 
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100vh" }}>
 
       {/* Top quick-action bar */}
-      <div style={{ background: "#1a3a6b", flexShrink: 0, padding: "6px 12px", display: "flex", alignItems: "center", gap: 8, justifyContent: "space-between" }}>
-        <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 700, letterSpacing: 1 }}>UTI PAN TOOLKIT</span>
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "flex-end" }}>
-          <a href="/a4-crop" style={{ background: "#7c3aed", color: "#fff", borderRadius: 7, padding: "5px 11px", fontSize: 11, fontWeight: 800, textDecoration: "none", whiteSpace: "nowrap" }}>✂️ A4 Crop</a>
-          <a href="/coupons" style={{ background: "#d97706", color: "#fff", borderRadius: 7, padding: "5px 11px", fontSize: 11, fontWeight: 800, textDecoration: "none", whiteSpace: "nowrap" }}>🎟️ Buy Coupons</a>
-          <a href="/my-coupons" style={{ background: "#1a7a3a", color: "#fff", borderRadius: 7, padding: "5px 11px", fontSize: 11, fontWeight: 800, textDecoration: "none", whiteSpace: "nowrap" }}>💰 My Coupons</a>
-          <a href="/login" style={{ background: "rgba(255,255,255,0.15)", color: "#fff", borderRadius: 7, padding: "5px 11px", fontSize: 11, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>👤 My Account</a>
+      <div style={{ background: "#15233D", flexShrink: 0, padding: "10px 18px", display: "flex", alignItems: "center", gap: 12, justifyContent: "space-between", borderBottom: "2px solid #C7A046", flexWrap: "wrap" }}>
+        <span style={{ color: "#fff", fontSize: 14, fontWeight: 800, letterSpacing: 0.5, fontFamily: "Georgia, 'Times New Roman', serif", whiteSpace: "nowrap" }}>🪪 UTI PAN TOOLKIT</span>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          <a href="/a4-crop" style={{ background: "#5b3a8f", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 12.5, fontWeight: 800, textDecoration: "none", whiteSpace: "nowrap" }}>✂️ A4 Crop</a>
+          <a href="/coupons" style={{ background: "#b5650a", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 12.5, fontWeight: 800, textDecoration: "none", whiteSpace: "nowrap" }}>🎟️ Buy Coupons</a>
+          <a href="/my-coupons" style={{ background: "#1E7145", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 12.5, fontWeight: 800, textDecoration: "none", whiteSpace: "nowrap" }}>💰 My Coupons</a>
+          <a href="/login" style={{ background: "rgba(199,160,70,0.18)", border: "1.5px solid rgba(199,160,70,0.5)", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 12.5, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>👤 My Account</a>
         </div>
       </div>
 
@@ -111,7 +112,7 @@ export default function ToolkitPage() {
           bottom: "16px",
           right: "16px",
           zIndex: 1000,
-          background: "#1a3a6b",
+          background: "#15233D",
           color: "#fff",
           border: "none",
           borderRadius: "24px",
@@ -129,17 +130,36 @@ export default function ToolkitPage() {
 
       {/* Legal footer */}
       <div style={{
-        background: "#1a3a6b", flexShrink: 0, padding: "8px 12px",
-        display: "flex", flexDirection: "column", gap: 4,
+        background: "#15233D", flexShrink: 0, padding: "12px 16px 10px",
+        display: "flex", flexDirection: "column", gap: 8, position: "relative",
       }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 14px", justifyContent: "center" }}>
-          {footerLinks.map(l => (
-            <a key={l.href} href={l.href} style={{ color: "#7eb8f7", textDecoration: "none", fontWeight: 700, fontSize: 12, whiteSpace: "nowrap" }}>{l.label}</a>
+        {/* Primary action links — bigger, pill-style */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", justifyContent: "center" }}>
+          {primaryLinks.map(l => (
+            <a key={l.href} href={l.href} style={{
+              color: "#fff", textDecoration: "none", fontWeight: 700, fontSize: 13,
+              background: "rgba(199,160,70,0.16)", border: "1px solid rgba(199,160,70,0.4)",
+              borderRadius: 8, padding: "7px 14px", whiteSpace: "nowrap",
+            }}>{l.label}</a>
           ))}
         </div>
-        <p style={{ margin: 0, textAlign: "center", fontSize: 10, color: "rgba(255,255,255,0.5)" }}>
+
+        {/* Legal links — small, secondary */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 14px", justifyContent: "center" }}>
+          {legalLinks.map(l => (
+            <a key={l.href} href={l.href} style={{ color: "rgba(255,255,255,0.55)", textDecoration: "none", fontWeight: 600, fontSize: 11, whiteSpace: "nowrap" }}>{l.label}</a>
+          ))}
+        </div>
+
+        <p style={{ margin: "2px 0 0", textAlign: "center", fontSize: 10, color: "rgba(255,255,255,0.4)" }}>
           Not affiliated with UTIITSL, NSDL, or the Government of India
         </p>
+
+        {/* Admin — tucked quietly in the corner, not competing with customer actions */}
+        <a href="/admin" style={{
+          position: "absolute", right: 12, bottom: 10,
+          color: "rgba(255,255,255,0.3)", textDecoration: "none", fontSize: 10, fontWeight: 600,
+        }}>🔐 Admin</a>
       </div>
 
       {paymentRequest && (

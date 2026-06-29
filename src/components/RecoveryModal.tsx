@@ -45,7 +45,7 @@ export default function RecoveryModal({ deviceId, onSuccess, onClose }: Props) {
     <div style={overlayStyle}>
       <div style={modalStyle}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: "#1a3a6b" }}>🔑 Recover Access</h2>
+          <h2 style={{ fontSize: 16, fontWeight: 800, color: "#15233D" }}>🔑 Recover Access</h2>
           <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#888" }}>×</button>
         </div>
 
@@ -78,7 +78,7 @@ export default function RecoveryModal({ deviceId, onSuccess, onClose }: Props) {
             <button
               onClick={handleRecover}
               disabled={loading}
-              style={{ width: "100%", padding: "13px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #1a3a6b, #2557a7)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}
+              style={{ width: "100%", padding: "13px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #15233D, #3D5A73)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}
             >
               {loading ? "⏳ Recovering..." : "🔑 Recover Access"}
             </button>
@@ -91,12 +91,12 @@ export default function RecoveryModal({ deviceId, onSuccess, onClose }: Props) {
           <>
             <div style={{ textAlign: "center", padding: "8px 0 16px" }}>
               <div style={{ fontSize: 40 }}>✅</div>
-              <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1a7a3a", margin: "8px 0 4px" }}>Access Restored!</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 800, color: "#1E7145", margin: "8px 0 4px" }}>Access Restored!</h3>
               <p style={{ fontSize: 12, color: "#666" }}>
                 {result?.usesRemaining} uses transferred to this device.
               </p>
             </div>
-            <button onClick={onSuccess} style={{ width: "100%", padding: "13px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #1a7a3a, #2e9e55)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer" }}>
+            <button onClick={onSuccess} style={{ width: "100%", padding: "13px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #1E7145, #2e9e55)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer" }}>
               ▶ Continue Using Toolkit
             </button>
           </>

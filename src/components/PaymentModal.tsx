@@ -20,7 +20,7 @@ function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
-      style={{ background: copied ? "#1a7a3a" : "#1a3a6b", color: "#fff", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>
+      style={{ background: copied ? "#1E7145" : "#15233D", color: "#fff", border: "none", borderRadius: 6, padding: "4px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>
       {copied ? "✓" : "Copy"}
     </button>
   );
@@ -82,14 +82,14 @@ export default function PaymentModal({ deviceId, serviceType, onSuccess, onClose
         <div style={modalStyle}>
           <div style={{ textAlign: "center", padding: "6px 0 12px" }}>
             <div style={{ fontSize: 40 }}>⏳</div>
-            <h2 style={{ fontSize: 17, fontWeight: 800, color: "#1a3a6b", margin: "8px 0 4px" }}>Payment Submitted!</h2>
+            <h2 style={{ fontSize: 17, fontWeight: 800, color: "#15233D", margin: "8px 0 4px" }}>Payment Submitted!</h2>
             <p style={{ fontSize: 12, color: "#666", margin: 0 }}>Admin will verify and credit your uses shortly.</p>
           </div>
 
           <div style={{ background: "#f0f7f0", border: "1.5px solid #a5d6a7", borderRadius: 10, padding: "10px 14px", marginBottom: 12 }}>
             <p style={{ fontSize: 11, color: "#555", margin: "0 0 4px" }}>Your Unique Code:</p>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 18, fontWeight: 900, color: "#1a3a6b", letterSpacing: 2, flex: 1 }}>{result.uniqueCode}</span>
+              <span style={{ fontSize: 18, fontWeight: 900, color: "#15233D", letterSpacing: 2, flex: 1 }}>{result.uniqueCode}</span>
               <CopyButton text={result.uniqueCode} />
             </div>
           </div>
@@ -119,10 +119,10 @@ export default function PaymentModal({ deviceId, serviceType, onSuccess, onClose
       <div style={overlayStyle}>
         <div style={modalStyle}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <h2 style={{ fontSize: 15, fontWeight: 800, color: "#1a3a6b" }}>📝 Submit Payment Details</h2>
+            <h2 style={{ fontSize: 15, fontWeight: 800, color: "#15233D" }}>📝 Submit Payment Details</h2>
             <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#888" }}>×</button>
           </div>
-          <div style={{ background: "#eef1f7", borderRadius: 8, padding: "8px 12px", fontSize: 12, color: "#1a3a6b", fontWeight: 600, marginBottom: 14 }}>
+          <div style={{ background: "#eef1f7", borderRadius: 8, padding: "8px 12px", fontSize: 12, color: "#15233D", fontWeight: 600, marginBottom: 14 }}>
             ₹{getAmount()} {getUses() ? `→ ${getUses()} uses` : "(custom)"}
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 14 }}>
@@ -150,23 +150,23 @@ export default function PaymentModal({ deviceId, serviceType, onSuccess, onClose
       <div style={overlayStyle}>
         <div style={modalStyle}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-            <h2 style={{ fontSize: 15, fontWeight: 800, color: "#1a3a6b" }}>📱 Pay ₹{amount} via UPI</h2>
+            <h2 style={{ fontSize: 15, fontWeight: 800, color: "#15233D" }}>📱 Pay ₹{amount} via UPI</h2>
             <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#888" }}>×</button>
           </div>
           <div style={{ background: "#f8f9ff", border: "2px dashed #c0c8e0", borderRadius: 10, padding: "14px 12px", textAlign: "center", marginBottom: 12 }}>
             {/* QR Code */}
             <div style={{ display: "flex", justifyContent: "center", marginBottom: 10 }}>
               <div style={{ background: "#fff", padding: 10, borderRadius: 12, border: "2px solid #dde", display: "inline-block" }}>
-                <QRCodeSVG value={qrValue} size={150} bgColor="#ffffff" fgColor="#1a3a6b" level="M" />
+                <QRCodeSVG value={qrValue} size={150} bgColor="#ffffff" fgColor="#15233D" level="M" />
               </div>
             </div>
             <p style={{ fontSize: 11, color: "#888", margin: "0 0 8px" }}>📷 Scan with any UPI app</p>
             <p style={{ fontSize: 11, color: "#555", margin: "0 0 8px" }}>— or pay to UPI ID —</p>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#fff", border: "2px solid #1a3a6b", borderRadius: 8, padding: "10px 12px", marginBottom: 10 }}>
-              <span style={{ fontWeight: 900, fontSize: 13, color: "#1a3a6b", flex: 1 }}>{UPI_ID}</span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#fff", border: "2px solid #15233D", borderRadius: 8, padding: "10px 12px", marginBottom: 10 }}>
+              <span style={{ fontWeight: 900, fontSize: 13, color: "#15233D", flex: 1 }}>{UPI_ID}</span>
               <CopyButton text={UPI_ID} />
             </div>
-            <p style={{ fontSize: 11, color: "#888", margin: "0 0 10px" }}>Pay exactly <b style={{ color: "#1a3a6b" }}>₹{amount}</b></p>
+            <p style={{ fontSize: 11, color: "#888", margin: "0 0 10px" }}>Pay exactly <b style={{ color: "#15233D" }}>₹{amount}</b></p>
             <a href={upiLink} style={{ display: "block", background: "linear-gradient(135deg,#00b386,#00854f)", color: "#fff", borderRadius: 8, padding: "11px", fontSize: 13, fontWeight: 800, textDecoration: "none" }}>
               🚀 Open UPI App — Pay ₹{amount}
             </a>
@@ -187,7 +187,7 @@ export default function PaymentModal({ deviceId, serviceType, onSuccess, onClose
     <div style={overlayStyle}>
       <div style={modalStyle}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-          <h2 style={{ fontSize: 15, fontWeight: 800, color: "#1a3a6b" }}>💳 Buy Coupon Pack</h2>
+          <h2 style={{ fontSize: 15, fontWeight: 800, color: "#15233D" }}>💳 Buy Coupon Pack</h2>
           <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#888" }}>×</button>
         </div>
 
@@ -196,8 +196,8 @@ export default function PaymentModal({ deviceId, serviceType, onSuccess, onClose
             <button key={i} onClick={() => { setSelected(i); setUseCustom(false); }}
               style={{
                 padding: "11px 14px", borderRadius: 9,
-                border: (!useCustom && selected === i) ? "2px solid #1a3a6b" : "2px solid #dde",
-                background: (!useCustom && selected === i) ? "#1a3a6b" : "#fff",
+                border: (!useCustom && selected === i) ? "2px solid #15233D" : "2px solid #dde",
+                background: (!useCustom && selected === i) ? "#15233D" : "#fff",
                 color: (!useCustom && selected === i) ? "#fff" : "#333",
                 fontWeight: 700, fontSize: 13, cursor: "pointer", textAlign: "left",
                 display: "flex", justifyContent: "space-between", alignItems: "center",
@@ -207,8 +207,8 @@ export default function PaymentModal({ deviceId, serviceType, onSuccess, onClose
             </button>
           ))}
           <div onClick={() => setUseCustom(true)}
-            style={{ padding: "10px 14px", borderRadius: 9, border: useCustom ? "2px solid #1a3a6b" : "2px solid #dde", background: useCustom ? "#eef1f7" : "#fff", cursor: "pointer" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#1a3a6b", marginBottom: useCustom ? 8 : 0 }}>🎯 Custom Amount</div>
+            style={{ padding: "10px 14px", borderRadius: 9, border: useCustom ? "2px solid #15233D" : "2px solid #dde", background: useCustom ? "#eef1f7" : "#fff", cursor: "pointer" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#15233D", marginBottom: useCustom ? 8 : 0 }}>🎯 Custom Amount</div>
             {useCustom && (
               <input autoFocus value={customAmount} onChange={e => setCustomAmount(e.target.value.replace(/\D/g, ""))}
                 placeholder="₹ amount (min ₹10)" inputMode="numeric"
@@ -258,6 +258,6 @@ const modalStyle: React.CSSProperties = {
 };
 const primaryBtnStyle: React.CSSProperties = {
   width: "100%", padding: "13px", borderRadius: 10, border: "none",
-  background: "linear-gradient(135deg, #1a3a6b, #2557a7)", color: "#fff",
+  background: "linear-gradient(135deg, #15233D, #3D5A73)", color: "#fff",
   fontWeight: 800, fontSize: 15, cursor: "pointer",
 };

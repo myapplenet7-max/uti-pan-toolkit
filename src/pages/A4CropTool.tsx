@@ -231,17 +231,17 @@ export default function A4CropTool() {
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
         <span style={{ fontSize: 13, fontWeight: 700, color: "#333" }}>{label}</span>
-        <span style={{ fontSize: 13, fontWeight: 800, color: "#1a3a6b", minWidth: 32, textAlign: "right" }}>{value > 0 ? "+" : ""}{value}</span>
+        <span style={{ fontSize: 13, fontWeight: 800, color: "#15233D", minWidth: 32, textAlign: "right" }}>{value > 0 ? "+" : ""}{value}</span>
       </div>
       <input type="range" min={min} max={max} value={value}
         onChange={e => { onChange(Number(e.target.value)); setPreviewUrl(null); }}
-        style={{ width: "100%", cursor: "pointer", accentColor: "#1a3a6b" }} />
+        style={{ width: "100%", cursor: "pointer", accentColor: "#15233D" }} />
     </div>
   );
 
   return (
     <div style={{ minHeight: "100vh", background: "#eef1f7", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-      <div style={{ background: "linear-gradient(135deg,#1a3a6b,#2557a7)", padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ background: "linear-gradient(135deg,#15233D,#3D5A73)", padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <h1 style={{ color: "#fff", fontSize: 17, fontWeight: 800, margin: 0 }}>✂️ A4 Document Crop</h1>
           <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 11, margin: "2px 0 0", letterSpacing: 1 }}>DRAG GUIDES · ENHANCE · SAVE</p>
@@ -258,9 +258,9 @@ export default function A4CropTool() {
             onClick={() => document.getElementById("a4-file-input")?.click()}
           >
             <div style={{ fontSize: 56, marginBottom: 14 }}>📄</div>
-            <h2 style={{ fontSize: 20, fontWeight: 800, color: "#1a3a6b", margin: "0 0 8px" }}>Upload Document Image</h2>
+            <h2 style={{ fontSize: 20, fontWeight: 800, color: "#15233D", margin: "0 0 8px" }}>Upload Document Image</h2>
             <p style={{ fontSize: 13, color: "#888", margin: "0 0 20px" }}>Tap to select or drag & drop your image here</p>
-            <div style={{ display: "inline-block", background: "linear-gradient(135deg,#1a3a6b,#2557a7)", color: "#fff", borderRadius: 10, padding: "12px 28px", fontWeight: 800, fontSize: 15 }}>Choose Image</div>
+            <div style={{ display: "inline-block", background: "linear-gradient(135deg,#15233D,#3D5A73)", color: "#fff", borderRadius: 10, padding: "12px 28px", fontWeight: 800, fontSize: 15 }}>Choose Image</div>
             <p style={{ fontSize: 11, color: "#aaa", margin: "12px 0 0" }}>JPG, PNG, WebP supported</p>
             <input id="a4-file-input" type="file" accept="image/*" style={{ display: "none" }} onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
           </div>
@@ -268,12 +268,12 @@ export default function A4CropTool() {
           <>
             <div style={{ background: "#fff", borderRadius: 14, padding: 14, marginBottom: 14, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                <h2 style={{ fontSize: 14, fontWeight: 800, color: "#1a3a6b", margin: 0 }}>🖱️ Drag guides to define crop area</h2>
+                <h2 style={{ fontSize: 14, fontWeight: 800, color: "#15233D", margin: 0 }}>🖱️ Drag guides to define crop area</h2>
                 <button onClick={() => { setImage(null); setPreviewUrl(null); }} style={{ background: "#eef1f7", border: "none", borderRadius: 7, padding: "5px 12px", fontSize: 12, fontWeight: 700, cursor: "pointer", color: "#555" }}>Change Image</button>
               </div>
               <div style={{ display: "flex", gap: 6, marginBottom: 8, flexWrap: "wrap" }}>
                 {(["top", "bottom", "left", "right"] as const).map(g => (
-                  <div key={g} style={{ background: "#f0f7ff", border: "1px solid #c0d8f8", borderRadius: 6, padding: "3px 10px", fontSize: 11, fontWeight: 700, color: "#1a3a6b" }}>
+                  <div key={g} style={{ background: "#f0f7ff", border: "1px solid #c0d8f8", borderRadius: 6, padding: "3px 10px", fontSize: 11, fontWeight: 700, color: "#15233D" }}>
                     {g[0].toUpperCase() + g.slice(1)}: {Math.round(guides[g] * 100)}%
                   </div>
                 ))}
@@ -305,7 +305,7 @@ export default function A4CropTool() {
 
             <div style={{ background: "#fff", borderRadius: 14, padding: 18, marginBottom: 14, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                <h2 style={{ fontSize: 14, fontWeight: 800, color: "#1a3a6b", margin: 0 }}>🎛️ Image Enhancement</h2>
+                <h2 style={{ fontSize: 14, fontWeight: 800, color: "#15233D", margin: 0 }}>🎛️ Image Enhancement</h2>
                 <button onClick={() => { setEnh({ luminanceDenoise: 0, luminanceBrightness: 0, luminanceContrast: 0, luminanceClarity: 0, luminanceDetail: 0 }); setPreviewUrl(null); }}
                   style={{ background: "#eef1f7", border: "none", borderRadius: 7, padding: "4px 10px", fontSize: 11, fontWeight: 700, cursor: "pointer", color: "#888" }}>Reset</button>
               </div>
@@ -323,11 +323,11 @@ export default function A4CropTool() {
 
             {previewUrl && (
               <div style={{ background: "#fff", borderRadius: 14, padding: 14, boxShadow: "0 2px 12px rgba(0,0,0,0.08)" }}>
-                <h3 style={{ fontSize: 14, fontWeight: 800, color: "#1a7a3a", margin: "0 0 10px" }}>✅ Result Preview</h3>
+                <h3 style={{ fontSize: 14, fontWeight: 800, color: "#1E7145", margin: "0 0 10px" }}>✅ Result Preview</h3>
                 <img src={previewUrl} alt="Cropped result" style={{ width: "100%", borderRadius: 8, border: "1px solid #dde", marginBottom: 12 }} />
                 <div style={{ display: "flex", gap: 8 }}>
                   <button onClick={() => handleDownload("jpeg")}
-                    style={{ flex: 1, padding: "13px", borderRadius: 10, border: "none", background: "linear-gradient(135deg,#1a7a3a,#2e9e55)", color: "#fff", fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
+                    style={{ flex: 1, padding: "13px", borderRadius: 10, border: "none", background: "linear-gradient(135deg,#1E7145,#2e9e55)", color: "#fff", fontWeight: 800, fontSize: 14, cursor: "pointer" }}>
                     ⬇️ JPEG
                   </button>
                   <button onClick={() => handleDownload("png")}

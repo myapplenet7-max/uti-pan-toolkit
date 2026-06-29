@@ -19,19 +19,12 @@ export default function MyCouponsPage() {
   const [whatsappNum, setWhatsappNum] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Lookup by UTR / mobile
-  const [lookupQuery, setLookupQuery] = useState("");
-  const [lookupLoading, setLookupLoading] = useState(false);
-  const [lookupError, setLookupError] = useState("");
-  const [lookupResult, setLookupResult] = useState<{ found: number; usesRemaining: number; records: { uniqueCode: string; usesRemaining: number; upiName: string | null }[] } | null>(null);
-
   // Recovery by unique code
   const [recoveryCode, setRecoveryCode] = useState("");
   const [recovering, setRecovering] = useState(false);
   const [recoveryError, setRecoveryError] = useState("");
   const [recoveryResult, setRecoveryResult] = useState<{ uniqueCode: string; usesRemaining: number } | null>(null);
   const [showRecovery, setShowRecovery] = useState(false);
-  const [activeTab, setActiveTab] = useState<"utr" | "code">("utr");
 
   useEffect(() => {
     let id = localStorage.getItem("uti_device_id");
@@ -62,29 +55,6 @@ export default function MyCouponsPage() {
     }
   };
 
-  const handleLookup = async () => {
-    setLookupError("");
-    setLookupResult(null);
-    const q = lookupQuery.trim();
-    if (q.length < 6) { setLookupError("Enter your UTR number or 10-digit mobile number."); return; }
-    setLookupLoading(true);
-    try {
-      const res = await fetch("/api/access/lookup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q, deviceId }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Not found");
-      setLookupResult(data);
-      fetchAccess(deviceId);
-    } catch (err: any) {
-      setLookupError(err.message || "Lookup failed");
-    } finally {
-      setLookupLoading(false);
-    }
-  };
-
   const handleRecover = async () => {
     setRecoveryError("");
     if (!recoveryCode.trim()) { setRecoveryError("Enter your unique code"); return; }
@@ -109,13 +79,13 @@ export default function MyCouponsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "#eef1f7", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
       {/* Header */}
-      <div style={{ background: "linear-gradient(135deg, #1a3a6b, #2557a7)", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ background: "linear-gradient(135deg, #15233D, #3D5A73)", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <a href="/" style={{ color: "#fff", textDecoration: "none", fontWeight: 800, fontSize: 16 }}>UTI PAN Toolkit</a>
         <a href="/coupons" style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none", fontSize: 13, fontWeight: 600 }}>+ Buy Coupons</a>
       </div>
 
       <div style={{ maxWidth: 480, margin: "0 auto", padding: "20px 16px" }}>
-        <h1 style={{ fontSize: 24, fontWeight: 900, color: "#1a3a6b", marginBottom: 4 }}>🎟️ My Coupon Wallet</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 900, color: "#15233D", marginBottom: 4 }}>🎟️ My Coupon Wallet</h1>
         <p style={{ fontSize: 13, color: "#888", marginBottom: 20 }}>Your available uses on this device</p>
 
         {/* Balance Card */}
@@ -123,7 +93,7 @@ export default function MyCouponsPage() {
           <div style={{ textAlign: "center", padding: 40, color: "#888" }}>⏳ Loading...</div>
         ) : (
           <div style={{
-            background: access && access.usesRemaining > 0 ? "linear-gradient(135deg, #1a3a6b, #2557a7)" : "#64748b",
+            background: access && access.usesRemaining > 0 ? "linear-gradient(135deg, #15233D, #3D5A73)" : "#64748b",
             borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", color: "#fff",
             boxShadow: "0 4px 20px rgba(26,58,107,0.25)",
           }}>
@@ -144,10 +114,10 @@ export default function MyCouponsPage() {
             {access.records.map(r => (
               <div key={r.uniqueCode} style={{ background: "#fff", borderRadius: 10, padding: "12px 16px", marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 1px 4px rgba(0,0,0,0.07)" }}>
                 <div>
-                  <code style={{ fontSize: 16, fontWeight: 900, color: "#1a3a6b", letterSpacing: 2 }}>{r.uniqueCode}</code>
+                  <code style={{ fontSize: 16, fontWeight: 900, color: "#15233D", letterSpacing: 2 }}>{r.uniqueCode}</code>
                   <div style={{ fontSize: 11, color: "#888", marginTop: 2 }}>{r.serviceType === "new_pan" ? "PAN Application" : r.serviceType}</div>
                 </div>
-                <span style={{ background: "#e8f5e9", color: "#1a7a3a", padding: "4px 14px", borderRadius: 20, fontWeight: 800, fontSize: 14 }}>
+                <span style={{ background: "#e8f5e9", color: "#1E7145", padding: "4px 14px", borderRadius: 20, fontWeight: 800, fontSize: 14 }}>
                   {r.usesRemaining} uses
                 </span>
               </div>
@@ -156,99 +126,49 @@ export default function MyCouponsPage() {
         )}
 
         {access && access.usesRemaining === 0 && (
-          <a href="/coupons" style={{ display: "block", width: "100%", padding: "14px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #1a3a6b, #2557a7)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", textDecoration: "none", textAlign: "center", marginBottom: 20, boxSizing: "border-box" }}>
+          <a href="/coupons" style={{ display: "block", width: "100%", padding: "14px", borderRadius: 10, border: "none", background: "linear-gradient(135deg, #15233D, #3D5A73)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", textDecoration: "none", textAlign: "center", marginBottom: 20, boxSizing: "border-box" }}>
             🎟️ Buy Coupon Pack →
           </a>
         )}
 
-        {/* Find uses by UTR/Mobile or Unique Code */}
+        {/* Find uses by Unique Code */}
         <div style={{ background: "#fff", borderRadius: 12, padding: "18px 16px", marginBottom: 16, boxShadow: "0 1px 6px rgba(0,0,0,0.08)" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 800, color: "#1a3a6b", margin: "0 0 6px" }}>🔍 Find My Uses</h3>
-          <p style={{ fontSize: 12, color: "#888", margin: "0 0 14px" }}>Already paid? Activate uses on this device by entering your details.</p>
+          <h3 style={{ fontSize: 15, fontWeight: 800, color: "#15233D", margin: "0 0 6px" }}>🔍 Find My Uses</h3>
+          <p style={{ fontSize: 12, color: "#888", margin: "0 0 14px" }}>Already paid? Activate uses on this device with your unique code.</p>
 
-          {/* Tab switcher */}
-          <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-            {[
-              { key: "utr", label: "By UTR / Mobile" },
-              { key: "code", label: "By Unique Code" },
-            ].map(t => (
-              <button key={t.key} onClick={() => { setActiveTab(t.key as any); setLookupError(""); setRecoveryError(""); }}
-                style={{ flex: 1, padding: "8px", borderRadius: 8, border: "none", fontWeight: 700, fontSize: 12, cursor: "pointer",
-                  background: activeTab === t.key ? "#1a3a6b" : "#eef1f7",
-                  color: activeTab === t.key ? "#fff" : "#555",
-                }}>
-                {t.label}
-              </button>
-            ))}
-          </div>
-
-          {activeTab === "utr" ? (
-            <>
-              {lookupResult ? (
-                <div style={{ background: "#e8f5e9", border: "1.5px solid #a5d6a7", borderRadius: 10, padding: "14px", textAlign: "center" }}>
-                  <div style={{ fontSize: 28 }}>✅</div>
-                  <p style={{ fontWeight: 800, color: "#1a7a3a", margin: "6px 0 4px", fontSize: 15 }}>Found! {lookupResult.usesRemaining} uses activated.</p>
-                  <p style={{ fontSize: 12, color: "#555", margin: 0 }}>Uses have been transferred to this device.</p>
-                  <a href="/" style={{ display: "inline-block", marginTop: 10, background: "#1a7a3a", color: "#fff", borderRadius: 8, padding: "8px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
-                    ▶ Use Now →
-                  </a>
-                </div>
-              ) : (
-                <>
-                  <input
-                    value={lookupQuery}
-                    onChange={e => setLookupQuery(e.target.value)}
-                    placeholder="Enter UTR number or mobile number"
-                    style={inputStyle}
-                  />
-                  <p style={{ fontSize: 10, color: "#aaa", margin: "4px 0 12px" }}>
-                    UTR = 12-digit transaction reference from your UPI app. Mobile = the number you used when paying.
-                  </p>
-                  {lookupError && <ErrorBox msg={lookupError} />}
-                  <button onClick={handleLookup} disabled={lookupLoading}
-                    style={{ ...btnStyle, opacity: lookupLoading ? 0.7 : 1, cursor: lookupLoading ? "not-allowed" : "pointer" }}>
-                    {lookupLoading ? "⏳ Searching..." : "🔍 Find & Activate"}
-                  </button>
-
-                  {whatsappNum && (
-                    <p style={{ fontSize: 11, color: "#aaa", textAlign: "center", marginTop: 10 }}>
-                      Not finding your payment?{" "}
-                      <a href={`https://wa.me/${whatsappNum}?text=Hi%2C%20I%20paid%20but%20my%20uses%20are%20not%20showing.%20My%20mobile%20is%20${lookupQuery}.`}
-                        target="_blank" rel="noreferrer" style={{ color: "#25D366", fontWeight: 700 }}>
-                        WhatsApp us
-                      </a>
-                    </p>
-                  )}
-                </>
-              )}
-            </>
+          {recoveryResult ? (
+            <div style={{ background: "#e8f5e9", border: "1.5px solid #a5d6a7", borderRadius: 10, padding: "14px", textAlign: "center" }}>
+              <div style={{ fontSize: 28 }}>✅</div>
+              <p style={{ fontWeight: 800, color: "#1E7145", margin: "6px 0 4px", fontSize: 15 }}>Recovered! {recoveryResult.usesRemaining} uses on this device.</p>
+              <a href="/" style={{ display: "inline-block", marginTop: 10, background: "#1E7145", color: "#fff", borderRadius: 8, padding: "8px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                ▶ Use Now →
+              </a>
+            </div>
           ) : (
             <>
-              {recoveryResult ? (
-                <div style={{ background: "#e8f5e9", border: "1.5px solid #a5d6a7", borderRadius: 10, padding: "14px", textAlign: "center" }}>
-                  <div style={{ fontSize: 28 }}>✅</div>
-                  <p style={{ fontWeight: 800, color: "#1a7a3a", margin: "6px 0 4px", fontSize: 15 }}>Recovered! {recoveryResult.usesRemaining} uses on this device.</p>
-                  <a href="/" style={{ display: "inline-block", marginTop: 10, background: "#1a7a3a", color: "#fff", borderRadius: 8, padding: "8px 18px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
-                    ▶ Use Now →
+              <input
+                value={recoveryCode}
+                onChange={e => setRecoveryCode(e.target.value.toUpperCase())}
+                placeholder="Unique Code (e.g. ABCD1234)"
+                style={inputStyle}
+              />
+              <p style={{ fontSize: 10, color: "#aaa", margin: "4px 0 12px" }}>
+                The 8-character code you received after payment approval.
+              </p>
+              {recoveryError && <ErrorBox msg={recoveryError} />}
+              <button onClick={handleRecover} disabled={recovering}
+                style={{ ...btnStyle, opacity: recovering ? 0.7 : 1, cursor: recovering ? "not-allowed" : "pointer" }}>
+                {recovering ? "⏳ Recovering..." : "🔑 Recover Access"}
+              </button>
+
+              {whatsappNum && (
+                <p style={{ fontSize: 11, color: "#aaa", textAlign: "center", marginTop: 10 }}>
+                  Lost your code?{" "}
+                  <a href={`https://wa.me/${whatsappNum}?text=Hi%2C%20I%20paid%20but%20lost%20my%20unique%20code.`}
+                    target="_blank" rel="noreferrer" style={{ color: "#25D366", fontWeight: 700 }}>
+                    WhatsApp us
                   </a>
-                </div>
-              ) : (
-                <>
-                  <input
-                    value={recoveryCode}
-                    onChange={e => setRecoveryCode(e.target.value.toUpperCase())}
-                    placeholder="Unique Code (e.g. ABCD1234)"
-                    style={inputStyle}
-                  />
-                  <p style={{ fontSize: 10, color: "#aaa", margin: "4px 0 12px" }}>
-                    The 8-character code you received after payment approval.
-                  </p>
-                  {recoveryError && <ErrorBox msg={recoveryError} />}
-                  <button onClick={handleRecover} disabled={recovering}
-                    style={{ ...btnStyle, opacity: recovering ? 0.7 : 1, cursor: recovering ? "not-allowed" : "pointer" }}>
-                    {recovering ? "⏳ Recovering..." : "🔑 Recover Access"}
-                  </button>
-                </>
+                </p>
               )}
             </>
           )}
@@ -275,6 +195,6 @@ const inputStyle: React.CSSProperties = {
 
 const btnStyle: React.CSSProperties = {
   display: "block", width: "100%", padding: "13px", borderRadius: 10, border: "none",
-  background: "linear-gradient(135deg, #1a3a6b, #2557a7)", color: "#fff",
+  background: "linear-gradient(135deg, #15233D, #3D5A73)", color: "#fff",
   fontWeight: 800, fontSize: 14, cursor: "pointer", textAlign: "center",
 };

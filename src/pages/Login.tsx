@@ -42,6 +42,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [userData, setUserData] = useState<UserData | null>(null);
   const [showPass, setShowPass] = useState(false);
+  const [whatsappNum, setWhatsappNum] = useState("");
 
   // Forgot password state
   const [forgotMobile, setForgotMobile] = useState("");
@@ -55,6 +56,7 @@ export default function LoginPage() {
   useEffect(() => {
     const { mobile: m, token: t } = getSession();
     if (m && t) tryAutoLogin(m, t);
+    fetch("/api/config").then(r => r.json()).then(d => setWhatsappNum((d.whatsappNumber || "").replace(/\D/g, ""))).catch(() => {});
   }, []);
 
   const tryAutoLogin = async (mobile: string, token: string) => {
@@ -135,7 +137,7 @@ export default function LoginPage() {
   if (userData) {
     return (
       <div style={{ minHeight: "100vh", background: "#eef1f7", fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
-        <div style={{ background: "linear-gradient(135deg,#1a3a6b,#2557a7)", padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ background: "linear-gradient(135deg,#15233D,#3D5A73)", padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <h1 style={{ color: "#fff", fontSize: 17, fontWeight: 800, margin: 0 }}>👤 My Account</h1>
             <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 11, margin: "2px 0 0", letterSpacing: 1 }}>COUPON WALLET</p>
@@ -147,7 +149,7 @@ export default function LoginPage() {
         </div>
 
         <div style={{ maxWidth: 520, margin: "0 auto", padding: "16px 12px" }}>
-          <div style={{ background: "linear-gradient(135deg,#1a3a6b,#2557a7)", borderRadius: 16, padding: "20px 22px", marginBottom: 14, color: "#fff" }}>
+          <div style={{ background: "linear-gradient(135deg,#15233D,#3D5A73)", borderRadius: 16, padding: "20px 22px", marginBottom: 14, color: "#fff" }}>
             <div style={{ fontSize: 32, marginBottom: 4 }}>👤</div>
             <div style={{ fontSize: 20, fontWeight: 900, marginBottom: 2 }}>{userData.name || "Customer"}</div>
             <div style={{ fontSize: 13, opacity: 0.75 }}>📱 +91 {userData.mobile}</div>
@@ -155,9 +157,9 @@ export default function LoginPage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 14 }}>
             {[
-              { label: "Purchased", value: userData.totalPurchased, color: "#1a3a6b" },
+              { label: "Purchased", value: userData.totalPurchased, color: "#15233D" },
               { label: "Used", value: userData.totalUsed, color: "#d97706" },
-              { label: "Remaining", value: userData.totalRemaining, color: userData.totalRemaining > 0 ? "#1a7a3a" : "#c00" },
+              { label: "Remaining", value: userData.totalRemaining, color: userData.totalRemaining > 0 ? "#1E7145" : "#c00" },
             ].map(({ label, value, color }) => (
               <div key={label} style={{ background: "#fff", borderRadius: 12, padding: "14px 10px", textAlign: "center", boxShadow: "0 1px 6px rgba(0,0,0,0.07)" }}>
                 <div style={{ fontSize: 26, fontWeight: 900, color, lineHeight: 1 }}>{value}</div>
@@ -167,21 +169,21 @@ export default function LoginPage() {
           </div>
 
           {userData.totalRemaining > 0 && (
-            <a href="/" style={{ display: "block", padding: "14px", borderRadius: 12, background: "linear-gradient(135deg,#1a7a3a,#2e9e55)", color: "#fff", fontWeight: 800, fontSize: 15, textAlign: "center", textDecoration: "none", marginBottom: 14 }}>
+            <a href="/" style={{ display: "block", padding: "14px", borderRadius: 12, background: "linear-gradient(135deg,#1E7145,#2e9e55)", color: "#fff", fontWeight: 800, fontSize: 15, textAlign: "center", textDecoration: "none", marginBottom: 14 }}>
               ⚡ Use Toolkit Now
             </a>
           )}
 
           {userData.records && userData.records.length > 0 && (
             <div style={{ background: "#fff", borderRadius: 14, padding: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", marginBottom: 14 }}>
-              <h3 style={{ fontSize: 13, fontWeight: 800, color: "#1a3a6b", margin: "0 0 12px" }}>ACTIVE COUPON CODES</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 800, color: "#15233D", margin: "0 0 12px" }}>ACTIVE COUPON CODES</h3>
               {userData.records.map(r => (
                 <div key={r.uniqueCode} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 12px", background: "#f8f9ff", borderRadius: 9, marginBottom: 8, border: "1.5px solid #eef" }}>
                   <div>
                     <div style={{ fontFamily: "monospace", fontWeight: 800, fontSize: 15, letterSpacing: 1 }}>{r.uniqueCode}</div>
                     <div style={{ fontSize: 11, color: "#888" }}>{r.serviceType}</div>
                   </div>
-                  <div style={{ background: "#e8f5e9", color: "#1a7a3a", borderRadius: 20, padding: "4px 12px", fontSize: 12, fontWeight: 800 }}>
+                  <div style={{ background: "#e8f5e9", color: "#1E7145", borderRadius: 20, padding: "4px 12px", fontSize: 12, fontWeight: 800 }}>
                     {r.usesRemaining} uses
                   </div>
                 </div>
@@ -199,7 +201,7 @@ export default function LoginPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#eef1f7", fontFamily: "'Segoe UI', system-ui, sans-serif", display: "flex", flexDirection: "column" }}>
-      <div style={{ background: "linear-gradient(135deg,#1a3a6b,#2557a7)", padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ background: "linear-gradient(135deg,#15233D,#3D5A73)", padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <h1 style={{ color: "#fff", fontSize: 17, fontWeight: 800, margin: 0 }}>🔐 Account Login</h1>
           <p style={{ color: "rgba(255,255,255,0.65)", fontSize: 11, margin: "2px 0 0", letterSpacing: 1 }}>UTI PAN TOOLKIT</p>
@@ -212,7 +214,7 @@ export default function LoginPage() {
           <div style={{ background: "#fff", borderRadius: 18, padding: "28px 24px", boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
             <div style={{ textAlign: "center", marginBottom: 24 }}>
               <div style={{ fontSize: 44, marginBottom: 10 }}>🪪</div>
-              <h2 style={{ fontSize: 20, fontWeight: 900, color: "#1a3a6b", margin: 0 }}>UTI PAN Toolkit</h2>
+              <h2 style={{ fontSize: 20, fontWeight: 900, color: "#15233D", margin: 0 }}>UTI PAN Toolkit</h2>
               <p style={{ fontSize: 12, color: "#888", margin: "4px 0 0" }}>
                 {tab === "forgot" ? "Reset your password" : "Sign in to view your coupon wallet"}
               </p>
@@ -222,7 +224,7 @@ export default function LoginPage() {
               <div style={{ display: "flex", background: "#eef1f7", borderRadius: 10, padding: 4, marginBottom: 20 }}>
                 {(["login", "register"] as const).map(t => (
                   <button key={t} onClick={() => { setTab(t); setError(""); }}
-                    style={{ flex: 1, padding: "8px", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 13, cursor: "pointer", background: tab === t ? "#fff" : "transparent", color: tab === t ? "#1a3a6b" : "#888", boxShadow: tab === t ? "0 1px 6px rgba(0,0,0,0.10)" : "none", transition: "all 0.2s" }}>
+                    style={{ flex: 1, padding: "8px", border: "none", borderRadius: 8, fontWeight: 800, fontSize: 13, cursor: "pointer", background: tab === t ? "#fff" : "transparent", color: tab === t ? "#15233D" : "#888", boxShadow: tab === t ? "0 1px 6px rgba(0,0,0,0.10)" : "none", transition: "all 0.2s" }}>
                     {t === "login" ? "Sign In" : "Register"}
                   </button>
                 ))}
@@ -234,7 +236,7 @@ export default function LoginPage() {
                 {forgotSuccess ? (
                   <div style={{ background: "#e8f5e9", border: "1.5px solid #a5d6a7", borderRadius: 10, padding: "16px", textAlign: "center", marginBottom: 16 }}>
                     <div style={{ fontSize: 32, marginBottom: 6 }}>✅</div>
-                    <p style={{ fontWeight: 800, color: "#1a7a3a", margin: 0, fontSize: 14 }}>{forgotSuccess}</p>
+                    <p style={{ fontWeight: 800, color: "#1E7145", margin: 0, fontSize: 14 }}>{forgotSuccess}</p>
                   </div>
                 ) : (
                   <>
@@ -275,7 +277,7 @@ export default function LoginPage() {
                     )}
 
                     <button onClick={handleForgotPassword} disabled={forgotLoading}
-                      style={{ width: "100%", padding: "14px", borderRadius: 12, border: "none", background: "linear-gradient(135deg,#1a3a6b,#2557a7)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", opacity: forgotLoading ? 0.7 : 1, marginBottom: 12 }}>
+                      style={{ width: "100%", padding: "14px", borderRadius: 12, border: "none", background: "linear-gradient(135deg,#15233D,#3D5A73)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", opacity: forgotLoading ? 0.7 : 1, marginBottom: 12 }}>
                       {forgotLoading ? "⏳ Verifying..." : "🔑 Reset Password"}
                     </button>
                   </>
@@ -320,7 +322,7 @@ export default function LoginPage() {
                 {tab === "login" && (
                   <div style={{ textAlign: "right", marginBottom: 16 }}>
                     <button onClick={() => { setTab("forgot"); setError(""); setForgotMobile(mobile); }}
-                      style={{ background: "none", border: "none", color: "#2557a7", fontSize: 12, fontWeight: 700, cursor: "pointer", padding: 0 }}>
+                      style={{ background: "none", border: "none", color: "#3D5A73", fontSize: 12, fontWeight: 700, cursor: "pointer", padding: 0 }}>
                       Forgot Password?
                     </button>
                   </div>
@@ -333,12 +335,32 @@ export default function LoginPage() {
                 )}
 
                 <button onClick={tab === "login" ? handleLogin : handleRegister} disabled={loading}
-                  style={{ width: "100%", padding: "14px", borderRadius: 12, border: "none", background: "linear-gradient(135deg,#1a3a6b,#2557a7)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", opacity: loading ? 0.7 : 1 }}>
+                  style={{ width: "100%", padding: "14px", borderRadius: 12, border: "none", background: "linear-gradient(135deg,#15233D,#3D5A73)", color: "#fff", fontWeight: 800, fontSize: 15, cursor: "pointer", opacity: loading ? 0.7 : 1 }}>
                   {loading ? "⏳ Please wait..." : tab === "login" ? "🔐 Sign In" : "✅ Create Account"}
                 </button>
               </>
             )}
           </div>
+
+          {whatsappNum && (
+            <a
+              href={`https://wa.me/${whatsappNum}?text=${encodeURIComponent(
+                tab === "forgot"
+                  ? "Hi, I need help resetting my UTI PAN Toolkit password."
+                  : tab === "register"
+                  ? "Hi, I need help creating my UTI PAN Toolkit account."
+                  : "Hi, I'm having trouble signing in to UTI PAN Toolkit."
+              )}`}
+              target="_blank" rel="noreferrer"
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                marginTop: 14, width: "100%", padding: "12px", borderRadius: 12,
+                border: "1.5px solid #25D366", background: "#fff", color: "#1E7145",
+                fontWeight: 700, fontSize: 13, textDecoration: "none", boxSizing: "border-box",
+              }}>
+              💬 Need help? Chat with us on WhatsApp
+            </a>
+          )}
         </div>
       </div>
     </div>

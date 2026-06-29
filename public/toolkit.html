@@ -5,22 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>UTI PAN Toolkit</title>
 <style>
+/* ── Design tokens ──
+   Ink Navy   #15233D  — primary surfaces, headers
+   Slate Blue #3D5A73  — secondary / active state
+   Brass      #C7A046  — accent, used sparingly (active tab rule, links)
+   Paper      #F6F4ED  — page background, warm not clinical
+   Verified   #1E7145  — success only
+   Alert      #8B1E1E  — error only
+*/
 /* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: #f0f2f8;
+  background: #F6F4ED;
   min-height: 100vh;
   padding-bottom: 40px;
-  color: #1a1a2e;
+  color: #15233D;
   -webkit-font-smoothing: antialiased;
 }
 
 /* ── App Header ── */
 .app-header {
-  background: linear-gradient(135deg, #1a3a6b 0%, #1e4d94 60%, #2563b8 100%);
+  background: #15233D;
   padding: 16px 16px 0;
-  box-shadow: 0 2px 12px rgba(26,58,107,0.3);
+  box-shadow: 0 2px 12px rgba(21,35,61,0.35);
+  position: relative;
+}
+.app-header::after {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, #C7A046 0%, #C7A046 8%, transparent 8%);
+  margin-top: 14px;
 }
 .app-header-row {
   display: flex;
@@ -30,26 +46,28 @@ body {
 }
 .app-title {
   color: #fff;
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -0.3px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
 .app-sub {
-  color: rgba(255,255,255,0.55);
+  color: rgba(199,160,70,0.85);
   font-size: 10px;
   letter-spacing: 1.8px;
   text-transform: uppercase;
-  margin-top: 2px;
+  margin-top: 3px;
+  font-weight: 600;
 }
 .app-header-actions {
   display: flex;
   gap: 6px;
 }
 .hdr-btn {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.85);
-  border-radius: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(199,160,70,0.4);
+  color: rgba(255,255,255,0.9);
+  border-radius: 6px;
   padding: 6px 11px;
   font-size: 11px;
   font-weight: 700;
@@ -58,30 +76,84 @@ body {
   text-decoration: none;
   white-space: nowrap;
 }
-.hdr-btn:hover { background: rgba(255,255,255,0.22); }
+.hdr-btn:hover { background: rgba(199,160,70,0.25); }
 
-/* ── Tab Bar ── */
-.tab-bar { display: flex; gap: 3px; }
+/* ── Mobile Top Tab Bar ── */
+.tab-bar-mobile { display: flex; gap: 3px; }
 .tab-btn {
   flex: 1;
-  padding: 9px 4px 10px;
+  padding: 10px 4px 11px;
   border: none;
-  border-radius: 8px 8px 0 0;
+  border-radius: 7px 7px 0 0;
   font-weight: 700;
-  font-size: 10px;
+  font-size: 10.5px;
   cursor: pointer;
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.65);
   transition: all .15s;
-  line-height: 1.35;
+  line-height: 1.4;
   text-align: center;
   letter-spacing: 0.1px;
 }
-.tab-btn:hover { background: rgba(255,255,255,0.18); color: rgba(255,255,255,0.9); }
+.tab-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.92); }
 .tab-btn.active {
-  background: #f0f2f8;
-  color: #1a3a6b;
-  box-shadow: 0 -2px 0 #2563b8 inset;
+  background: #F6F4ED;
+  color: #15233D;
+  box-shadow: 0 -2px 0 #C7A046 inset;
+}
+
+/* ── App Shell (sidebar + content) ── */
+.app-shell {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Sidebar (desktop only) ── */
+.sidebar {
+  display: none;
+  flex-direction: column;
+  width: 248px;
+  flex-shrink: 0;
+  background: #15233D;
+  min-height: calc(100vh - 84px);
+  padding: 10px 0;
+  gap: 2px;
+}
+.side-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.65);
+  padding: 13px 18px;
+  cursor: pointer;
+  text-align: left;
+  border-left: 3px solid transparent;
+  transition: background .15s, color .15s;
+}
+.side-btn:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.92); }
+.side-btn.active {
+  background: rgba(199,160,70,0.12);
+  color: #fff;
+  border-left-color: #C7A046;
+}
+.side-icon { font-size: 19px; flex-shrink: 0; width: 22px; text-align: center; }
+.side-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.side-title { font-size: 13.5px; font-weight: 700; letter-spacing: 0.1px; }
+.side-desc { font-size: 10.5px; color: rgba(255,255,255,0.45); line-height: 1.3; }
+.side-btn.active .side-desc { color: rgba(199,160,70,0.75); }
+
+.main-content { flex: 1; min-width: 0; }
+
+@media (min-width: 880px) {
+  .tab-bar-mobile { display: none; }
+  .app-header::after { display: none; }
+  .sidebar { display: flex; }
+  .wrap { max-width: 680px; margin: 0; padding: 28px 28px 16px; }
 }
 
 /* ── Layout Wrapper ── */
@@ -93,27 +165,27 @@ body {
   flex-direction: column;
   gap: 12px;
 }
-
 /* ── Cards ── */
 .card {
   background: #fff;
   border-radius: 14px;
   padding: 16px 18px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
-  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(21,35,61,0.06), 0 4px 16px rgba(21,35,61,0.05);
+  border: 1px solid rgba(21,35,61,0.08);
 }
 .card-title {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
-  color: #1a3a6b;
+  color: #15233D;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 6px;
+  font-family: Georgia, 'Times New Roman', serif;
 }
 .card-hint {
   font-size: 11.5px;
-  color: #7a85a0;
+  color: #6b6358;
   margin-bottom: 10px;
   line-height: 1.6;
 }
@@ -146,7 +218,7 @@ body {
   transition: all .15s;
 }
 .form-btn:hover { border-color: #7ea8e0; background: #f5f8ff; }
-.form-btn.active { border-color: #1a3a6b; background: #1a3a6b; color: #fff; }
+.form-btn.active { border-color: #15233D; background: #15233D; color: #fff; }
 
 /* ── Dropzone ── */
 .dropzone {
@@ -165,7 +237,7 @@ body {
   background: #fafbff;
   transition: border-color .15s, background .15s;
 }
-.dropzone:hover { border-color: #2563b8; background: #f0f5ff; }
+.dropzone:hover { border-color: #3D5A73; background: #f0f5ff; }
 
 /* ── File Pill ── */
 .file-pill {
@@ -179,7 +251,7 @@ body {
 }
 .file-pill span { flex: 1; font-size: 12px; color: #333; font-weight: 600; }
 .remove-btn {
-  background: #e74c3c;
+  background: #8B1E1E;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -189,7 +261,7 @@ body {
   font-size: 12px;
   transition: background .15s;
 }
-.remove-btn:hover { background: #c0392b; }
+.remove-btn:hover { background: #6B1414; }
 
 /* ── Image Upload Grid ── */
 .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -200,7 +272,7 @@ body {
 .img-box img { width: 100%; max-height: 120px; object-fit: contain; border-radius: 8px; border: 1px solid #eee; display: block; }
 .img-clear {
   position: absolute; top: -7px; right: -7px;
-  background: #e74c3c; color: #fff; border: none;
+  background: #8B1E1E; color: #fff; border: none;
   border-radius: 50%; width: 22px; height: 22px;
   cursor: pointer; font-size: 13px; font-weight: 800;
   line-height: 22px; text-align: center;
@@ -213,7 +285,7 @@ body {
   cursor: pointer; color: #b0b8cc; font-size: 12px; gap: 4px;
   background: #fafbff; transition: all .15s;
 }
-.img-placeholder:hover { border-color: #2563b8; background: #f0f5ff; }
+.img-placeholder:hover { border-color: #3D5A73; background: #f0f5ff; }
 
 /* ── Toggle Switch ── */
 .toggle-row {
@@ -234,7 +306,7 @@ body {
   border: none;
   flex-shrink: 0;
 }
-.toggle.on { background: #1a7a3a; }
+.toggle.on { background: #1E7145; }
 .toggle::after {
   content: '';
   position: absolute;
@@ -263,7 +335,7 @@ body {
   border-radius: 10px;
   padding: 11px 15px;
   font-size: 12px;
-  color: #c0392b;
+  color: #6B1414;
   display: none;
 }
 .success-box {
@@ -284,7 +356,7 @@ body {
   font-weight: 800;
   font-size: 15px;
   cursor: pointer;
-  background: linear-gradient(135deg, #1a3a6b, #2563b8);
+  background: linear-gradient(135deg, #15233D, #3D5A73);
   color: #fff;
   width: 100%;
   letter-spacing: 0.2px;
@@ -294,7 +366,7 @@ body {
 .gen-btn:hover:not(:disabled) { opacity: 0.93; transform: translateY(-1px); }
 .gen-btn:disabled { background: #c8cdd8; cursor: not-allowed; box-shadow: none; }
 .gen-btn.green {
-  background: linear-gradient(135deg, #16a34a, #22c55e);
+  background: linear-gradient(135deg, #1E7145, #2D8659);
   box-shadow: 0 2px 8px rgba(22,163,74,0.25);
 }
 .gen-btn.orange {
@@ -312,7 +384,7 @@ body {
   padding: 11px 8px;
   border-radius: 10px;
   border: none;
-  background: linear-gradient(135deg, #16a34a, #22c55e);
+  background: linear-gradient(135deg, #1E7145, #2D8659);
   color: #fff;
   font-weight: 800;
   font-size: 12px;
@@ -350,13 +422,13 @@ body {
   cursor: pointer;
   transition: all .15s;
 }
-.size-btn:hover { border-color: #2563b8; color: #1a3a6b; background: #f0f5ff; }
-.size-btn.active { border-color: #1a3a6b; background: #1a3a6b; color: #fff; }
+.size-btn:hover { border-color: #3D5A73; color: #15233D; background: #f0f5ff; }
+.size-btn.active { border-color: #15233D; background: #15233D; color: #fff; }
 
 /* ── Crop Resize Handles ── */
 .crop-rh {
   position: absolute;
-  background: #16a34a;
+  background: #1E7145;
   border: 2px solid #fff;
   border-radius: 3px;
   box-sizing: border-box;
@@ -390,21 +462,21 @@ body {
 .merge-item-name { font-size: 12px; font-weight: 700; color: #333; }
 .merge-item-hint { font-size: 11px; color: #999; margin-top: 1px; }
 .merge-item-status { font-size: 11px; font-weight: 700; color: #b0b8cc; }
-.merge-item-status.loaded { color: #16a34a; }
+.merge-item-status.loaded { color: #1E7145; }
 .merge-item button.pick-btn {
-  background: #1a3a6b; color: #fff; border: none;
+  background: #15233D; color: #fff; border: none;
   border-radius: 8px; padding: 7px 13px;
   font-size: 11px; font-weight: 800; cursor: pointer;
   flex-shrink: 0; transition: background .15s;
 }
-.merge-item button.pick-btn:hover { background: #2563b8; }
+.merge-item button.pick-btn:hover { background: #3D5A73; }
 .merge-item button.clear-btn {
-  background: #e74c3c; color: #fff; border: none;
+  background: #8B1E1E; color: #fff; border: none;
   border-radius: 8px; padding: 7px 10px;
   font-size: 12px; font-weight: 800; cursor: pointer;
   flex-shrink: 0; transition: background .15s;
 }
-.merge-item button.clear-btn:hover { background: #c0392b; }
+.merge-item button.clear-btn:hover { background: #6B1414; }
 .merge-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: 7px; border: 1px solid #dde; flex-shrink: 0; }
 .order-note { font-size: 11px; color: #8a93b0; margin-top: 8px; line-height: 1.6; }
 
@@ -419,11 +491,6 @@ body {
   background: rgba(255,255,255,0.6);
   border-radius: 10px;
 }
-
-/* ── Save Bar (hidden by CSS injection from server) ── */
-.save-bar { background:#e8f5e9; border:2px solid #16a34a; border-radius:12px; padding:10px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.save-bar span { font-size:12px; font-weight:700; color:#16a34a; }
-.save-bar button { background:#16a34a; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-weight:800; font-size:12px; cursor:pointer; }
 
 /* ── Tabs ── */
 .tool-section { display: none; }
@@ -448,7 +515,8 @@ body {
       <button class="hdr-btn" onclick="selfDownload()" title="Save toolkit as HTML file">💾 Save</button>
     </div>
   </div>
-  <div class="tab-bar">
+  <!-- Mobile-only top tab bar -->
+  <div class="tab-bar tab-bar-mobile">
     <button class="tab-btn active" onclick="switchTab('t1')" id="tab-t1">📋 Form<br>Placer</button>
     <button class="tab-btn" onclick="switchTab('t2')" id="tab-t2">🌐 UTI Photo<br>-Sign Crop</button>
     <button class="tab-btn" onclick="switchTab('t3')" id="tab-t3">🖼️ General<br>Photo-Sign</button>
@@ -457,19 +525,42 @@ body {
   </div>
 </div>
 
+<div class="app-shell">
+  <!-- Desktop-only sidebar nav -->
+  <nav class="sidebar">
+    <button class="side-btn active" onclick="switchTab('t1')" id="side-t1">
+      <span class="side-icon">📋</span>
+      <span class="side-text"><span class="side-title">Form Placer</span><span class="side-desc">Photo &amp; signature on PAN form</span></span>
+    </button>
+    <button class="side-btn" onclick="switchTab('t2')" id="side-t2">
+      <span class="side-icon">🌐</span>
+      <span class="side-text"><span class="side-title">UTI Photo &amp; Sign Crop</span><span class="side-desc">213×213 photo · 400×200 signature</span></span>
+    </button>
+    <button class="side-btn" onclick="switchTab('t3')" id="side-t3">
+      <span class="side-icon">🖼️</span>
+      <span class="side-text"><span class="side-title">General Photo-Sign</span><span class="side-desc">Custom crop sizes</span></span>
+    </button>
+    <button class="side-btn" onclick="switchTab('t4')" id="side-t4">
+      <span class="side-icon">🪪</span>
+      <span class="side-text"><span class="side-title">Passport Photo Maker</span><span class="side-desc">Standard ID photo, 300 DPI</span></span>
+    </button>
+    <button class="side-btn" onclick="switchTab('t5')" id="side-t5">
+      <span class="side-icon">📎</span>
+      <span class="side-text"><span class="side-title">JPEG → PDF</span><span class="side-desc">Merge documents for upload</span></span>
+    </button>
+  </nav>
+
+  <div class="main-content">
+
 <!-- ══════════════════════════════════════════════════
      TOOL 1 — UTI FORM PHOTO & SIGNATURE PLACER
      ══════════════════════════════════════════════════ -->
 <div class="wrap">
 <div class="tool-section active" id="t1">
 
-  <div class="save-bar">
-    <span>💾 Save this toolkit to your device</span>
-    <button onclick="selfDownload()">⬇ Download</button>
-  </div>
-
   <div class="card">
     <div class="card-title">① Select Form Type</div>
+    <p class="card-hint">Choose which PAN form you're filling — new application or a correction to existing PAN.</p>
     <div class="form-btns">
       <button class="form-btn active" id="btn49a" onclick="setForm('form49a')">New PAN (49A)</button>
       <button class="form-btn" id="btncr01" onclick="setForm('pancr01')">Correction (CR-01)</button>
@@ -527,9 +618,35 @@ body {
     <div style="display:flex;align-items:center;gap:10px;margin-top:10px;background:#f0f7f2;border-radius:8px;padding:8px 12px;">
       <span style="font-size:12px;font-weight:600;white-space:nowrap;">✒️ Sig Stroke</span>
       <input type="range" id="t1StrokeSlider" min="0" max="4" step="1" value="1"
-             style="flex:1;accent-color:#1a3a6b;cursor:pointer;"
+             style="flex:1;accent-color:#15233D;cursor:pointer;"
              oninput="updateT1StrokeLabel(this.value)">
-      <span id="t1StrokeLabel" style="font-size:12px;font-weight:700;color:#1a3a6b;min-width:60px;text-align:right;">Light</span>
+      <span id="t1StrokeLabel" style="font-size:12px;font-weight:700;color:#15233D;min-width:60px;text-align:right;">Light</span>
+    </div>
+  </div>
+
+  <div class="card" id="placement-guide-card">
+    <div class="card-title">📐 How It's Placed</div>
+    <p class="card-hint">A quick look at where your photo and signature will sit on the form before you generate.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <!-- Page 1 mini diagram -->
+      <div style="text-align:center;">
+        <div style="width:120px;height:160px;border:2px solid #15233D;border-radius:6px;background:#fff;position:relative;margin:0 auto;box-shadow:0 1px 4px rgba(21,35,61,0.12);">
+          <div style="position:absolute;top:10px;right:10px;width:38px;height:48px;border:1.5px solid #C7A046;background:#faf6ea;border-radius:2px;"></div>
+          <div style="position:absolute;top:60px;right:10px;width:38px;height:14px;border:1.5px dashed #3D5A73;border-radius:2px;font-size:7px;color:#3D5A73;display:flex;align-items:center;justify-content:center;">sign</div>
+          <div style="position:absolute;bottom:8px;left:8px;right:8px;font-size:7px;color:#aaa;line-height:1.4;">application form fields…</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#15233D;margin-top:6px;">Page 1</div>
+        <div style="font-size:10px;color:#888;">Photo + signature corner</div>
+      </div>
+      <!-- Page 2 mini diagram -->
+      <div style="text-align:center;">
+        <div style="width:120px;height:160px;border:2px solid #15233D;border-radius:6px;background:#fff;position:relative;margin:0 auto;box-shadow:0 1px 4px rgba(21,35,61,0.12);">
+          <div style="position:absolute;bottom:14px;left:10px;right:10px;height:18px;border:1.5px dashed #3D5A73;border-radius:2px;font-size:7px;color:#3D5A73;display:flex;align-items:center;justify-content:center;">signature</div>
+          <div style="position:absolute;top:8px;left:8px;right:8px;font-size:7px;color:#aaa;line-height:1.4;">Verification &amp; Declaration —<br>I/We hereby declare…</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#15233D;margin-top:6px;">Page 2</div>
+        <div style="font-size:10px;color:#888;">Declaration box only</div>
+      </div>
     </div>
   </div>
 
@@ -582,6 +699,7 @@ body {
 
   <div class="card">
     <div class="card-title">① Choose Output Size</div>
+    <p class="card-hint">Pick the exact dimensions required for this upload — sizes shown adjust automatically per tool.</p>
     <div class="size-btns" id="crop-size-btns">
       <button class="size-btn" onclick="setCropSize('photo')" id="cs-photo" data-tabs="t3 t4">📷 Photo 3.5×4.5cm</button>
       <button class="size-btn" onclick="setCropSize('sig')" id="cs-sig" data-tabs="t3">✍️ Signature 2×6cm</button>
@@ -594,12 +712,13 @@ body {
       <label style="font-size:12px;color:#555;">W px: <input type="number" id="custom-w" value="350" style="width:70px;padding:5px;border-radius:6px;border:1.5px solid #dde;font-size:12px;"></label>
       <label style="font-size:12px;color:#555;">H px: <input type="number" id="custom-h" value="450" style="width:70px;padding:5px;border-radius:6px;border:1.5px solid #dde;font-size:12px;"></label>
       <label style="font-size:12px;color:#555;">DPI: <input type="number" id="custom-dpi" value="300" style="width:60px;padding:5px;border-radius:6px;border:1.5px solid #dde;font-size:12px;"></label>
-      <button onclick="applyCropSize()" style="padding:6px 12px;background:#1a3a6b;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">Apply</button>
+      <button onclick="applyCropSize()" style="padding:6px 12px;background:#15233D;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">Apply</button>
     </div>
   </div>
 
   <div class="card">
     <div class="card-title">② Upload Image</div>
+    <p class="card-hint">Your photo or signature — we'll crop, clean the background, and resize it automatically.</p>
     <div id="crop-placeholder" class="dropzone" onclick="document.getElementById('cropInput').click()">
       <span style="font-size:28px;">📷</span>
       <span style="font-weight:600;">Choose photo or signature</span>
@@ -610,28 +729,10 @@ body {
         <button class="toggle on" id="cropBgToggle" onclick="toggleCropBg()"></button>
         <span>AI background removal → white</span>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
-        <div class="toggle-row" style="margin-bottom:0;">
-          <button class="toggle on" id="cropEnhanceToggle" onclick="toggleCropAutoEnhance()"></button>
-          <span style="font-size:12px;">🔍 Sharpen &amp; Correct</span>
-        </div>
-        <div class="toggle-row" style="margin-bottom:0;">
-          <button class="toggle" id="cropSmoothToggle" onclick="toggleCropEnh('smooth')"></button>
-          <span style="font-size:12px;">✨ Smooth</span>
-        </div>
-        <div class="toggle-row" style="margin-bottom:0;">
-          <button class="toggle" id="cropDenoiseToggle" onclick="toggleCropEnh('denoise')"></button>
-          <span style="font-size:12px;">🧹 Remove Noise</span>
-        </div>
-        <div class="toggle-row" style="margin-bottom:0;">
-          <button class="toggle" id="cropBeautifyToggle" onclick="toggleCropEnh('beautify')"></button>
-          <span style="font-size:12px;">💄 Beautify</span>
-        </div>
-      </div>
       <!-- ── Levels Editor (Photoshop Ctrl+L equivalent) ── -->
-      <div id="levels-panel" style="background:#f0f2f8;border-radius:8px;padding:10px 12px;margin-bottom:10px;border:1.5px solid #dde;">
+      <div id="levels-panel" style="background:#F6F4ED;border-radius:8px;padding:10px 12px;margin-bottom:10px;border:1.5px solid #ddd6c4;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <span style="font-size:12px;font-weight:700;color:#1a3a6b;">📊 Levels  <span style="font-weight:400;color:#777;">(brighten grey background before removing)</span></span>
+          <span style="font-size:12px;font-weight:700;color:#15233D;">📊 Levels  <span style="font-weight:400;color:#777;">(brighten grey background before removing)</span></span>
           <button onclick="resetLevels()" style="font-size:11px;padding:2px 10px;border-radius:6px;border:1.5px solid #bbc;background:#fff;cursor:pointer;color:#555;">↺ Reset</button>
         </div>
         <!-- Histogram -->
@@ -644,8 +745,8 @@ body {
           <span style="font-size:11px;color:#888;font-weight:600;width:30px;text-align:right;">⬜ In:</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:0 2px;margin-bottom:2px;">
-          <span id="levels-black-val" style="font-size:11px;font-weight:700;color:#1a3a6b;min-width:28px;">0</span>
-          <span id="levels-white-val" style="font-size:11px;font-weight:700;color:#1a3a6b;min-width:28px;text-align:right;">255</span>
+          <span id="levels-black-val" style="font-size:11px;font-weight:700;color:#15233D;min-width:28px;">0</span>
+          <span id="levels-white-val" style="font-size:11px;font-weight:700;color:#15233D;min-width:28px;text-align:right;">255</span>
         </div>
       </div>
 
@@ -654,14 +755,14 @@ body {
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:13px;font-weight:600;white-space:nowrap;">✒️ Stroke Thickness</span>
           <input type="range" id="strokeThicknessSlider" min="0" max="4" step="1" value="2"
-                 style="flex:1;accent-color:#1a7a3a;cursor:pointer;"
+                 style="flex:1;accent-color:#1E7145;cursor:pointer;"
                  oninput="updateStrokeLabel(this.value)">
-          <span id="strokeThicknessLabel" style="font-size:12px;font-weight:700;color:#1a7a3a;min-width:60px;text-align:right;">Medium</span>
+          <span id="strokeThicknessLabel" style="font-size:12px;font-weight:700;color:#1E7145;min-width:60px;text-align:right;">Medium</span>
         </div>
         <!-- Live preview canvas — updates instantly as slider moves -->
         <div id="sig-live-preview-wrap" style="display:none;">
           <div style="font-size:11px;color:#555;margin-bottom:4px;font-style:italic;">Live preview — drag slider to compare</div>
-          <canvas id="sig-live-canvas" style="border:2px solid #1a7a3a;border-radius:6px;width:100%;max-height:120px;object-fit:contain;background:#fff;display:block;"></canvas>
+          <canvas id="sig-live-canvas" style="border:2px solid #1E7145;border-radius:6px;width:100%;max-height:120px;object-fit:contain;background:#fff;display:block;"></canvas>
         </div>
       </div>
       <div style="display:flex;gap:10px;align-items:flex-start;">
@@ -669,7 +770,7 @@ body {
           <div class="page-label">Original (drag box to adjust crop)</div>
           <div id="crop-orig-wrap" style="position:relative;width:100%;touch-action:none;">
             <canvas id="crop-orig-canvas" style="width:100%;border-radius:7px;border:1px solid #eee;display:block;"></canvas>
-            <div id="crop-box-overlay" style="position:absolute;border:2.5px solid #1a7a3a;background:rgba(26,122,58,0.10);cursor:move;box-sizing:border-box;">
+            <div id="crop-box-overlay" style="position:absolute;border:2.5px solid #1E7145;background:rgba(26,122,58,0.10);cursor:move;box-sizing:border-box;">
               <div class="crop-rh tl" data-dir="tl"></div>
               <div class="crop-rh tr" data-dir="tr"></div>
               <div class="crop-rh bl" data-dir="bl"></div>
@@ -700,14 +801,14 @@ body {
         <div style="flex:1;">
           <div class="page-label">Result (cropped)</div>
           <div style="position:relative;">
-            <canvas id="crop-result-canvas" style="width:100%;border-radius:7px;border:2px solid #1a3a6b;display:block;"></canvas>
+            <canvas id="crop-result-canvas" style="width:100%;border-radius:7px;border:2px solid #15233D;display:block;"></canvas>
             <!-- AI preview overlays the raw canvas so both are same size -->
-            <canvas id="crop-preview-canvas" style="display:none;position:absolute;top:0;left:0;width:100%;border-radius:7px;border:2px solid #1a7a3a;"></canvas>
+            <canvas id="crop-preview-canvas" style="display:none;position:absolute;top:0;left:0;width:100%;border-radius:7px;border:2px solid #1E7145;"></canvas>
           </div>
           <!-- Preview bar — visible for photo sizes when BG removal is ON -->
           <div id="photo-preview-bar" style="display:none;margin-top:6px;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;">
             <button id="photo-preview-btn" onclick="previewPhotoResult()"
-              style="padding:5px 16px;border-radius:8px;border:1.5px solid #1a7a3a;background:#f0f7f2;color:#1a7a3a;font-size:12px;font-weight:600;cursor:pointer;">
+              style="padding:5px 16px;border-radius:8px;border:1.5px solid #1E7145;background:#f0f7f2;color:#1E7145;font-size:12px;font-weight:600;cursor:pointer;">
               👁 Preview BG Removal
             </button>
             <span id="photo-preview-status" style="font-size:11px;color:#888;"></span>
@@ -725,10 +826,10 @@ body {
 
   <div class="card" id="crop-result-card" style="display:none;">
     <div class="card-title">✅ Ready to Upload to UTI Portal</div>
-    <canvas id="crop-final-canvas" style="width:100%;max-width:200px;display:block;margin:0 auto 10px;border-radius:10px;border:2px solid #1a3a6b;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></canvas>
+    <canvas id="crop-final-canvas" style="width:100%;max-width:200px;display:block;margin:0 auto 10px;border-radius:10px;border:2px solid #15233D;box-shadow:0 2px 8px rgba(0,0,0,0.1);"></canvas>
     <div id="crop-final-info" style="font-size:11px;color:#8a93b0;text-align:center;margin-bottom:14px;font-weight:600;"></div>
     <div class="result-btns">
-      <button class="dl-btn" onclick="downloadCrop()" style="background:linear-gradient(135deg,#1a3a6b,#2563b8);" title="JPEG — required format for UTI Portal">⬇ JPEG</button>
+      <button class="dl-btn" onclick="downloadCrop()" style="background:linear-gradient(135deg,#15233D,#3D5A73);" title="JPEG — required format for UTI Portal">⬇ JPEG</button>
       <button class="dl-btn" onclick="downloadCropPNG()" style="background:linear-gradient(135deg,#0e7a5a,#15a370);" title="PNG — transparent background preserved">⬇ PNG</button>
       <button class="dl-btn" onclick="downloadCropA4()" style="background:linear-gradient(135deg,#7c3aed,#9f5de2);" title="Place photo on A4 sheet for printing">📄 A4</button>
       <button class="reset-btn" onclick="resetCrop()">↺ Reset</button>
@@ -778,7 +879,7 @@ body {
     <div class="merge-list" id="merge-list">
       <!-- slots injected by JS -->
     </div>
-    <button onclick="addMergeSlot()" style="margin-top:10px;width:100%;padding:11px;border-radius:10px;border:2px dashed #c8d0e8;background:#fafbff;color:#8a93b0;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='#2563b8';this.style.color='#1a3a6b'" onmouseout="this.style.borderColor='#c8d0e8';this.style.color='#8a93b0'">+ Add Another Page</button>
+    <button onclick="addMergeSlot()" style="margin-top:10px;width:100%;padding:11px;border-radius:10px;border:2px dashed #c8d0e8;background:#fafbff;color:#8a93b0;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;" onmouseover="this.style.borderColor='#3D5A73';this.style.color='#15233D'" onmouseout="this.style.borderColor='#c8d0e8';this.style.color='#8a93b0'">+ Add Another Page</button>
   </div>
 
   <div class="card" id="merge-order-card">
@@ -806,6 +907,8 @@ body {
 <div class="privacy">🔒 100% private · All processing runs in your browser · Nothing is uploaded to any server</div>
 
 </div><!-- /wrap -->
+  </div><!-- /main-content -->
+</div><!-- /app-shell -->
 
 <script type="module">
 
@@ -824,6 +927,8 @@ window.switchTab = (id) => {
   ['t1','t2','t3','t4','t5'].forEach(t => {
     const el=document.getElementById('tab-'+t);
     if(el) el.classList.toggle('active', t===id);
+    const sideEl=document.getElementById('side-'+t);
+    if(sideEl) sideEl.classList.toggle('active', t===id);
   });
 
   // Filter visible size buttons by tab
@@ -893,12 +998,14 @@ async function loadSegmenter(statusCb) {
   return _segmenter;
 }
 
-// ── replaceBackgroundWithWhite ──────────────────────────────────────────────
+// ── removeBackground ─────────────────────────────────────────────────────────
 // Exact port of photo-hub's background-removal.ts:
 //   • accepts either HTMLImageElement or HTMLCanvasElement
 //   • passes the canvas directly to segmentPeople() with NO extra options
 //   • runs at the input's native resolution (no pre-scaling)
-//   • returns a new canvas with pure #ffffff background
+//   • returns a new canvas with the subject on a TRANSPARENT background.
+//     Callers that need an opaque image (JPEG has no alpha channel) should
+//     composite white themselves via compositeOnWhite() — see below.
 // ───────────────────────────────────────────────────────────────────────────
 async function removeBackground(imgOrCanvas, statusCb) {
   const seg = await loadSegmenter(statusCb);
@@ -920,7 +1027,8 @@ async function removeBackground(imgOrCanvas, statusCb) {
   }
 
   if (!segs || segs.length === 0) {
-    // No person detected: fall back to light-bg flood-fill (same as photo-hub fallback)
+    // No person detected: fall back to light-bg flood-fill (same as photo-hub fallback).
+    // This fallback can't separate subject from background, so it stays opaque white.
     return whitenBackgroundCanvas(inputCanvas);
   }
 
@@ -945,18 +1053,25 @@ async function removeBackground(imgOrCanvas, statusCb) {
   softCtx.drawImage(maskCanvas, 0, 0, W, H);
   softCtx.filter = 'none';
 
-  // Clip the ORIGINAL canvas to the soft mask using source-in
+  // Clip the ORIGINAL canvas to the soft mask using source-in.
+  // This result already has a proper alpha channel — subject visible, background transparent.
   const subjectC = document.createElement('canvas'); subjectC.width = W; subjectC.height = H;
   const subjectCtx = subjectC.getContext('2d');
   subjectCtx.drawImage(softMask, 0, 0, W, H);
   subjectCtx.globalCompositeOperation = 'source-in';
   subjectCtx.drawImage(inputCanvas, 0, 0, W, H);  // original pixels, masked
 
-  // Composite: pure white base + masked subject on top → pure #ffffff background
+  return subjectC; // transparent background — caller decides whether to flatten to white
+}
+
+// Composite a (possibly transparent) canvas onto a solid white background.
+// Use this for any JPEG/print path, since JPEG has no alpha channel.
+function compositeOnWhite(canvas) {
+  const W = canvas.width, H = canvas.height;
   const out = document.createElement('canvas'); out.width = W; out.height = H;
   const outCtx = out.getContext('2d');
   outCtx.fillStyle = '#ffffff'; outCtx.fillRect(0, 0, W, H);
-  outCtx.drawImage(subjectC, 0, 0);
+  outCtx.drawImage(canvas, 0, 0);
   return out;
 }
 
@@ -1363,7 +1478,7 @@ window.generate = async () => {
       pdf=await getDocument({url:pdfObjectUrl}).promise;
     }
     const photoImg=await loadImage(photoUrl);
-    const photoSrc=removeBg ? await removeBackground(photoImg,(s)=>{btn.textContent=s;}) : (()=>{const tc=document.createElement('canvas');tc.width=photoImg.width;tc.height=photoImg.height;tc.getContext('2d').drawImage(photoImg,0,0);return tc;})();
+    const photoSrc=removeBg ? compositeOnWhite(await removeBackground(photoImg,(s)=>{btn.textContent=s;})) : (()=>{const tc=document.createElement('canvas');tc.width=photoImg.width;tc.height=photoImg.height;tc.getContext('2d').drawImage(photoImg,0,0);return tc;})();
     const sigCanvas=processSignature(await loadImage(sigUrl));
 
     const c1=await renderPage(pdf,1,SCALE),ctx1=c1.getContext('2d');
@@ -1418,6 +1533,7 @@ const CROP_SIZES = {
   custom: { w:350, h:450, label:'Custom', dpi:96 },
 };
 let cropSize='photo', cropImageUrl=null, cropFinalDataUrl=null, cropBgRemove=true;
+let cropTransparentCanvas=null; // true alpha-channel cutout, set after each generate; backs the PNG download
 let sigStrokeThickness=2; // 0=Thin 1=Light 2=Medium 3=Bold 4=Heavy
 let sigBaseCanvas=null;   // clean cropped canvas reused by the live preview
 let photoPreviewActive=false; // true while the AI preview canvas is on top
@@ -1519,18 +1635,11 @@ window.previewPhotoResult = async () => {
 };
 // ─────────────────────────────────────────────────────────────────────────────
 
-let cropEnh = { smooth:false, denoise:false, beautify:false };
-window.toggleCropEnh = (key) => {
-  cropEnh[key]=!cropEnh[key];
-  document.getElementById('crop'+key.charAt(0).toUpperCase()+key.slice(1)+'Toggle').classList.toggle('on',cropEnh[key]);
-};
+let cropEnh = { smooth:false, denoise:false, beautify:false }; // UI removed — kept off by default, code below still supported if re-enabled later
 
 // ── Photo Enhancement Pipeline (Sharpen & Correct) ──────────────────────────
-let cropAutoEnhance = true;
-window.toggleCropAutoEnhance = () => {
-  cropAutoEnhance = !cropAutoEnhance;
-  document.getElementById('cropEnhanceToggle').classList.toggle('on', cropAutoEnhance);
-};
+// UI toggle removed — auto-enhance is now always applied for photo sizes (was the most useful of the 4 toggles).
+const cropAutoEnhance = true;
 
 // Separable Gaussian blur for unsharp mask (sigma≈1.0, kernel=5)
 function gaussBlur5(imgData) {
@@ -2181,6 +2290,7 @@ window.generateCrop = async () => {
 
     // AI background removal on cropped canvas
     let finalCanvas=enhanced;
+    let transparentCanvas=null; // populated only when bg removal ran on a photo (not signature)
     if(cropBgRemove){
       const isSig=['sig','portalsig'].includes(cropSize);
       if(isSig){
@@ -2188,19 +2298,27 @@ window.generateCrop = async () => {
         // Use contrast-boost + edge flood-fill instead (works perfectly for ink-on-paper).
         finalCanvas=enhanceAndWhitenSignature(enhanced);
       } else {
-        // Photos: use full AI segmentation (MediaPipe person detection)
-        finalCanvas=await removeBackground(enhanced,(s)=>{btn.textContent=s;});
+        // Photos: use full AI segmentation (MediaPipe person detection).
+        // removeBackground() now returns a TRANSPARENT cutout — composite white
+        // ourselves for the JPEG path, and keep the transparent version for PNG export.
+        transparentCanvas=await removeBackground(enhanced,(s)=>{btn.textContent=s;});
+        finalCanvas=compositeOnWhite(transparentCanvas);
       }
       if(finalCanvas.width!==sz.w||finalCanvas.height!==sz.h){
         const out=document.createElement('canvas'); out.width=sz.w; out.height=sz.h;
         out.getContext('2d').drawImage(finalCanvas,0,0,sz.w,sz.h); finalCanvas=out;
+        if(transparentCanvas){
+          const outT=document.createElement('canvas'); outT.width=sz.w; outT.height=sz.h;
+          outT.getContext('2d').drawImage(transparentCanvas,0,0,sz.w,sz.h); transparentCanvas=outT;
+        }
       }
     }
+    cropTransparentCanvas = transparentCanvas; // null when not applicable (signature, or bg removal off)
 
     // Compress to under 100KB for UTI portal
     cropFinalDataUrl=toJpegUnder(finalCanvas,100,sz.dpi);
 
-    // Show final canvas preview
+    // Show final canvas preview (opaque — matches what gets submitted as JPEG)
     const fc=document.getElementById('crop-final-canvas');
     fc.width=sz.w; fc.height=sz.h;
     fc.getContext('2d').drawImage(finalCanvas,0,0);
@@ -2228,11 +2346,13 @@ window.downloadCrop = () => {
 };
 
 window.downloadCropPNG = () => {
-  if(!cropFinalDataUrl) return;
   const sz=CROP_SIZES[cropSize];
-  // Re-draw from the final canvas to get a clean PNG with transparency preserved
-  const fc=document.getElementById('crop-final-canvas');
-  fc.toBlob((blob)=>{
+  // Use the true transparent cutout when available (background removal ran on a photo).
+  // Falls back to the on-screen canvas (e.g. signatures, or bg removal turned off)
+  // since those have no separate transparent version to offer.
+  const sourceCanvas = cropTransparentCanvas || document.getElementById('crop-final-canvas');
+  if(!sourceCanvas) return;
+  sourceCanvas.toBlob((blob)=>{
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a'); a.href=url;
     a.download=`uti-${cropSize}-${sz.w}x${sz.h}.png`; a.click();
@@ -2271,7 +2391,7 @@ window.resetCrop = () => {
   const wEl=document.getElementById('levels-white'); if(wEl) wEl.value=255;
   const bv=document.getElementById('levels-black-val'); if(bv) bv.textContent='0';
   const wv=document.getElementById('levels-white-val'); if(wv) wv.textContent='255';
-  cropImageUrl=null; cropFinalDataUrl=null; cropRect=null; cropSourceImg=null; cropRotatedCanvas=null; cropAngle=0;
+  cropImageUrl=null; cropFinalDataUrl=null; cropRect=null; cropSourceImg=null; cropRotatedCanvas=null; cropAngle=0; cropTransparentCanvas=null;
   sheetDataUrl=null;
   document.getElementById('sheet-dl-btn').style.display='none';
   document.getElementById('sheet-canvas').width=0; document.getElementById('sheet-canvas').height=0;
@@ -2408,7 +2528,7 @@ function updateMergeThumbs() {
     if(!slot.dataUrl) return;
     const wrap=document.createElement('div');
     wrap.style.cssText='text-align:center;';
-    wrap.innerHTML=`<img src="${slot.dataUrl}" style="width:48px;height:60px;object-fit:cover;border-radius:5px;border:1.5px solid #1a3a6b;display:block;"><div style="font-size:10px;color:#888;margin-top:3px;">${idx+1}</div>`;
+    wrap.innerHTML=`<img src="${slot.dataUrl}" style="width:48px;height:60px;object-fit:cover;border-radius:5px;border:1.5px solid #15233D;display:block;"><div style="font-size:10px;color:#888;margin-top:3px;">${idx+1}</div>`;
     container.appendChild(wrap);
   });
 }
